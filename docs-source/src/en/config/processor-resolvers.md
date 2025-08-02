@@ -2,13 +2,13 @@
 
 > Here are some third-party Member resolvers for reference and use.
 >
-> Please read [Custom Resolver](../library/kavaref-core.md#custom-resolver) for usage.
+> Please read [Custom Resolver](../library/kavaref-core.md#custom-resolver) for usage instructions.
 
 ## AndroidHiddenApiBypass
 
 [Project URL](https://github.com/LSPosed/AndroidHiddenApiBypass)
 
-> LSPass: Bypass restrictions on non-SDK interfaces
+> LSPosed: Bypass restrictions on non-SDK interfaces
 
 ```kotlin
 class AndroidHiddenApiBypassResolver : MemberProcessor.Resolver() {

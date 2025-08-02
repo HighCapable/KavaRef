@@ -4,8 +4,8 @@
 
 ## Project Requirements
 
-The project needs to be created using `IntelliJ IDEA` or `Android Studio` and be of type Java or Android
-project and have integrated Kotlin environment dependencies.
+The project needs to be created using `IntelliJ IDEA` or `Android Studio` and should be a Java or Android
+project with integrated Kotlin environment dependencies.
 
 - IntelliJ IDEA (It is recommended to get the latest version [from here](https://www.jetbrains.com/idea))
 
@@ -93,5 +93,5 @@ Click the corresponding module below to view detailed feature descriptions.
 
 ## Demo
 
-You can find some samples [here](repo://tree/main/samples) view the corresponding demo project to better understand how these functions work and quickly
+You can find some samples [here](repo://tree/main/samples) to view the corresponding demo projects to better understand how these functions work and quickly
 select the functions you need.

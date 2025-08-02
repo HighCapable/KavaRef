@@ -14,8 +14,8 @@ features:
     details: A powerful, elegant, beautiful API built with Kotlin lambda can help you quickly implement bytecode filtering and reflection functions.
   - title: Fully Compatible
     details: Using native Java APIs to implement reflection functionality, it can be used on any Kotlin on JVM project, and it is no problem on Android.
-  - title: Quickly Started
-    details: Simple and easy to use it now! Do not need complex configuration and full development experience, Integrate dependencies and enjoy yourself.
+  - title: Quick to Start
+    details: Simple and easy to use right now! No complex configuration or extensive development experience required. Just integrate the dependencies and enjoy!
 footer: Apache-2.0 License | Copyright (C) 2019 HighCapable
 ---
 

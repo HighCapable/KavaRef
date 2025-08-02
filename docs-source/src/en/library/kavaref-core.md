@@ -133,16 +133,16 @@ public class Box<T> {
 }
 ```
 
-Suppose, we want to get the `doTask` method of `Test` and execute it. In KavaRef, you can do it in the following ways.
+Suppose we want to get the `doTask` method of `Test` and execute it. In KavaRef, you can do it in the following way.
 
 > The following example
 
 ```kotlin
 // Suppose this is an instance of this Class.
 val test: Test
-//Reflect it by instantiating Class.
+// Reflect it by instantiating Class.
 // In KavaRef you don't need to convert it to `java.lang.Class`,
-// It will automatically call KClass.java.
+// it will automatically call KClass.java.
 Test::class
     // Create KavaRef reflections.
     .resolve()
@@ -157,24 +157,24 @@ Test::class
     // instance will be returned.
     // Here we get the first filtering result.
     .first()
-    // Setting an instance of Test on MethodResolver.
+    // Set an instance of Test on MethodResolver.
     .of(test)
-    // Calling methods and passing in parameters.
+    // Call the method and pass in parameters.
     .invoke("task_name")
 ```
 
 In the above writing method, we use `Test::class.resolve()` to get the KavaRef reflection instance of the current `Class`.
-Then create a method filtering condition `MethodCondition` by `method { ... }`, which sets the method name and parameter type, and returns the `List<MethodResolver>` instance after execution.
+Then create a method filtering condition `MethodCondition` using `method { ... }`, which sets the method name and parameter type, and returns the `List<MethodResolver>` instance after execution.
 Then we use `first()` to get the first matched `MethodResolver` instance,
-Then use `of(test)` to set the current instance of `Class`, and finally use `invoke("task_name")` to execute the method and pass in the parameters.
+then use `of(test)` to set the current instance of `Class`, and finally use `invoke("task_name")` to execute the method and pass in the parameters.
 
-In this, MethodCondition is inherited from MemberCondition, which allows you to conditionally filter the Method, which contains a conditional image of the Java-core reflection API.
+In this, MethodCondition is inherited from MemberCondition, which allows you to conditionally filter the Method, containing a conditional image of the Java-core reflection API.
 You can view the corresponding comments to understand the native usage of each API.
 
 Similarly, MethodResolver is inherited from `MemberResolver`, which allows you to make reflection calls to `Method` in the filtered result.
 
-Since the reflection requirement here is to obtain a available method result, the call chain of `method { ... }.first()` may be more cumbersome,
-and at this time there is the following simplification solution.
+Since the reflection requirement here is to obtain an available method result, the call chain of `method { ... }.first()` may be more cumbersome,
+so there is the following simplified solution.
 
 > The following example
 
@@ -191,7 +191,7 @@ Test::class
     .invoke("task_name")
 ```
 
-Since we can now get an instance of `Test`, there is also a simplified way to write it,
+Since we can now get an instance of `Test`, there is also a simplified way to write this:
 you can use this instance to create KavaRef reflections directly.
 
 > The following example
@@ -212,7 +212,7 @@ Next, we need to get the `isTaskRunning` variable, which can be written in the f
 > The following example
 
 ```kotlin
-// Suppose this is an example of this Class.
+// Suppose this is an instance of this Class.
 val test: Test
 // Call and execute with KavaRef.
 val isTaskRunning = test.asResolver()
@@ -222,15 +222,15 @@ val isTaskRunning = test.asResolver()
     }.get<Boolean>()
 ```
 
-The constructor in `Test` is privatized, and now we can create an instance of it using the following method.
+The constructor in `Test` is private, and now we can create an instance of it using the following method.
 
 > The following example
 
 ```kotlin
 val test = Test::class.resolve()
     .firstConstructor {
-        // For the zero parameter construction method,
-        // the following conditions can be used to filter.
+        // For the zero parameter constructor,
+        // the following condition can be used to filter.
         // It is equivalent to parameterCount = 0.
         emptyParameters()
     }.create() // Create a new Test instance.
@@ -254,13 +254,13 @@ In addition to methods such as `firstMethod`, you can also use methods such as `
 After you get the `MemberResolver` instance, you can use `self` to get the `Member` original instance of the current `MemberResolver` to do some of your own operations.
 
 In `MemberResolver` inherited from `InstanceAwareResolver` (for example `MethodResolver` and `FieldResolver`), you can use `of(instance)`
-To set the current instance, if the reflection is static (static) member, you do not need to set the instance.
+to set the current instance. If the reflection is a static member, you do not need to set the instance.
 
 :::
 
 ::: warning
 
-The `Any.resolve()` function has been deprecated in `1.0.1` version because it pollutes the namespace (for example `File.resolve("/path/to/file")`), and now use `Any.asResolver()` instead.
+The `Any.resolve()` function has been deprecated in version `1.0.1` because it pollutes the namespace (for example `File.resolve("/path/to/file")`), and now use `Any.asResolver()` instead.
 
 :::
 
@@ -269,15 +269,15 @@ The `Any.resolve()` function has been deprecated in `1.0.1` version because it p
 In `MemberResolver` inherited from `InstanceAwareResolver`, the type of `of(instance)` requires the same type as the currently reflected `Class` instance generic type.
 Unless the `Class` generic type is not specified, or the `Class` generic type is set to `Any`.
 
-If `of(instance)` appears `Required: Nothing?` error (this is usually due to `Class` created via `Class.forName(...)` or `ClassLoader.loadClass(...)`),
+If `of(instance)` shows a `Required: Nothing?` error (this is usually due to `Class` created via `Class.forName(...)` or `ClassLoader.loadClass(...)`),
 then your `Class` is `Class<*>` (in Java it is `Class<?>`).
-At this time, if you do not want to specify the type, please set or convert it to `Class<Any>`, just like the following.
+At this time, if you do not want to specify the type, please set or convert it to `Class<Any>`, as follows.
 
 > The following example
 
 ```kotlin
 val myClass = Class.forName("com.xxx.MyClass") as Class<Any>
-// Suppose this is an example of this Class.
+// Suppose this is an instance of this Class.
 val myClassInstance: Any
 myClass.resolve()
     .firstMethod {
@@ -291,9 +291,9 @@ You can also use [Create Class Object](kavaref-extension.md#create-class-object)
 
 ### Vague Conditions
 
-You will notice that there is a `release` method in `Test`, but its method parameters are very long and some types may not be directly obtained.
+You will notice that there is a `release` method in `Test`, but its method parameters are very long and some types may not be directly obtainable.
 
-At this point, you can use the `parameters(...)` condition to use `VagueType` to fill in the method parameter types you don't want to fill in.
+At this point, you can use the `parameters(...)` condition with `VagueType` to fill in the method parameter types you don't want to specify.
 
 > The following example
 

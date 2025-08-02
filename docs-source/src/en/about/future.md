@@ -1,22 +1,22 @@
-# Looking for Future
+# Looking Toward the Future
 
-> The future is bright and uncertain, let us look forward to the future development space of `KavaRef`.
+> The future is bright and uncertain, let us look forward to the future development potential of `KavaRef`.
 
 ## Future Plans
 
 > Features that `KavaRef` may add later are included here.
 
-### Supports Class Filtering through ClassLoader
+### Support Class Filtering through ClassLoader
 
 `KavaRef` currently only supports search and calls for reflection APIs such as `Method`, `Field`, and `Constructor`.
-In the future, the ability to filter `Class` by specified type `ClassLoader` may be supported in Java and Android platforms according to requirements.
+In the future, the ability to filter `Class` by specified `ClassLoader` type may be supported on Java and Android platforms according to requirements.
 
-Currently, you can use [DexKit](https://github.com/LuckyPray/DexKit) to complete this requirement,
-which also supports more complex searches and calls of reflective APIs such as Method, Field, and Constructor.
+Currently, you can use [DexKit](https://github.com/LuckyPray/DexKit) to fulfill this requirement,
+which also supports more complex searches and calls for reflective APIs such as Method, Field, and Constructor.
 
 ### Automatically Generate Reflection Code
 
-**This is a feature that has been initially established in [YukiReflection](https://github.com/HighCapable/YukiReflection), and `KavaRef` is ready to continue to implement it in the possible time in the future.**
+**This is a feature that was initially established in [YukiReflection](https://github.com/HighCapable/YukiReflection), and `KavaRef` is ready to continue implementing it at some point in the future.**
 
 Use `stub` to create a Kotlin class, and declare the parameters in it, as well as its different states in each version.
 
@@ -66,7 +66,7 @@ MyClass().resolve().apply {
 }
 ```
 
-The function to be implemented at present can be directly defined as the following Kotlin class using the reflection function.
+The function to be implemented can currently be directly defined as the following Kotlin class using the reflection functionality.
 
 > The following example
 
@@ -90,7 +90,7 @@ class MyClass {
 }
 ```
 
-Then we can directly call this defined Kotlin class to implement the reflection function, and the API will automatically generate the reflection code according to the annotation.
+Then we can directly call this defined Kotlin class to implement the reflection functionality, and the API will automatically generate the reflection code according to the annotations.
 
 > The following example
 
@@ -109,6 +109,6 @@ MyClass().also {
 
 ::: tip
 
-The above functions may change after the actual release, and the functions of the actual version shall prevail.
+The above functions may change after the actual release, and the features of the actual version shall prevail.
 
 :::

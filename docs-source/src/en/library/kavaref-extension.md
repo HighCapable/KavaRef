@@ -65,8 +65,8 @@ You can view the KDoc [click here](kdoc://kavaref-extension).
 
 KavaRef provides some extensions that are more convenient when dealing with `Class` objects.
 
-KavaRef also adds the `KClass` extensions to the `Class` extensions,
-which is used to call `KClass.java`, which is more concise than using `Some::class.java` directly.
+KavaRef also adds `KClass` extensions to the `Class` extensions,
+which is used to call `KClass.java`, making it more concise than using `Some::class.java` directly.
 
 #### Create Class Object
 
@@ -77,7 +77,7 @@ For example, we need to create a `Class` object using the string class name.
 ```kotlin
 val myClass = "com.example.MyClass".toClass()
 // You can use a method with OrNull suffix to return null
-// when Class is not found instead of throwing an exception.
+// when the Class is not found instead of throwing an exception.
 val myClassOrNull = "com.example.MyClass".toClassOrNull()
 ```
 
@@ -94,8 +94,8 @@ You can also manually pass a `ClassLoader` parameter to the `toClass` method to 
 
 #### Class Object Reference
 
-Referring to Java Class in Kotlin requires writing a very long statement,
-such as `MyClass::class.java`, which you can simplify in the following ways.
+Referring to a Java Class in Kotlin requires writing a very long statement,
+such as `MyClass::class.java`, which you can simplify in the following way.
 
 > The following example
 

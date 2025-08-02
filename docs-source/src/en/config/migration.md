@@ -73,30 +73,30 @@ myClass.current().method {
 </div>
 </div>
 
-`KavaRef` starts reflection at any time, you need to use `resolve()` to create a reflection scope.
-You no longer directly extend the related `method` and `constructor` methods to avoid contaminating their scope.
+`KavaRef` starts reflection at any time; you need to use `resolve()` to create a reflection scope.
+You no longer directly extend the related `method` and `constructor` methods to avoid polluting their scope.
 
 `KavaRef` provides the `asResolver()` method to directly reference the reflection scope of the instance object,
-avoiding contamination caused by the creation of uncontrollable instance objects by the `current()` method in `YukiReflection`.
+avoiding pollution caused by the creation of uncontrollable instance objects by the `current()` method in `YukiReflection`.
 
-`KavaRef` abandons the "Finder" design concept and uses the "Filter" design concept to obtain reflected results.
-"Find" is no longer a finding, but a "filtering".
+`KavaRef` abandons the "Finder" design concept and uses the "Filter" design concept to obtain reflection results.
+"Find" is no longer finding, but "filtering".
 
-`KavaRef` canceled the `YukiReflection` defined in the resulting instance whether the `Member` obtained is a multiple or a single design scheme,
+`KavaRef` canceled the design scheme defined in `YukiReflection` for determining whether the `Member` obtained in the resulting instance is multiple or single,
 and directly returns the entire `List<MemberResolver>`.
-The example you see above uses `firstMethod` to get the first match `MethodResolver`,
-if you need to get all matches, you can change to `method`.
+The example you see above uses `firstMethod` to get the first matching `MethodResolver`.
+If you need to get all matches, you can change to `method`.
 
-The conditional method name of `KavaRef` in `MethodCondition` has been modified from abbreviation
-such as `param` before `YukiReflection` to `parameters` to more in line with the naming habit of Java reflection API.
+The conditional method name in `MethodCondition` of `KavaRef` has been modified from abbreviations
+such as `param` used previously in `YukiReflection` to `parameters` to better align with the naming conventions of the Java reflection API.
 
-`KavaRef` no longer provides the `param(...).order()` function in the condition, because this function itself is unstable.
-`KavaRef` now uses an iterator for filtering, and the bytecode will no longer be in order, and the bytecode should not be filtered in order.
-You can use `firstMethod`, `firstField`, or `lastMethod`, `lastField`, etc. to get the first or last match result.
+`KavaRef` no longer provides the `param(...).order()` function in conditions, because this function itself is unstable.
+`KavaRef` now uses an iterator for filtering, and the bytecode will no longer be in order, nor should bytecode be filtered by order.
+You can use `firstMethod`, `firstField`, or `lastMethod`, `lastField`, etc. to get the first or last matching result.
 
-`KavaRef` renames the `get(instance)` method to `of(instance)` because `get(...)` may be confused with the `get(...)` usage of `Field` and is not semantic,
-At the same time, `get(instance)` is no longer getting the `MethodFinder.Result.Instance` instance from something like `MethodFinder.Result`,
-but uses `of(instance)` to always operate and set the instance object to `MemberResolver`.
+`KavaRef` renames the `get(instance)` method to `of(instance)` because `get(...)` may be confused with the `get(...)` usage of `Field` and lacks semantic clarity.
+At the same time, `get(instance)` no longer gets the `MethodFinder.Result.Instance` instance from something like `MethodFinder.Result`,
+but uses `of(instance)` to consistently operate and set the instance object to `MemberResolver`.
 
 Methods such as `string()`, `int()`, etc. in `MethodFinder.Result.Instance` have been removed in `KavaRef`.
 You can directly use `get<String>()`, `get<Int>()`, `invoke<String>(...)`, `invoke<Int>(...)`, etc. to get or call the corresponding type results.
