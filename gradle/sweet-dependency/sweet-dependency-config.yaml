@@ -18,7 +18,7 @@ plugins:
     auto-update: false
   com.vanniktech.maven.publish:
     alias: maven-publish
-    version: 0.33.0
+    version: 0.34.0
 
 libraries:
   org.slf4j:
