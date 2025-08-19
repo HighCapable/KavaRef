@@ -11,7 +11,7 @@ repositories:
 plugins:
   org.jetbrains.kotlin.jvm:
     alias: kotlin-jvm
-    version: 2.1.21
+    version: 2.2.10
   org.jetbrains.dokka:
     alias: kotlin-dokka
     version: 1.9.20
