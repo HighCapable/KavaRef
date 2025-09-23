@@ -506,6 +506,16 @@ KavaRef 提供了其自身的日志管理功能，你可以通过 `KavaRef.logLe
 
 如果你想关闭 KavaRef 的全部日志打印，你可以设置 `KavaRef.logLevel = KavaRefRuntime.LogLevel.OFF`。
 
+::: tip
+
+在 JVM 平台，KavaRef 使用 SLF4J 作为日志打印的实现，你可以通过配置 SLF4J 的实现来控制日志的打印。
+
+默认情况下，你只需要引入 `org.slf4j:slf4j-simple` 作为依赖即可完成日志提供者实现，在 SpringBoot 等项目中，你无需额外配置。
+
+在 Android 平台，KavaRef 使用 `android.util.Log` 作为日志打印的实现，你无需额外配置。
+
+:::
+
 如果你有更高级的需求，你可以实现 `KavaRefRuntime.Logger` 来自定义自己的日志打印方式。
 
 > 示例如下

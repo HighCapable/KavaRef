@@ -525,6 +525,16 @@ prints more detailed step-by-step filtering condition logs to the console during
 
 If you want to turn off all log printing of KavaRef, you can set `KavaRef.logLevel = KavaRefRuntime.LogLevel.OFF`.
 
+::: tip
+
+On the JVM platform, KavaRef uses SLF4J as the implementation of log printing, and you can control log printing by configuring the implementation of SLF4J.
+
+By default, you only need to introduce `org.slf4j:slf4j-simple` as a dependency to complete the log provider implementation, and in projects such as SpringBoot, you do not need additional configuration.
+
+On the Android platform, KavaRef uses `android.util.Log` as an implementation of log printing, and you don't need additional configuration.
+
+:::
+
 If you have more advanced requirements, you can implement `KavaRefRuntime.Logger` to customize your own log printing method.
 
 > The following example
