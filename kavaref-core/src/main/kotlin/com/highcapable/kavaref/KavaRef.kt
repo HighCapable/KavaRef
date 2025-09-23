@@ -77,15 +77,6 @@ class KavaRef private constructor() {
 
         /**
          * Create a [MemberScope] instance to start a new reflection.
-         *
-         * This function has been deprecated due to naming pollution, use [asResolver] instead.
-         * @return [MemberScope]<[T]>
-         */
-        @Deprecated(message = "Use asResolver() instead.", replaceWith = ReplaceWith("this.asResolver()"))
-        fun <T : Any> T.resolve() = asResolver()
-
-        /**
-         * Create a [MemberScope] instance to start a new reflection.
          * @see KClass.resolve
          * @see Class.resolve
          * @return [MemberScope]<[T]>
@@ -115,21 +106,7 @@ class KavaRef private constructor() {
          */
         @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
-        fun MemberScope<*>.resolve(): MemberScope<*> = error(EXCEPTION_MESSAGE)
-
-        /**
-         * This is a fake function call chains to avoid internal calls to themselves.
-         */
-        @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
-        @JvmSynthetic
         fun MemberCondition<*, *, *>.asResolver(): MemberCondition<*, *, *> = error(EXCEPTION_MESSAGE)
-
-        /**
-         * This is a fake function call chains to avoid internal calls to themselves.
-         */
-        @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
-        @JvmSynthetic
-        fun MemberCondition<*, *, *>.resolve(): MemberCondition<*, *, *> = error(EXCEPTION_MESSAGE)
 
         /**
          * This is a fake function call chains to avoid internal calls to themselves.
@@ -143,21 +120,7 @@ class KavaRef private constructor() {
          */
         @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
-        fun MemberResolver<*, *>.resolve(): MemberResolver<*, *> = error(EXCEPTION_MESSAGE)
-
-        /**
-         * This is a fake function call chains to avoid internal calls to themselves.
-         */
-        @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
-        @JvmSynthetic
         fun List<MemberResolver<*, *>>.asResolver(): List<MemberResolver<*, *>> = error(EXCEPTION_MESSAGE)
-
-        /**
-         * This is a fake function call chains to avoid internal calls to themselves.
-         */
-        @Deprecated(message = DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
-        @JvmSynthetic
-        fun List<MemberResolver<*, *>>.resolve(): List<MemberResolver<*, *>> = error(EXCEPTION_MESSAGE)
     }
 
     /**
