@@ -11,7 +11,9 @@ repositories:
 plugins:
   org.jetbrains.kotlin.jvm:
     alias: kotlin-jvm
-    version: 2.2.10
+    # For compatibility with Android projects.
+    version: 2.0.10
+    auto-update: false
   org.jetbrains.dokka:
     alias: kotlin-dokka
     version: 1.9.20
