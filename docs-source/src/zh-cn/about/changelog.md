@@ -10,7 +10,12 @@
 
 ## kavaref-core
 
-### 1.0.1 | 2025.07.06 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+### 1.0.2 | 2025.09.23 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+
+- 移除 `org.slf4j:slf4j-simple` 依赖以修复在 SpringBoot 项目中引起的冲突问题
+- 移除已被弃用的 `T.resolve()`  方法避免其污染作用域，如果仍未迁移，请按照文档指引迁移到 `T.asResolver()`
+
+### 1.0.1 | 2025.07.06 &ensp;<Badge type="warning" text="过旧" vertical="middle" />
 
 - `T.resolve()` 已被弃用，因为其存在命名空间污染问题，现在推荐迁移到 `T.asResolver()`
 - 移除了 `KavaRef` 中存在的残留 `block` 方法，如果有用到此类方法，你可以手动使用 `apply` 来实现
