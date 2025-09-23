@@ -25,4 +25,7 @@ kotlin {
 dependencies {
     implementation(projects.kavarefCore)
     implementation(projects.kavarefExtension)
+
+    // SLF4J Simple Logger
+    implementation(org.slf4j.slf4j.simple)
 }

@@ -13,6 +13,7 @@ libraryProjects {
                 val repositoryDir = gradle.gradleUserHomeDir
                     .resolve("highcapable-maven-repository")
                     .resolve("repository")
+
                 maven {
                     name = "HighCapableMavenReleases"
                     url = repositoryDir.resolve("releases").toURI()
@@ -24,19 +25,23 @@ libraryProjects {
             }
         }
     }
+
     tasks.withType<DokkaTask>().configureEach {
         val configuration = """{ "footerMessage": "KavaRef | Apache-2.0 License | Copyright (C) 2019 HighCapable" }"""
         pluginsMapConfiguration.set(mapOf("org.jetbrains.dokka.base.DokkaBase" to configuration))
     }
+
     tasks.register("publishKDoc") {
         group = "documentation"
         dependsOn("dokkaHtml")
+
         doLast {
             val docsDir = rootProject.projectDir
                 .resolve("docs-source")
                 .resolve("dist")
                 .resolve("KDoc")
                 .resolve(project.name)
+
             if (docsDir.exists()) docsDir.deleteRecursively() else docsDir.mkdirs()
             layout.buildDirectory.dir("dokka/html").get().asFile.copyRecursively(docsDir)
         }
