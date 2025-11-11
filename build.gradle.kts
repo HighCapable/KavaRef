@@ -1,9 +1,9 @@
 import org.jetbrains.dokka.gradle.DokkaTask
 
 plugins {
-    autowire(libs.plugins.kotlin.jvm) apply false
-    autowire(libs.plugins.kotlin.dokka) apply false
-    autowire(libs.plugins.maven.publish) apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.dokka) apply false
+    alias(libs.plugins.maven.publish) apply false
 }
 
 libraryProjects {

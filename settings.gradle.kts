@@ -8,29 +8,32 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
 plugins {
-    id("com.highcapable.sweetdependency") version "1.0.4"
-    id("com.highcapable.sweetproperty") version "1.0.8"
+    id("com.highcapable.gropify") version "1.0.0"
 }
 
-sweetDependency {
-    isEnableVerboseMode = false
-}
-
-sweetProperty {
+gropify {
     global {
-        sourcesCode {
+        jvm {
             includeKeys(
                 "^project\\..*\$".toRegex(),
                 "^gradle\\..*\$".toRegex()
             )
-            isEnableRestrictedAccess = true
+            isRestrictedAccessEnabled = true
         }
     }
 
     rootProject {
-        all {
-            isEnable = false
+        common {
+            isEnabled = false
         }
     }
 }

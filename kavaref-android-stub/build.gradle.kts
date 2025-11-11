@@ -2,7 +2,7 @@ plugins {
     id("java")
 }
 
-group = property.project.groupName
+group = gropify.project.groupName
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17

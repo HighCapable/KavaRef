@@ -1,9 +1,9 @@
 plugins {
-    autowire(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.jvm)
 }
 
-group = property.project.samples.kavaref.demo.groupName
-version = property.project.samples.kavaref.demo.version
+group = gropify.project.samples.kavaref.demo.groupName
+version = gropify.project.samples.kavaref.demo.version
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -27,5 +27,5 @@ dependencies {
     implementation(projects.kavarefExtension)
 
     // SLF4J Simple Logger
-    implementation(org.slf4j.slf4j.simple)
+    implementation(libs.slf4j.simple)
 }

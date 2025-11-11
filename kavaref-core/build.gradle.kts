@@ -1,11 +1,11 @@
 plugins {
-    autowire(libs.plugins.kotlin.jvm)
-    autowire(libs.plugins.kotlin.dokka)
-    autowire(libs.plugins.maven.publish)
+    alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.kotlin.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
-group = property.project.groupName
-version = property.project.kavaref.core.version
+group = gropify.project.groupName
+version = gropify.project.kavaref.core.version
 
 java {
     sourceCompatibility = JavaVersion.VERSION_17
@@ -30,5 +30,5 @@ dependencies {
     compileOnly(projects.kavarefAndroidStub)
 
     implementation(projects.kavarefExtension)
-    implementation(org.slf4j.slf4j.api)
+    implementation(libs.slf4j.api)
 }
