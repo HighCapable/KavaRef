@@ -10,24 +10,7 @@ This is an extended dependency for KavaRef-related features.
 
 You can add this module to your project using the following method.
 
-### SweetDependency (Recommended)
-
-Add dependency in your project's `SweetDependency` configuration file.
-
-```yaml
-libraries:
-  com.highcapable.kavaref:
-    kavaref-extension:
-      version: +
-```
-
-Configure dependency in your project's `build.gradle.kts`.
-
-```kotlin
-implementation(com.highcapable.kavaref.kavaref.extension)
-```
-
-### Version Catalog
+### Version Catalog (Recommended)
 
 Add dependency in your project's `gradle/libs.versions.toml`.
 

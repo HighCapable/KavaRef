@@ -18,25 +18,7 @@ project with integrated Kotlin environment dependencies.
 The dependencies of `KavaRef` are published in **Maven Central** and our public repository,
 you can use the following method to configure repositories.
 
-We recommend using Kotlin DSL as the Gradle build script language and [SweetDependency](https://github.com/HighCapable/SweetDependency)
-to manage dependencies.
-
-#### SweetDependency (Recommended)
-
-Configure repositories in your project's `SweetDependency` configuration file.
-
-```yaml
-repositories:
-  google:
-  maven-central:
-  # (Optional) You can add this URL to use our public repository
-  # When Sonatype-OSS fails and cannot publish dependencies, this repository is added as a backup
-  # For details, please visit: https://github.com/HighCapable/maven-repository
-  highcapable-maven-releases:
-    url: https://raw.githubusercontent.com/HighCapable/maven-repository/main/repository/releases
-```
-
-#### Traditional Method
+We recommend using Kotlin DSL as the Gradle build script language.
 
 Configure repositories in your project's `build.gradle.kts`.
 

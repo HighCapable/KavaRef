@@ -10,24 +10,7 @@ This is the core dependency of KavaRef, and you need to introduce this module to
 
 You can add this module to your project using the following method.
 
-### SweetDependency (Recommended)
-
-Add dependency in your project's `SweetDependency` configuration file.
-
-```yaml
-libraries:
-  com.highcapable.kavaref:
-    kavaref-core:
-      version: +
-```
-
-Configure dependency in your project's `build.gradle.kts`.
-
-```kotlin
-implementation(com.highcapable.kavaref.kavaref.core)
-```
-
-### Version Catalog
+### Version Catalog (Recommended)
 
 Add dependency in your project's `gradle/libs.versions.toml`.
 

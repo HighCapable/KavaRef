@@ -10,24 +10,7 @@
 
 你可以使用以下方式将此模块添加到你的项目中。
 
-### SweetDependency (推荐)
-
-在你的项目 `SweetDependency` 配置文件中添加依赖。
-
-```yaml
-libraries:
-  com.highcapable.kavaref:
-    kavaref-core:
-      version: +
-```
-
-在你的项目 `build.gradle.kts` 中配置依赖。
-
-```kotlin
-implementation(com.highcapable.kavaref.kavaref.core)
-```
-
-### Version Catalog
+### Version Catalog (推荐)
 
 在你的项目 `gradle/libs.versions.toml` 中添加依赖。
 
