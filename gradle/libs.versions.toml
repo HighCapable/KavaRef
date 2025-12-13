@@ -3,6 +3,7 @@ kotlin = "2.0.10"
 dokka = "1.9.20"
 maven-publish = "0.34.0"
 slf4j = "2.0.17"
+androidx-annotation = "1.9.1"
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
@@ -12,3 +13,4 @@ maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publ
 [libraries]
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotation" }

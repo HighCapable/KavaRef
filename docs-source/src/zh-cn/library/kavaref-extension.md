@@ -268,6 +268,37 @@ val myClass: Class<*>
 val arguments = myClass.genericSuperclassTypeArguments()
 ```
 
+### 类型引用扩展
+
+在 Java 中，方法的泛型会在编译后被类型擦除，在运行获取到的类型是 `java.lang.Object`。
+
+KavaRef 提供了 `TypeRef` 类来包装你的目标泛型来确保你可以在运行时获取到正确的泛型类型，它的核心功能参考于 [Gson](https://github.com/google/gson) 的 `TypeToken`。
+
+它的使用方法非常简单，你可以像下面这样使用它。
+
+> 示例如下
+
+```kotlin
+val listStringType = typeRef<List<String>>()
+// 获取存储的类型，将会是 List<? extends String>
+val type = listStringType.type
+// 获取其原始类型，将会是 List
+val rawType = listStringType.rawType
+```
+
+在使用 Gson 等需要传入 `Type` 的场景中，你可以为此实现一个带有 `reified` 泛型的扩展方法。
+
+> 示例如下
+
+```kotlin
+val gson = Gson()
+
+inline fun <reified T : Any> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
+
+// 使用方法
+val json = listOf("KavaRef", "is", "awesome").toJson()
+```
+
 ### Java 包装类扩展
 
 在 Kotlin 中直接使用 `Boolean::class`、`Byte::class` 等方式获取到的是 Java 的原始类型 `boolean`、`byte` 而不是它们的包装类。

@@ -287,6 +287,38 @@ val myClass: Class<*>
 val arguments = myClass.genericSuperclassTypeArguments()
 ```
 
+### Type Reference Extensions
+
+In Java, method generics are erased after compilation, and the type obtained at runtime is `java.lang.Object`.
+
+KavaRef provides the `TypeRef` class to wrap your target generics to ensure that you can get the correct generic type at runtime.
+Its core functionality is referenced from [Gson](https://github.com/google/gson)'s `TypeToken`.
+
+It is very simple to use, you can use it like this.
+
+> The following example
+
+```kotlin
+val listStringType = typeRef<List<String>>()
+// Get the stored type, which will be List<? extends String>.
+val type = listStringType.type
+// Get its raw type, which will be List.
+val rawType = listStringType.rawType
+```
+
+In scenarios where you need to pass in `Type` such as when using Gson, you can implement an extension method with `reified` generics for this purpose.
+
+> The following example
+
+```kotlin
+val gson = Gson()
+
+inline fun <reified T : Any> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
+
+// Usage
+val json = listOf("KavaRef", "is", "awesome").toJson()
+```
+
 ### Java Wrapper Classes Extensions
 
 In Kotlin, you can directly use `Boolean::class`, `Byte::class`, etc. to obtain Java's original types `boolean` and `byte` instead of their wrapper classes.
