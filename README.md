@@ -49,6 +49,10 @@ which has no affiliation and will replace `YukiReflection` as a new reflection s
 
 ![Star History Chart](https://api.star-history.com/svg?repos=HighCapable/KavaRef&type=Date)
 
+## Third-Party Open Source Usage Statement
+
+- [Gson](https://github.com/google/gson)
+
 ## License
 
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)

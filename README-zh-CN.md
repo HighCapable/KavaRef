@@ -46,6 +46,10 @@
 
 ![Star History Chart](https://api.star-history.com/svg?repos=HighCapable/KavaRef&type=Date)
 
+## 第三方开源使用声明
+
+- [Gson](https://github.com/google/gson)
+
 ## 许可证
 
 - [Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)
