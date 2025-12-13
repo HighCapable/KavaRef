@@ -26,7 +26,11 @@
 
 ## kavaref-extension
 
-### 1.0.1 | 2025.07.06 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+### 1.0.2 | 2025.12.13 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+
+- 新增 `TypeRef` 功能，可用于在运行时保留泛型信息
+
+### 1.0.1 | 2025.07.06 &ensp;<Badge type="warning" text="过旧" vertical="middle" />
 
 - 修复 `VariousClass` 中 `loadOrNull` 返回类型是 `Class<*>?` 而不是 `Class<Any>?` 的问题
 

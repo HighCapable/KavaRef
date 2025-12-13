@@ -34,7 +34,11 @@ Time zone of version release date: **UTC+8**
 
 ## kavaref-extension
 
-### 1.0.1 | 2025.07.06 &ensp;<Badge type="tip" text="latest" vertical="middle" />
+### 1.0.2 | 2025.12.13 &ensp;<Badge type="tip" text="latest" vertical="middle" />
+
+- Added `TypeRef` feature, which can be used to preserve generic information at runtime
+
+### 1.0.1 | 2025.07.06 &ensp;<Badge type="warning" text="stale" vertical="middle" />
 
 - Fixed an issue where the return type of `loadOrNull` is `Class<*>?` instead of `Class<Any>?` in `VariousClass`
 
