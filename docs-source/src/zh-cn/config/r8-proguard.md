@@ -6,6 +6,9 @@
 
 ```
 -keepattributes Signature
+-keep class * extends com.highcapable.kavaref.extension.TypeRef {
+    <init>(...);
+}
 ```
 
 `TypeRef` 已添加 `Keep` 注解，如果无效，请手动添加以下规则以保留类。

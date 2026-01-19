@@ -7,6 +7,9 @@ If you are using the [kavaref-extension](../library/kavaref-extension) module an
 
 ```
 -keepattributes Signature
+-keep class * extends com.highcapable.kavaref.extension.TypeRef {
+    <init>(...);
+}
 ```
 
 `TypeRef` has been annotated with `Keep`. If it doesn't work, please manually add the following rules to keep the class.
