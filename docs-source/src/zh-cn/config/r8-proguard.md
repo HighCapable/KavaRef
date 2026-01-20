@@ -6,7 +6,7 @@
 
 ```
 -keepattributes Signature
--keep class * extends com.highcapable.kavaref.extension.TypeRef {
+-keep class,allowobfuscation * extends com.highcapable.kavaref.extension.TypeRef {
     <init>(...);
 }
 ```
@@ -15,5 +15,4 @@
 
 ```
 -keep class com.highcapable.kavaref.extension.TypeRef {*;}
--keep class,allowobfuscation * extends com.highcapable.kavaref.extension.TypeRef
 ```
