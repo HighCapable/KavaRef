@@ -7,7 +7,8 @@ If you are using the [kavaref-extension](../library/kavaref-extension) module an
 
 ```
 -keepattributes Signature
--keep class,allowobfuscation * extends com.highcapable.kavaref.extension.TypeRef {
+-keep,allowobfuscation class * extends com.highcapable.kavaref.extension.TypeRef
+-keepclassmembers class * extends com.highcapable.kavaref.extension.TypeRef {
     <init>(...);
 }
 ```
