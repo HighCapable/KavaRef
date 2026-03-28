@@ -114,7 +114,7 @@ val myClassOrNull = MyClass::class.createInstanceOrNull("Hello", 123)
 // createInstance 方法默认仅过滤公开的构造方法，如果你需要调用非公有构造方法，请设置 isPublic = false
 val myClassWithPrivateConstructor = MyClass::class.createInstance("Private!", isPublic = false)
 // 如果你想指定创建实例的类型使用另一个类型，可以使用以下方法
-val mySuperClass = MyClas::class.createInstanceAsType<MySuperClass>("Hello", 123)
+val mySuperClass = MyClass::class.createInstanceAsType<MySuperClass>("Hello", 123)
 // 同样地，你也可以使用带有 OrNull 后缀的方法在创建失败时返回 null 而不是抛出异常
 val mySuperClassOrNull = MyClass::class.createInstanceAsTypeOrNull<MySuperClass>("Hello", 123)
 ```
