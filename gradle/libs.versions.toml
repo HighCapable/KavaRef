@@ -1,7 +1,7 @@
 [versions]
-kotlin = "2.0.10"
-dokka = "1.9.20"
-maven-publish = "0.34.0"
+kotlin = "2.3.21"
+dokka = "2.2.0"
+maven-publish = "0.36.0"
 slf4j = "2.0.17"
 androidx-annotation = "1.9.1"
 
