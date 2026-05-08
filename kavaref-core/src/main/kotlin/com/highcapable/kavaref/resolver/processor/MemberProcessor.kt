@@ -127,10 +127,8 @@ object MemberProcessor {
             ) { declaringClass ->
                 methodFilters(condition, configuration, declaringClass)
             }
-            is ConstructorCondition -> resolveInClass(
-                condition, configuration, configuration.declaringClass
-            ) { declaringClass ->
-                constructorFilters(condition, configuration, declaringClass)
+            is ConstructorCondition -> constructorFilters(condition, configuration).ifEmpty {
+                throwIfNotOptional(condition, configuration)
             }
             is FieldCondition -> resolveInClass(
                 condition, configuration, configuration.declaringClass
@@ -179,9 +177,8 @@ object MemberProcessor {
 
     private fun <T : Any> constructorFilters(
         condition: ConstructorCondition<T>,
-        configuration: MemberCondition.Configuration<T>,
-        declaringClass: Class<*>
-    ): List<ConstructorResolver<T>> = configuration.currentProcessorResolver.getDeclaredConstructors(declaringClass)
+        configuration: MemberCondition.Configuration<T>
+    ): List<ConstructorResolver<T>> = configuration.currentProcessorResolver.getDeclaredConstructors(configuration.declaringClass)
         .asSequence()
         .baseFilters(condition, configuration)
         .executableFilters(condition, configuration)
@@ -327,18 +324,23 @@ object MemberProcessor {
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>
     ): List<R> {
-        fun splicingString(name: String) = "No $name found matching the condition for " +
-            "current class${if (configuration.superclass) " (Also tried for superclass)" else ""}.\n" +
-            buildConditionTable(condition, configuration) + "\n" +
-            "Suggestion: ${if (!configuration.superclass) "Members in superclass are not reflected in the current class, " +
-                "you can try adding superclass() in your condition and try again. "
-            else "Check if the conditions are correct and valid, and try again. "}"
-
         val exceptionNote = "If you want to ignore this exception, adding optional() in your condition."
         val message = when (condition) {
-            is MethodCondition -> splicingString(name = "method")
-            is ConstructorCondition -> splicingString(name = "constructor")
-            is FieldCondition -> splicingString(name = "field")
+            is MethodCondition -> "No method found matching the condition for " +
+                "current class${if (configuration.superclass) " (Also tried for superclass)" else ""}.\n" +
+                buildConditionTable(condition, configuration) + "\n" +
+                "Suggestion: ${if (!configuration.superclass) "Members in superclass are not reflected in the current class, " +
+                    "you can try adding superclass() in your condition and try again. "
+                else "Check if the conditions are correct and valid, and try again. "}"
+            is ConstructorCondition -> "No constructor found matching the condition for current class.\n" +
+                buildConditionTable(condition, configuration) + "\n" +
+                "Suggestion: Constructors are not inherited from superclass, check if the conditions are correct and valid, and try again. "
+            is FieldCondition -> "No field found matching the condition for " +
+                "current class${if (configuration.superclass) " (Also tried for superclass)" else ""}.\n" +
+                buildConditionTable(condition, configuration) + "\n" +
+                "Suggestion: ${if (!configuration.superclass) "Members in superclass are not reflected in the current class, " +
+                    "you can try adding superclass() in your condition and try again. "
+                else "Check if the conditions are correct and valid, and try again. "}"
             else -> error("Unsupported condition type: $condition")
         }
 
@@ -354,7 +356,7 @@ object MemberProcessor {
         }
     }
 
-    private inline fun <reified M : Member, T : Any> MemberResolver<M, T>.apply(configuration: MemberCondition.Configuration<T>) = 
+    private inline fun <reified M : Member, T : Any> MemberResolver<M, T>.apply(configuration: MemberCondition.Configuration<T>) =
         apply { configuration.memberInstance?.let { if (this is InstanceAwareResolver) of(it) } }
 
     private fun <T, R> Sequence<T>.filter(
@@ -452,7 +454,7 @@ object MemberProcessor {
             displayValue?.let { label to it }
         }
 
-        if (rows.isEmpty()) return configuration.declaringClass.toString()
+        if (rows.isEmpty()) return@runCatching configuration.declaringClass.toString()
 
         val originalLabelWidth = rows.maxOf { displayWidth(it.first) }
         val originalValueWidth = rows.maxOf { displayWidth(it.second) }
@@ -476,7 +478,7 @@ object MemberProcessor {
             "| ${padDisplay(label, labelWidth)} | ${padDisplay(value, valueWidth)} |"
         }
 
-        return listOf(headerBorder, header, border, content, border).joinToString("\n")
+        return@runCatching listOf(headerBorder, header, border, content, border).joinToString("\n")
     }.getOrDefault("${configuration.declaringClass.toStringIgnore()}\nFailed to build condition table.")
 
     private val <T : Any> MemberCondition.Configuration<T>.currentProcessorResolver

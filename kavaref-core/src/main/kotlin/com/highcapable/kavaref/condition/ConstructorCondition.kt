@@ -33,6 +33,15 @@ import java.lang.reflect.Constructor
  */
 class ConstructorCondition<T : Any> : ExecutableCondition<Constructor<T>, ConstructorResolver<T>, T>() {
 
+    companion object {
+
+        private const val SUPERCLASS_DEPRECATED_MESSAGE =
+            "Constructors are not inherited from superclass in Java, so ConstructorCondition does not support superclass()."
+
+        private const val SUPERCLASS_EXCEPTION_MESSAGE =
+            "Not allowed to call superclass() in ConstructorCondition because constructors are not inherited from superclass."
+    }
+
     override fun name(name: String) = apply { super.name(name) }
     override fun name(condition: (String) -> Boolean) = apply { super.name(condition) }
     override fun modifiers(vararg modifiers: Modifiers) = apply { super.modifiers(*modifiers) }
@@ -72,7 +81,8 @@ class ConstructorCondition<T : Any> : ExecutableCondition<Constructor<T>, Constr
     override fun annotatedExceptionTypes(vararg types: Any) = apply { super.annotatedExceptionTypes(*types) }
     override fun annotatedExceptionTypesNot(vararg types: Any) = apply { super.annotatedExceptionTypesNot(*types) }
 
-    override fun superclass() = apply { super.superclass() }
+    @Deprecated(message = SUPERCLASS_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
+    override fun superclass(): Nothing = error(SUPERCLASS_EXCEPTION_MESSAGE)
 
     override fun copy() = ConstructorCondition<T>().also {
         initializeCopiedData(it)

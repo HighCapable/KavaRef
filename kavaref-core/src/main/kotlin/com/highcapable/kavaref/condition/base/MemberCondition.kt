@@ -23,7 +23,6 @@
 
 package com.highcapable.kavaref.condition.base
 
-import com.highcapable.kavaref.condition.base.MemberCondition.Configuration.Optional
 import com.highcapable.kavaref.condition.type.Modifiers
 import com.highcapable.kavaref.resolver.base.MemberResolver
 import com.highcapable.kavaref.resolver.processor.MemberProcessor
