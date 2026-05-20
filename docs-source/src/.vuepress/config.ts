@@ -1,7 +1,9 @@
 import { defaultTheme } from 'vuepress';
 import { shikiPlugin } from '@vuepress/plugin-shiki';
 import { searchPlugin } from '@vuepress/plugin-search';
+import type MarkdownIt from 'markdown-it';
 import { navBarItems, sideBarItems, configs, pageLinkRefs } from './configs/template';
+import { alignI18nAnchors } from './configs/anchors';
 import { env, markdown } from './configs/utils';
 
 export default {
@@ -48,7 +50,8 @@ export default {
             }
         },
     }),
-    extendsMarkdown: (md: markdownit) => {
+    extendsMarkdown: (md: MarkdownIt) => {
+        md.use(alignI18nAnchors);
         markdown.injectLinks(md, env.dev ? pageLinkRefs.dev : pageLinkRefs.prod);
     },
     plugins: [
