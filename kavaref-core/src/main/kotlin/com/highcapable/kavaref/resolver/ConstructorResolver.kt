@@ -24,7 +24,6 @@
 package com.highcapable.kavaref.resolver
 
 import com.highcapable.kavaref.extension.classOf
-import com.highcapable.kavaref.extension.makeAccessible
 import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Constructor
 
@@ -45,7 +44,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @return [T]
      */
     fun create(vararg args: Any?): T {
-        self.makeAccessible()
+        self.requireAccessible()
         return self.newInstance(*args)
     }
 
@@ -57,7 +56,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @return [T]
      */
     inline fun <reified T : Any> createAsType(vararg args: Any?): T {
-        self.makeAccessible()
+        self.requireAccessible()
         return self.newInstance(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}.")
     }
 

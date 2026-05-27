@@ -23,7 +23,6 @@
 
 package com.highcapable.kavaref.resolver
 
-import com.highcapable.kavaref.extension.makeAccessible
 import com.highcapable.kavaref.resolver.base.InstanceAwareResolver
 import java.lang.reflect.Method
 
@@ -47,7 +46,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      */
     @JvmName("invokeTyped")
     fun <T : Any?> invoke(vararg args: Any?): T? {
-        self.makeAccessible()
+        self.requireAccessible()
         return self.invoke(instance, *args) as? T?
     }
 
@@ -67,7 +66,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      * @return [Any] or null.
      */
     fun invoke(vararg args: Any?): Any? {
-        self.makeAccessible()
+        self.requireAccessible()
         return self.invoke(instance, *args)
     }
 
