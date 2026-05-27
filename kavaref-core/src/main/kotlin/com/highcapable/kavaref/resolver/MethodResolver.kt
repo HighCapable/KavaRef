@@ -46,7 +46,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      */
     @JvmName("invokeTyped")
     fun <T : Any?> invoke(vararg args: Any?): T? {
-        self.requireAccessible()
+        requireAccessible()
         return self.invoke(instance, *args) as? T?
     }
 
@@ -66,7 +66,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      * @return [Any] or null.
      */
     fun invoke(vararg args: Any?): Any? {
-        self.requireAccessible()
+        requireAccessible()
         return self.invoke(instance, *args)
     }
 

@@ -35,8 +35,8 @@ abstract class MemberResolver<M : Member, T : Any>(open val self: M) {
     /** Make the member accessible and check if it is successful. */
     @PublishedApi
     @JvmSynthetic
-    internal fun Member.requireAccessible() {
-        require(makeAccessible()) {
+    internal fun requireAccessible() {
+        require(self.makeAccessible()) {
             "Failed to make the member \"$this\" accessible. " +
                 "Please check if the member is accessible or if the security manager allows it."
         }

@@ -44,7 +44,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @return [T]
      */
     fun create(vararg args: Any?): T {
-        self.requireAccessible()
+        requireAccessible()
         return self.newInstance(*args)
     }
 
@@ -56,7 +56,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @return [T]
      */
     inline fun <reified T : Any> createAsType(vararg args: Any?): T {
-        self.requireAccessible()
+        requireAccessible()
         return self.newInstance(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}.")
     }
 
