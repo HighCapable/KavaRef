@@ -80,15 +80,55 @@ libraryProjects {
     }
 }
 
+registerAggregatePublishTask(
+    name = "publishBomToMavenLocal",
+    description = "Publishes the BOM and all modules to the local Maven cache.",
+    taskName = "publishToMavenLocal",
+    projectNames = Libraries.entries
+)
+
+registerAggregatePublishTask(
+    name = "publishBomToMavenCentral",
+    description = "Publishes the BOM and all modules to the Maven Central repository.",
+    taskName = "publishMavenPublicationToMavenCentralRepository",
+    projectNames = Libraries.entries
+)
+
+registerAggregatePublishTask(
+    name = "publishBomToHighCapableMavenReleases",
+    description = "Publishes the BOM and all modules to the HighCapableMavenReleases repository.",
+    taskName = "publishAllPublicationsToHighCapableMavenReleasesRepository",
+    projectNames = Libraries.entries
+)
+
+registerAggregatePublishTask(
+    name = "publishBomToHighCapableMavenSnapShots",
+    description = "Publishes the BOM and all modules to the HighCapableMavenSnapShots repository.",
+    taskName = "publishAllPublicationsToHighCapableMavenSnapShotsRepository",
+    projectNames = Libraries.entries
+)
+
+fun registerAggregatePublishTask(name: String, description: String, taskName: String, projectNames: List<String>) {
+    tasks.register(name) {
+        this.group = "publishing"
+        this.description = description
+        dependsOn(projectNames.map { ":$it:$taskName" })
+    }
+}
+
 fun libraryProjects(action: Action<in Project>) {
-    val libraries = listOf(
-        Libraries.KAVAREF_CORE,
-        Libraries.KAVAREF_EXTENSION
-    )
+    val libraries = Libraries.entries
     allprojects { if (libraries.contains(name)) action.execute(this) }
 }
 
 object Libraries {
+    const val KAVAREF_BOM = "kavaref-bom"
     const val KAVAREF_CORE = "kavaref-core"
     const val KAVAREF_EXTENSION = "kavaref-extension"
+
+    val entries = listOf(
+        KAVAREF_BOM,
+        KAVAREF_CORE,
+        KAVAREF_EXTENSION
+    )
 }

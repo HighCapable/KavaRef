@@ -1,6 +1,5 @@
 plugins {
-    alias(libs.plugins.kotlin.jvm)
-    alias(libs.plugins.kotlin.dokka)
+    `java-platform`
     alias(libs.plugins.maven.publish)
 }
 
@@ -8,5 +7,8 @@ group = gropify.project.groupName
 version = gropify.project.kavaref.bom.version
 
 dependencies {
-    implementation(libs.androidx.annotation)
+    constraints {
+        api(projects.kavarefCore)
+        api(projects.kavarefExtension)
+    }
 }

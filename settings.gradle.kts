@@ -24,8 +24,8 @@ gropify {
     global {
         jvm {
             includeKeys(
-                "^project\\..*\$".toRegex(),
-                "^gradle\\..*\$".toRegex()
+                "^project\\..*$".toRegex(),
+                "^gradle\\..*$".toRegex()
             )
             isRestrictedAccessEnabled = true
         }
@@ -36,9 +36,16 @@ gropify {
             isEnabled = false
         }
     }
+
+    projects(":kavaref-bom") {
+        jvm {
+            isEnabled = false
+        }
+    }
 }
 
 rootProject.name = "KavaRef"
 
-include(":kavaref-core", ":kavaref-extension", "kavaref-android-stub")
 include(":samples:kavaref-demo")
+include(":kavaref-bom")
+include(":kavaref-core", ":kavaref-extension", "kavaref-android-stub")

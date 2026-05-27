@@ -5,7 +5,7 @@ plugins {
 }
 
 group = gropify.project.groupName
-version = gropify.project.kavaref.core.version
+version = gropify.project.kavaref.bom.version
 
 dependencies {
     // Android Only
