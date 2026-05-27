@@ -32,6 +32,7 @@ import java.lang.reflect.Modifier
  * A flag to indicate whether the [AccessibleObject.trySetAccessible] method
  * is supported in the current environment.
  */
+@Volatile
 private var isTrySetAccessibleSupported = true
 
 /**
