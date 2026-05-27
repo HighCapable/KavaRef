@@ -33,8 +33,25 @@ import kotlin.reflect.KProperty
 /** Definition [ClassLoader] Loading instance function body type. */
 private typealias ClassLoaderInitializer = () -> ClassLoader?
 
+/** Structured key for [createInstance] constructor cache. */
+private data class CreateInstanceConstructorCacheKey(
+    val targetClass: Class<*>,
+    val parameterTypes: List<CreateInstanceArgumentType>,
+    val isPublic: Boolean
+)
+
+/** Argument type descriptor for [createInstance] constructor cache. */
+private sealed interface CreateInstanceArgumentType {
+
+    /** Null argument marker that preserves position in constructor cache keys. */
+    data object Null : CreateInstanceArgumentType
+
+    /** Runtime argument type marker used by constructor cache keys. */
+    data class Runtime(val type: Class<*>) : CreateInstanceArgumentType
+}
+
 /** Cache for [createInstance] function to store constructors for faster access. */
-private val createInstanceConstructorsCache = ConcurrentHashMap<String, Constructor<*>>()
+private val createInstanceConstructorsCache = ConcurrentHashMap<CreateInstanceConstructorCacheKey, Constructor<*>>()
 
 /**
  * Provide a [ClassLoader] for reflection operations.
@@ -373,7 +390,7 @@ fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = tru
             it.parameterTypes.zip(args).all { (type, arg) ->
                 arg == null && !type.isPrimitive || arg?.javaClass?.isSubclassOf(type.wrap()) == true
             }
-        }.firstOrNull()?.apply { makeAccessible() }
+        }.firstOrNull()
 
     fun Constructor<*>?.create() = this?.newInstance(*args) as? T? ?: throw NoSuchMethodError(
         "Could not find a suitable constructor for $this with arguments: ${args.joinToString().ifBlank { "(empty)" }}."
@@ -383,17 +400,20 @@ fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = tru
     if (args.isNotEmpty() && args.all { it == null })
         error("Not allowed to create an instance with all null arguments for $this.")
 
-    val constructorKey = buildString {
-        append(name); append('|')
-        args.forEach { arg ->
-            append(arg?.javaClass?.name ?: "null")
-            append('|')
-        }
-        append("isPublic: $isPublic")
-    }
+    val constructorKey = CreateInstanceConstructorCacheKey(
+        targetClass = this,
+        parameterTypes = args.map {
+            it?.javaClass?.let(CreateInstanceArgumentType::Runtime) ?: CreateInstanceArgumentType.Null
+        },
+        isPublic = isPublic
+    )
 
     return createInstanceConstructorsCache[constructorKey]?.create() ?: run {
         val constructor = filterConstructor()?.also {
+            require(it.makeAccessible()) {
+                "Failed to make the constructor \"$it\" accessible. " +
+                    "Please check if the constructor is accessible or if the security manager allows it."
+            }
             createInstanceConstructorsCache[constructorKey] = it
         }
         constructor.create()
