@@ -533,8 +533,8 @@ object MemberProcessor {
             is KClass<*> -> this.java
             is String -> if (configuration.optional == MemberCondition.Configuration.Optional.NO)
                 toClass(configuration.declaringClass.classLoader)
-            // If enabled optional mode, use the "Object.class" as the default return type when not found.
-            else toClassOrNull(configuration.declaringClass.classLoader) ?: classOf<Any>()
+            // If enabled optional mode, use a non-match sentinel when not found so unresolved strings fail closed.
+            else toClassOrNull(configuration.declaringClass.classLoader) ?: classOf<UnresolvedTypeSentinel>()
             is VagueType -> javaClass
             else -> error("Unsupported type: $this, supported types are Class, KClass, String and VagueType.")
         }.parseVagueType()
@@ -543,4 +543,7 @@ object MemberProcessor {
     private fun Any.toStringIgnore() = toString().replace(" (Kotlin reflection is not available)", "")
 
     private inline fun runOrElse(block: () -> Boolean) = runCatching(block).getOrDefault(false)
+
+    /** Internal sentinel type used when optional string type resolution fails. */
+    private class UnresolvedTypeSentinel
 }
