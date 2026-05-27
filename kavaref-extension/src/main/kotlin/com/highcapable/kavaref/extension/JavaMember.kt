@@ -31,13 +31,9 @@ import java.lang.reflect.Modifier
 /**
  * Make [AccessibleObject] implements [Member] accessible.
  * @receiver the [Member] to be made accessible.
+ * @return [Boolean]
  */
-inline fun <reified T : Member> T.makeAccessible() {
-    (this as? AccessibleObject)?.let {
-        @Suppress("DEPRECATION")
-        if (!it.isAccessible) it.isAccessible = true
-    }
-}
+inline fun <reified T : Member> T.makeAccessible() = (this as? AccessibleObject?)?.trySetAccessible() == true
 
 // Member extension properties for checking modifiers.
 
