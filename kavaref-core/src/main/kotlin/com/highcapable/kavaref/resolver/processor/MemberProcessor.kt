@@ -295,19 +295,19 @@ object MemberProcessor {
             !compareElementTypes(key, annotations, configuration)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES, condition.annotatedParameterTypes) { key, value ->
-            val annotations = value.annotatedParameterTypes.map { it.annotations.map { e -> e.annotationClass.java } }.flatten()
+            val annotations = value.annotatedParameterTypes.collectTypes()
             compareElementTypes(key, annotations, configuration)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES_NOT, condition.annotatedParameterTypesNot) { key, value ->
-            val annotations = value.annotatedParameterTypes.map { it.annotations.map { e -> e.annotationClass.java } }.flatten()
+            val annotations = value.annotatedParameterTypes.collectTypes()
             !compareElementTypes(key, annotations, configuration)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES, condition.annotatedExceptionTypes) { key, value ->
-            val annotations = value.annotatedExceptionTypes.map { it.annotations.map { e -> e.annotationClass.java } }.flatten()
+            val annotations = value.annotatedExceptionTypes.collectTypes()
             compareElementTypes(key, annotations, configuration)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES_NOT, condition.annotatedExceptionTypesNot) { key, value ->
-            val annotations = value.annotatedExceptionTypes.map { it.annotations.map { e -> e.annotationClass.java } }.flatten()
+            val annotations = value.annotatedExceptionTypes.collectTypes()
             !compareElementTypes(key, annotations, configuration)
         }
 
@@ -325,22 +325,23 @@ object MemberProcessor {
         configuration: MemberCondition.Configuration<T>
     ): List<R> {
         val exceptionNote = "If you want to ignore this exception, adding optional() in your condition."
+        val superclassNote = if (configuration.superclass) " (Also tried for superclass)" else ""
+
+        val memberSuggestion = if (!configuration.superclass) {
+            "Members in superclass are not reflected in the current class, you can try adding superclass() in your condition and try again. "
+        } else "Check if the conditions are correct and valid, and try again. "
+
+        val conditionTable = buildConditionTable(condition, configuration)
         val message = when (condition) {
-            is MethodCondition -> "No method found matching the condition for " +
-                "current class${if (configuration.superclass) " (Also tried for superclass)" else ""}.\n" +
-                buildConditionTable(condition, configuration) + "\n" +
-                "Suggestion: ${if (!configuration.superclass) "Members in superclass are not reflected in the current class, " +
-                    "you can try adding superclass() in your condition and try again. "
-                else "Check if the conditions are correct and valid, and try again. "}"
+            is MethodCondition -> "No method found matching the condition for current class$superclassNote.\n" +
+                conditionTable + "\n" +
+                "Suggestion: $memberSuggestion"
             is ConstructorCondition -> "No constructor found matching the condition for current class.\n" +
-                buildConditionTable(condition, configuration) + "\n" +
+                conditionTable + "\n" +
                 "Suggestion: Constructors are not inherited from superclass, check if the conditions are correct and valid, and try again. "
-            is FieldCondition -> "No field found matching the condition for " +
-                "current class${if (configuration.superclass) " (Also tried for superclass)" else ""}.\n" +
-                buildConditionTable(condition, configuration) + "\n" +
-                "Suggestion: ${if (!configuration.superclass) "Members in superclass are not reflected in the current class, " +
-                    "you can try adding superclass() in your condition and try again. "
-                else "Check if the conditions are correct and valid, and try again. "}"
+            is FieldCondition -> "No field found matching the condition for current class$superclassNote.\n" +
+                conditionTable + "\n" +
+                "Suggestion: $memberSuggestion"
             else -> error("Unsupported condition type: $condition")
         }
 
@@ -371,11 +372,12 @@ object MemberProcessor {
 
         predicateKey?.let {
             val result = predicate(it, condition)
-            val sKey = VagueType.format(it)?.toStringIgnore()
-            val sValue = condition?.toStringIgnore()
+            if (configuration.shouldLogFilterDebug()) {
+                val sKey = VagueType.format(it)?.toStringIgnore()
+                val sValue = condition?.toStringIgnore()
 
-            if (configuration.optional != MemberCondition.Configuration.Optional.SILENT)
                 KavaRefRuntime.debug("[FILTER] [${if (result) "HIT" else "MISS"}] $name: $sKey [RESOLVED] $sValue")
+            }
 
             result
         } ?: true
@@ -389,14 +391,16 @@ object MemberProcessor {
         // If size is different at first, return false.
         if (conditionKey.size != typesValue.size) return false
 
-        val isMatched = conditionKey
-            .map { it.toTypeClass(configuration) }
-            .filterIndexed { index, type ->
-                val target = typesValue[index]
-                type == classOf<VagueType>() || target == type
-            }.size == typesValue.size
+        var index = 0
+        conditionKey.forEach { conditionType ->
+            val target = typesValue[index++]
+            val expected = conditionType.toTypeClass(configuration)
 
-        return isMatched
+            if (expected != classOf<VagueType>() && target != expected)
+                return false
+        }
+
+        return true
     }
 
     @JvmName("compareElementTypesMultiple")
@@ -407,13 +411,15 @@ object MemberProcessor {
     ): Boolean {
         // If size is different at first, return false.
         if (conditionKey.size != typesValue.size) return false
-        
-        val isMatched = conditionKey.filterIndexed { index, type ->
-            val target = typesValue[index]
-            compareElementTypes(type, target, configuration)
-        }.size == typesValue.size
-        
-        return isMatched
+
+        var index = 0
+        conditionKey.forEach { conditionType ->
+            val target = typesValue[index++]
+            if (!compareElementTypes(conditionType, target, configuration))
+                return false
+        }
+
+        return true
     }
 
     private fun compareMatcherTypes(
@@ -423,12 +429,14 @@ object MemberProcessor {
         // If size is different at first, return false.
         if (conditionKey.size != typesValue.size) return false
 
-        val isMatched = conditionKey.filterIndexed { index, type ->
-            val target = typesValue[index]
-            type.matches(target)
-        }.size == typesValue.size
+        var index = 0
+        conditionKey.forEach { matcher ->
+            val target = typesValue[index++]
+            if (!matcher.matches(target))
+                return false
+        }
 
-        return isMatched
+        return true
     }
 
     private fun <T : Any> buildConditionTable(
@@ -488,6 +496,24 @@ object MemberProcessor {
         is AnnotatedElement -> declaredAnnotations
         else -> error("Unsupported member type: $this")
     }
+
+    private fun Array<out AnnotatedElement>.collectTypes(): List<Class<*>> {
+        var size = 0
+        this.forEach { size += it.annotations.size }
+        if (size == 0) return emptyList()
+
+        return buildList {
+            this@collectTypes.forEach { element ->
+                element.annotations.forEach { annotation ->
+                    this += annotation.annotationClass.java
+                }
+            }
+        }
+    }
+
+    private fun MemberCondition.Configuration<*>.shouldLogFilterDebug() =
+        this.optional != MemberCondition.Configuration.Optional.SILENT &&
+            KavaRefRuntime.logLevel.ordinal <= KavaRefRuntime.LogLevel.DEBUG.ordinal
 
     private fun Member.toGenericString() = when (this) {
         is Method -> toGenericString()
