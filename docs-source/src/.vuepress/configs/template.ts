@@ -11,6 +11,7 @@ const navigationLinks = {
         '/guide/quick-start'
     ],
     library: [
+        '/library/kavaref-bom',
         '/library/kavaref-core',
         '/library/kavaref-extension'
     ],

@@ -10,6 +10,8 @@
 
 你可以使用以下方式将此模块添加到你的项目中。
 
+我们推荐你优先参考 [kavaref-bom](./kavaref-bom.md) 使用 BOM 统一管理版本。
+
 ### Version Catalog (推荐)
 
 在你的项目 `gradle/libs.versions.toml` 中添加依赖。
