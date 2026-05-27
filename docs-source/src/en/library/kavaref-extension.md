@@ -240,8 +240,8 @@ It will take effect if `Member` is the `AccessibleObject` type.
 ```kotlin
 // Suppose this is your current Member object.
 val method: Method
-// Make method is accessible.
-method.makeAccessible()
+// Make method is accessible, return whether it is successful.
+val isSuccess = method.makeAccessible()
 ```
 
 Similarly, KavaRef also extends `Modifier`, and you can directly use `Member.isPublic` and other methods to judge a `Member` modifier.

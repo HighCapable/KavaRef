@@ -226,8 +226,8 @@ KavaRef 提供了一些扩展方法来简化对 `Member` 的操作。
 ```kotlin
 // 假设这个是你当前的 Member 对象
 val method: Method
-// 设置方法可访问
-method.makeAccessible()
+// 设置方法可访问，返回是否成功
+val isSuccess = method.makeAccessible()
 ```
 
 同样地，KavaRef 也对 `Modifier` 进行了扩展，你可以直接使用 `Member.isPublic` 等方法来判断一个 `Member` 的修饰符。
