@@ -1,17 +1,51 @@
+import com.android.build.api.dsl.CommonExtension
+import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.MavenPublishBaseExtension
+import com.vanniktech.maven.publish.SourcesJar
 import org.jetbrains.dokka.gradle.DokkaExtension
 import org.jetbrains.dokka.gradle.engine.plugins.DokkaHtmlPluginParameters
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmCompilerOptions
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kotlin.jvm) apply false
     alias(libs.plugins.kotlin.dokka) apply false
     alias(libs.plugins.maven.publish) apply false
 }
 
+val androidApplicationPluginId = libs.plugins.android.application.get().pluginId
+val androidLibraryPluginId = libs.plugins.android.library.get().pluginId
 val dokkaPluginId = libs.plugins.kotlin.dokka.get().pluginId
 
 allprojects {
+    fun Project.configureAndroidJvm() {
+        configure<CommonExtension> {
+            compileOptions.sourceCompatibility = JavaVersion.VERSION_17
+            compileOptions.targetCompatibility = JavaVersion.VERSION_17
+        }
+    }
+
+    fun KotlinJvmCompilerOptions.configureKotlinJvm() {
+        jvmTarget.set(JvmTarget.JVM_17)
+        freeCompilerArgs.addAll(
+            "-Xno-param-assertions",
+            "-Xno-call-assertions",
+            "-Xno-receiver-assertions"
+        )
+    }
+
+    plugins.withId(androidLibraryPluginId) {
+        configureAndroidJvm()
+    }
+
+    plugins.withId(androidApplicationPluginId) {
+        configureAndroidJvm()
+    }
+
     plugins.withId("java") {
         configure<JavaPluginExtension> {
             sourceCompatibility = JavaVersion.VERSION_17
@@ -22,12 +56,7 @@ allprojects {
 
     tasks.withType<KotlinJvmCompile>().configureEach {
         compilerOptions {
-            jvmTarget = JvmTarget.JVM_17
-            freeCompilerArgs.addAll(
-                "-Xno-param-assertions",
-                "-Xno-call-assertions",
-                "-Xno-receiver-assertions"
-            )
+            configureKotlinJvm()
         }
     }
 }
@@ -49,6 +78,11 @@ libraryProjects {
                     url = repositoryDir.resolve("snapshots").toURI()
                 }
             }
+        }
+
+        configure<MavenPublishBaseExtension> {
+            if (name == Libraries.KAVAREF_ANDROID)
+                configure(AndroidSingleVariantLibrary(JavadocJar.None(), SourcesJar.Sources()))
         }
     }
 
@@ -124,11 +158,15 @@ fun libraryProjects(action: Action<in Project>) {
 object Libraries {
     const val KAVAREF_BOM = "kavaref-bom"
     const val KAVAREF_CORE = "kavaref-core"
+    const val KAVAREF_ANDROID = "kavaref-android"
+    const val KAVAREF_JVM = "kavaref-jvm"
     const val KAVAREF_EXTENSION = "kavaref-extension"
 
     val entries = listOf(
         KAVAREF_BOM,
         KAVAREF_CORE,
+        KAVAREF_ANDROID,
+        KAVAREF_JVM,
         KAVAREF_EXTENSION
     )
 }

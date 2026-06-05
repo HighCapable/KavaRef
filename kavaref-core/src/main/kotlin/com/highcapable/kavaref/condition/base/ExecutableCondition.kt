@@ -26,13 +26,14 @@ package com.highcapable.kavaref.condition.base
 import com.highcapable.kavaref.condition.matcher.base.TypeMatcher
 import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Executable
+import java.lang.reflect.Member
 
 /**
  * Base class for conditions that are applicable to executable members (methods and constructors) [E], [R].
  * 
  * [T] to specify the declaring class type of the executable.
  */
-abstract class ExecutableCondition<E : Executable, R : MemberResolver<E, T>, T : Any> : MemberCondition<E, R, T>() {
+abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any> : MemberCondition<E, R, T>() {
 
     /** @see Executable.getParameterTypes */
     val parameters = mutableListOf<Any>()

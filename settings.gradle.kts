@@ -22,6 +22,13 @@ plugins {
 
 gropify {
     global {
+        android {
+            includeKeys(
+                "^project\\..*$".toRegex(),
+                "^gradle\\..*$".toRegex()
+            )
+            isRestrictedAccessEnabled = true
+        }
         jvm {
             includeKeys(
                 "^project\\..*$".toRegex(),
@@ -37,15 +44,48 @@ gropify {
         }
     }
 
+    projects(":samples") {
+        common {
+            isEnabled = false
+        }
+    }
+    projects(
+        ":samples:demo-android",
+        ":samples:demo-jvm"
+    ) {
+        android {
+            isEnabled = false
+        }
+        jvm { 
+            isEnabled = false
+        }
+    }
+
     projects(":kavaref-bom") {
         jvm {
             isEnabled = false
+        }
+    }
+
+    projects(
+        ":kavaref-core",
+        ":kavaref-runtime-stub",
+        ":kavaref-android",
+        ":kavaref-android-lint",
+        ":kavaref-jvm",
+    ) {
+        android {
+            className = rootProject.name
+        }
+        jvm { 
+            className = rootProject.name
         }
     }
 }
 
 rootProject.name = "KavaRef"
 
-include(":samples:kavaref-demo")
+include(":samples:demo-android", ":samples:demo-jvm")
 include(":kavaref-bom")
-include(":kavaref-core", ":kavaref-extension", "kavaref-android-stub")
+include(":kavaref-core", ":kavaref-extension", ":kavaref-runtime-stub", ":kavaref-android", ":kavaref-jvm")
+include(":kavaref-android-lint")

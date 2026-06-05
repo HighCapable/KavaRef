@@ -7,10 +7,16 @@ plugins {
 group = gropify.project.groupName
 version = gropify.project.kavaref.bom.version
 
-dependencies {
-    // Android Only
-    compileOnly(projects.kavarefAndroidStub)
+kotlin {
+    sourceSets {
+        main {
+            kotlin.srcDir("src/main/kotlin")
+            kotlin.srcDir("src/share/kotlin")
+        }
+    }
+}
 
+dependencies {
+    compileOnly(projects.kavarefRuntimeStub)
     implementation(projects.kavarefExtension)
-    implementation(libs.slf4j.api)
 }

@@ -9,6 +9,8 @@ version = gropify.project.kavaref.bom.version
 dependencies {
     constraints {
         api(projects.kavarefCore)
+        api(projects.kavarefAndroid)
+        api(projects.kavarefJvm)
         api(projects.kavarefExtension)
     }
 }

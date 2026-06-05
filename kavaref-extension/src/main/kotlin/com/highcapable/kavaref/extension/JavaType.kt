@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/6/7.
  */
-@file:Suppress("unused", "UNCHECKED_CAST")
+@file:Suppress("unused", "UNCHECKED_CAST", "RemoveExplicitTypeArguments")
 @file:JvmName("TypeUtils")
 
 package com.highcapable.kavaref.extension
@@ -36,7 +36,7 @@ import kotlin.reflect.KClass
  * @throws TypeCastException if the conversion fails.
  */
 @JvmName("toClassTyped")
-fun <T : Any> Type.toClass(): Class<T> = when (this) {
+tailrec fun <T : Any> Type.toClass(): Class<T> = when (this) {
     is Class<*> -> this as Class<T>
     is ParameterizedType -> rawType.toClass<T>()
     else -> throw TypeCastException("Cannot cast type $this to java.lang.Class object.")

@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/5/31.
  */
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST", "PLATFORM_CLASS_MAPPED_TO_KOTLIN")
 @file:JvmName("ClassUtils")
 
 package com.highcapable.kavaref.extension
@@ -385,12 +385,12 @@ fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = tru
 
     fun filterConstructor() = declaredConstructors.asSequence()
         .filter { !isPublic || it.isPublic }
-        .filter { it.parameterCount == args.size }
-        .filter {
+        .filter { it.parameterTypes.size == args.size }.firstOrNull {
             it.parameterTypes.zip(args).all { (type, arg) ->
-                arg == null && !type.isPrimitive || arg?.javaClass?.isSubclassOf(type.wrap()) == true
+                val isBoxed = arg == null && !type.isPrimitive
+                isBoxed || arg?.javaClass?.isSubclassOf(type.wrap()) == true
             }
-        }.firstOrNull()
+        }
 
     fun Constructor<*>?.create() = this?.newInstance(*args) as? T? ?: throw NoSuchMethodError(
         "Could not find a suitable constructor for $this with arguments: ${args.joinToString().ifBlank { "(empty)" }}."

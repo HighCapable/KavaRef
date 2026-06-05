@@ -1,16 +1,51 @@
 [versions]
+agp = "9.2.1"
 kotlin = "2.4.0"
 dokka = "2.2.0"
 maven-publish = "0.36.0"
-slf4j = "2.0.17"
-androidx-annotation = "1.9.1"
+slf4j = "2.0.18"
+androidx-annotation = "1.10.0"
+# The project current support min sdk version is 21,
+# suppress the warning about using newer versions of dependencies that may require higher min sdk version.
+# noinspection GradleDependency
+androidx-core-ktx = "1.17.0"
+androidx-appcompat = "1.7.1"
+# The project current support min sdk version is 21,
+# suppress the warning about using newer versions of dependencies that may require higher min sdk version.
+# noinspection GradleDependency
+material = "1.11.0"
+constraintlayout = "2.2.1"
+betterandroid-android-bom = "1.1.2"
+androidx-test-ext-junit = "1.3.0"
+androidx-test-espresso-core = "3.7.0"
+junit = "4.13.2"
+android-lint = "32.2.1"
 
 [plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 kotlin-dokka = { id = "org.jetbrains.dokka", version.ref = "dokka" }
 maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publish" }
 
 [libraries]
+kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
 slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
+betterandroid-bom = { group = "com.highcapable.betterandroid", name = "android-bom", version.ref = "betterandroid-android-bom" }
+betterandroid-ui-component = { group = "com.highcapable.betterandroid", name = "ui-component" }
+betterandroid-ui-component-adapter = { group = "com.highcapable.betterandroid", name = "ui-component-adapter" }
+betterandroid-ui-extension = { group = "com.highcapable.betterandroid", name = "ui-extension" }
+betterandroid-system-extension = { group = "com.highcapable.betterandroid", name = "system-extension" }
 androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidx-annotation" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "androidx-core-ktx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidx-appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-test-ext-junit" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidx-test-espresso-core" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+android-lint = { group = "com.android.tools.lint", name = "lint", version.ref = "android-lint" }
+android-lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "android-lint" }
+android-lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "android-lint" }
+android-lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "android-lint" }
