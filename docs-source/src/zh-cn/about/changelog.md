@@ -8,7 +8,32 @@
 
 :::
 
-### 1.0.3 | 2026.05.28 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+### 1.1.0 | 2026.06.06 &ensp;<Badge type="tip" text="最新" vertical="middle" />
+
+#### kavaref-core
+
+- 新增平台底座接入机制，核心 API 保持不变，使用时需按平台引入 [kavaref-android](../library/kavaref-android.md) 或 [kavaref-jvm](../library/kavaref-jvm.md)
+- 新增 `MethodCondition.genericReturnType(...)` 与 `MethodCondition.defaultValue(...)` 条件
+- 调整 `ExecutableCondition` 内部实现，避免低版本 Android 直接依赖 `Executable`
+- 将成员访问、可访问性、注解与泛型等平台差异能力下沉到平台底座
+
+#### kavaref-android
+
+- 新增 Android 平台底座模块，支持 Min SDK 21 环境下使用 `KavaRef`
+- 新增 Android Lint 规则
+- 新增 R8/ProGuard 配置与 Android 平台日志实现
+
+#### kavaref-jvm
+
+- 新增 JVM 平台底座模块，提供完整 JVM 反射能力支持
+- 新增 JVM 平台日志实现，并保持原有 JVM 使用体验
+
+#### kavaref-extension
+
+- 优化 `createInstance()` 的构造方法参数匹配逻辑，兼容低版本 Android
+- 优化 `Type.toClass()` 的类型解析实现
+
+### 1.0.3 | 2026.05.28 &ensp;<Badge type="warning" text="过旧" vertical="middle" />
 
 #### kavaref-core
 

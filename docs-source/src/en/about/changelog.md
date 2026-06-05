@@ -8,7 +8,32 @@ We will only maintain the latest API version. If you are using an outdated API v
 
 :::
 
-### 1.0.3 | 2026.05.28 &ensp;<Badge type="tip" text="latest" vertical="middle" />
+### 1.1.0 | 2026.06.06 &ensp;<Badge type="tip" text="latest" vertical="middle" />
+
+#### kavaref-core
+
+- Added platform base module integration while keeping the core API unchanged. Add [kavaref-android](../library/kavaref-android.md) or [kavaref-jvm](../library/kavaref-jvm.md) according to the target platform
+- Added `MethodCondition.genericReturnType(...)` and `MethodCondition.defaultValue(...)` conditions
+- Adjusted the internal implementation of `ExecutableCondition` to avoid directly depending on `Executable` on lower Android versions
+- Moved platform-specific member access, accessibility, annotation, and generic handling to platform base modules
+
+#### kavaref-android
+
+- Added Android platform base module with support for using `KavaRef` in environments with Min SDK 21
+- Added Android Lint rules
+- Added R8/ProGuard configuration and Android platform logging implementation
+
+#### kavaref-jvm
+
+- Added JVM platform base module with full JVM reflection support
+- Added JVM platform logging implementation while keeping the original JVM usage experience
+
+#### kavaref-extension
+
+- Optimized constructor argument matching in `createInstance()` for lower Android version compatibility
+- Optimized the type resolution implementation of `Type.toClass()`
+
+### 1.0.3 | 2026.05.28 &ensp;<Badge type="warning" text="stale" vertical="middle" />
 
 #### kavaref-core
 
