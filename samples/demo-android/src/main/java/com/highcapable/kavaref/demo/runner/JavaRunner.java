@@ -33,15 +33,17 @@ public final class JavaRunner {
     }
 
     public static String run() {
+        // Enable KavaRef debug level logging.
         KavaRef.setLogLevel(KavaRefRuntime.LogLevel.DEBUG);
-
+        // Resolve the Test class using KavaRef.
         var memberScope = KavaRef.resolveClass(Test.class);
+        // Create an instance of the Test class using the resolved class.
         var test = memberScope.constructor()
                 .emptyParameters()
                 .build()
                 .get(0)
                 .create();
-
+        // Invoke a method, modify a field, and retrieve a value using the resolved class.
         memberScope.method()
                 .name("test")
                 .parameters(String.class)
@@ -49,7 +51,7 @@ public final class JavaRunner {
                 .get(0)
                 .of(test)
                 .invoke("reflection test");
-
+        // Modify the field 'myTest' and retrieve its value using the resolved class.
         memberScope.field()
                 .name("myTest")
                 .type(String.class)
@@ -57,7 +59,7 @@ public final class JavaRunner {
                 .get(0)
                 .of(test)
                 .set("Hello modified reflection test");
-
+        // Retrieve the value of the field 'myTest' using the resolved class.
         var testString = (String) memberScope.method()
                 .name("getTest")
                 .emptyParameters()

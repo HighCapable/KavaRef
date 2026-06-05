@@ -31,43 +31,55 @@ object Runner {
 
     @JvmStatic
     fun run(): Pair<String?, String?> {
+        // Enable KavaRef debug level logging.
         KavaRef.logLevel = KavaRefRuntime.LogLevel.DEBUG
 
+        // Resolve the Test class using KavaRef.
+        // Create an instance of the Test class using the resolved class.
         val test = Test::class.resolve()
             .firstConstructor {
                 emptyParameters()
             }.create()
 
+        // Invoke a method, modify a field, and retrieve a value using the resolved class.
+        // (1) Call from Class.
         Test::class.resolve()
             .firstMethod {
                 name = "test"
                 parameters(String::class)
             }.of(test).invoke("reflection test")
 
+        // (2) Call from Object.
         test.asResolver()
             .firstMethod {
                 name = "test"
                 parameters(String::class)
             }.invoke("reflection test")
 
+        // Modify the field 'myTest' and retrieve its value using the resolved class.
+        // (1) Call from Class.
         Test::class.resolve()
             .firstField {
                 name = "myTest"
                 type = String::class
             }.of(test).set("Hello modified reflection test")
 
+        // (2) Call from Object.
         test.asResolver()
             .firstField {
                 name = "myTest"
                 type = String::class
             }.set("Hello modified reflection test")
 
+        // Retrieve the value of the field 'myTest' using the resolved class.
+        // (1) Call from Class.
         val testString1 = Test::class.resolve()
             .firstMethod {
                 name = "getTest"
                 emptyParameters()
             }.of(test).invoke<String>()
 
+        // (2) Call from Object.
         val testString2 = test.asResolver()
             .firstMethod {
                 name = "getTest"
