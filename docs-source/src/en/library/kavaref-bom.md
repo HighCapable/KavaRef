@@ -21,6 +21,8 @@ kavaref-bom = "<version>"
 [libraries]
 kavaref-bom = { module = "com.highcapable.kavaref:kavaref-bom", version.ref = "kavaref-bom" }
 kavaref-core = { module = "com.highcapable.kavaref:kavaref-core" }
+kavaref-android = { module = "com.highcapable.kavaref:kavaref-android" }
+kavaref-jvm = { module = "com.highcapable.kavaref:kavaref-jvm" }
 kavaref-extension = { module = "com.highcapable.kavaref:kavaref-extension" }
 ```
 
@@ -30,6 +32,11 @@ Configure dependency in your project's `build.gradle.kts`.
 implementation(platform(libs.kavaref.bom))
 
 implementation(libs.kavaref.core)
+
+// Choose the appropriate base module according to your project type (choose one).
+implementation(libs.kavaref.android)
+implementation(libs.kavaref.jvm)
+
 implementation(libs.kavaref.extension)
 ```
 
@@ -43,6 +50,11 @@ Configure dependency in your project's `build.gradle.kts`.
 implementation(platform("com.highcapable.kavaref:kavaref-bom:<version>"))
 
 implementation("com.highcapable.kavaref:kavaref-core")
+
+// Choose the appropriate base module according to your project type (choose one).
+implementation("com.highcapable.kavaref:kavaref-android")
+implementation("com.highcapable.kavaref:kavaref-jvm")
+
 implementation("com.highcapable.kavaref:kavaref-extension")
 ```
 
@@ -55,4 +67,6 @@ Please change `<version>` to the version displayed at the top of this document.
 It currently manages the versions of the following modules:
 
 - [kavaref-core](./kavaref-core.md)
+- [kavaref-android](./kavaref-android.md)
+- [kavaref-jvm](./kavaref-jvm.md)
 - [kavaref-extension](./kavaref-extension.md)

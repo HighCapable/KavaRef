@@ -130,6 +130,59 @@ code {
     }
 }
 
+.lint-rules-table {
+    table {
+        width: 100%;
+        table-layout: fixed;
+    }
+
+    th,
+    td {
+        vertical-align: middle;
+    }
+
+    th {
+        white-space: nowrap;
+    }
+
+    th:nth-child(1),
+    td:nth-child(1) {
+        width: 38%;
+    }
+
+    th:nth-child(2),
+    td:nth-child(2) {
+        width: 13%;
+        text-align: center;
+    }
+
+    th:nth-child(3),
+    td:nth-child(3) {
+        width: 10%;
+        text-align: center;
+    }
+
+    th:nth-child(4),
+    td:nth-child(4) {
+        width: 11%;
+        text-align: center;
+    }
+
+    th:nth-child(5),
+    td:nth-child(5) {
+        width: 28%;
+    }
+
+    td:nth-child(1) {
+        white-space: nowrap;
+    }
+
+    td:nth-child(5) {
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+}
+
 html {
     scroll-behavior: smooth;
 

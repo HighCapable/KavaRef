@@ -69,7 +69,8 @@ tasks.withType<KotlinJvmCompile>().configureEach {
 
 ## Functional Overview
 
-The project is divided into multiple modules. You can choose the module you wish to include as a dependency in your project, but be sure to include the **kavaref-core** module.
+The project is divided into multiple modules. You can choose the module you wish to include as a dependency in your project, but be sure to include the **kavaref-core**
+module and a platform-related base module (**kavaref-android** or **kavaref-jvm**).
 
 Click the corresponding module below to view detailed feature descriptions.
 
@@ -85,6 +86,8 @@ For details, please see the [changelog](../about/changelog.md).
 
 - [kavaref-bom](../library/kavaref-bom.md)
 - [kavaref-core](../library/kavaref-core.md)
+- [kavaref-android](../library/kavaref-android.md)
+- [kavaref-jvm](../library/kavaref-jvm.md)
 - [kavaref-extension](../library/kavaref-extension.md)
 
 ## Demo

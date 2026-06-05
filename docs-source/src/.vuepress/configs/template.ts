@@ -13,12 +13,15 @@ const navigationLinks = {
     library: [
         '/library/kavaref-bom',
         '/library/kavaref-core',
+        '/library/kavaref-android',
+        '/library/kavaref-jvm',
         '/library/kavaref-extension'
     ],
     config: [
         '/config/r8-proguard',
         '/config/processor-resolvers',
-        '/config/migration'
+        '/config/migration',
+        '/config/lint-rules'
     ],
     about: [
         '/about/changelog',

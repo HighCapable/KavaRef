@@ -21,6 +21,8 @@ kavaref-bom = "<version>"
 [libraries]
 kavaref-bom = { module = "com.highcapable.kavaref:kavaref-bom", version.ref = "kavaref-bom" }
 kavaref-core = { module = "com.highcapable.kavaref:kavaref-core" }
+kavaref-android = { module = "com.highcapable.kavaref:kavaref-android" }
+kavaref-jvm = { module = "com.highcapable.kavaref:kavaref-jvm" }
 kavaref-extension = { module = "com.highcapable.kavaref:kavaref-extension" }
 ```
 
@@ -30,6 +32,11 @@ kavaref-extension = { module = "com.highcapable.kavaref:kavaref-extension" }
 implementation(platform(libs.kavaref.bom))
 
 implementation(libs.kavaref.core)
+
+// 根据你的项目类型选择合适的底座模块 (二选一)
+implementation(libs.kavaref.android)
+implementation(libs.kavaref.jvm)
+
 implementation(libs.kavaref.extension)
 ```
 
@@ -43,6 +50,11 @@ implementation(libs.kavaref.extension)
 implementation(platform("com.highcapable.kavaref:kavaref-bom:<version>"))
 
 implementation("com.highcapable.kavaref:kavaref-core")
+
+// 根据你的项目类型选择合适的底座模块 (二选一)
+implementation("com.highcapable.kavaref:kavaref-android")
+implementation("com.highcapable.kavaref:kavaref-jvm")
+
 implementation("com.highcapable.kavaref:kavaref-extension")
 ```
 
@@ -55,4 +67,6 @@ implementation("com.highcapable.kavaref:kavaref-extension")
 目前它会管理以下模块的版本：
 
 - [kavaref-core](./kavaref-core.md)
+- [kavaref-android](./kavaref-android.md)
+- [kavaref-jvm](./kavaref-jvm.md)
 - [kavaref-extension](./kavaref-extension.md)

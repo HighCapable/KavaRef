@@ -68,7 +68,7 @@ tasks.withType<KotlinJvmCompile>().configureEach {
 
 ## 功能一览
 
-整个项目分为多个模块，你可以选择你希望引入的模块作为依赖应用到你的项目中，但一定要包含 **kavaref-core** 模块。
+整个项目分为多个模块，你可以选择你希望引入的模块作为依赖应用到你的项目中，但一定要包含 **kavaref-core** 和一个平台相关的底座模块 (**kavaref-android** 或 **kavaref-jvm**)。
 
 你可以点击下方对应的模块前往查看详细的功能介绍。
 
@@ -82,6 +82,8 @@ tasks.withType<KotlinJvmCompile>().configureEach {
 
 - [kavaref-bom](../library/kavaref-bom.md)
 - [kavaref-core](../library/kavaref-core.md)
+- [kavaref-android](../library/kavaref-android.md)
+- [kavaref-jvm](../library/kavaref-jvm.md)
 - [kavaref-extension](../library/kavaref-extension.md)
 
 ## Demo

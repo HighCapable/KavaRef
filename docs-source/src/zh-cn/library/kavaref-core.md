@@ -42,6 +42,14 @@ implementation("com.highcapable.kavaref:kavaref-core:<version>")
 
 请将 `<version>` 修改为此文档顶部显示的版本。
 
+::: danger
+
+从 `1.1.0` 起，为了兼容每个平台分发的二进制文件差异，`KavaRef` 引入了全新的底座模块，更新到这个版本时，你必须选择一个平台相关的底座模块作为依赖引入，否则会引发 `NoClassDefFoundError` 异常。
+
+Android 平台请选择 [kavaref-android](kavaref-android.md)，JVM 平台请选择 [kavaref-jvm](kavaref-jvm.md)。
+
+:::
+
 ## 功能介绍
 
 你可以 [点击这里](kdoc://kavaref-core) 查看 KDoc。
