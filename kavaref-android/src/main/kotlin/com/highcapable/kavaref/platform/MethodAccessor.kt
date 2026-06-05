@@ -26,6 +26,7 @@ package com.highcapable.kavaref.platform
 import android.os.Build
 import java.lang.reflect.Member
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 
 /**
  * Accessor for [Method] to provide platform-specific features.
@@ -35,8 +36,10 @@ internal class MethodAccessor(override val member: Member) : MemberAccessor(memb
     private val method = member as Method
 
     val returnType: Class<*> get() = method.returnType
+    val genericReturnType: Type get() = method.genericReturnType
     val isBridge: Boolean get() = method.isBridge
     val isDefault: Boolean get() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) method.isDefault else false
+    val defaultValue: Any? get() = method.defaultValue
 
     override fun toString() = member.toString()
 }

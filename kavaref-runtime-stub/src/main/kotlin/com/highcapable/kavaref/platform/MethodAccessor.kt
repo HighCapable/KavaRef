@@ -19,18 +19,21 @@
  *
  * This file is created by fankes on 2026/6/5.
  */
-@file:Suppress("unused")
+@file:Suppress("unused", "RedundantNullableReturnType")
 
 package com.highcapable.kavaref.platform
 
 import java.lang.reflect.Member
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 
 /**
  * Accessor for [Method] to provide platform-specific features.
  */
 class MethodAccessor(override val member: Member) : MemberAccessor(member) {
     val returnType: Class<*> get() = error("Stub!")
+    val genericReturnType: Type get() = error("Stub!")
     val isBridge: Boolean get() = error("Stub!")
     val isDefault: Boolean get() = error("Stub!")
+    val defaultValue: Any? get() = error("Stub!")
 }

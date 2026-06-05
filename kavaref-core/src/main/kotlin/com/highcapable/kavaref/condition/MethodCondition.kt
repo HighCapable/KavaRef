@@ -30,6 +30,7 @@ import com.highcapable.kavaref.condition.type.Modifiers
 import com.highcapable.kavaref.resolver.MethodResolver
 import com.highcapable.kavaref.resolver.processor.MemberProcessor
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 
 /**
  * Condition for [Method] of [MethodResolver].
@@ -42,6 +43,12 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
     /** @see Method.getReturnType */
     var returnTypeCondition: ((Class<*>) -> Boolean)? = null
 
+    /** @see Method.getGenericReturnType */
+    var genericReturnType: TypeMatcher? = null
+
+    /** @see Method.getGenericReturnType */
+    var genericReturnTypeCondition: ((Type) -> Boolean)? = null
+
     /** @see Method.isBridge */
     var isBridge: Boolean? = null
 
@@ -53,6 +60,12 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
 
     /** @see Method.isDefault */
     var isDefaultNot: Boolean? = null
+
+    /** @see Method.getDefaultValue */
+    var defaultValue: Any? = null
+
+    /** @see Method.getDefaultValue */
+    var defaultValueCondition: ((Any?) -> Boolean)? = null
 
     override fun name(name: String) = apply { super.name(name) }
     override fun name(condition: (String) -> Boolean) = apply { super.name(condition) }
@@ -105,6 +118,16 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
         this.returnTypeCondition = condition
     }
 
+    /** @see Method.getGenericReturnType */
+    fun genericReturnType(type: TypeMatcher) = apply {
+        this.genericReturnType = type
+    }
+
+    /** @see Method.getGenericReturnType */
+    fun genericReturnType(condition: (Type) -> Boolean) = apply {
+        this.genericReturnTypeCondition = condition
+    }
+
     /** @see Method.isBridge */
     fun isBridge(isBridge: Boolean) = apply {
         this.isBridge = isBridge
@@ -125,16 +148,30 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
         this.isDefaultNot = isDefault
     }
 
+    /** @see Method.getDefaultValue */
+    fun defaultValue(value: Any?) = apply {
+        this.defaultValue = value
+    }
+
+    /** @see Method.getDefaultValue */
+    fun defaultValue(condition: (Any?) -> Boolean) = apply {
+        this.defaultValueCondition = condition
+    }
+
     override fun initializeCopiedData(newSelf: MemberCondition<Method, MethodResolver<T>, T>) {
         super.initializeCopiedData(newSelf)
 
         (newSelf as? MethodCondition)?.also {
             it.returnType = returnType
             it.returnTypeCondition = returnTypeCondition
+            it.genericReturnType = genericReturnType
+            it.genericReturnTypeCondition = genericReturnTypeCondition
             it.isBridge = isBridge
             it.isBridgeNot = isBridgeNot
             it.isDefault = isDefault
             it.isDefaultNot = isDefaultNot
+            it.defaultValue = defaultValue
+            it.defaultValueCondition = defaultValueCondition
         }
     }
 
@@ -144,10 +181,14 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
         (other as? MethodCondition)?.also { condition ->
             condition.returnType?.let { returnType = it }
             condition.returnTypeCondition?.let { returnTypeCondition = it }
+            condition.genericReturnType?.let { genericReturnType = it }
+            condition.genericReturnTypeCondition?.let { genericReturnTypeCondition = it }
             condition.isBridge?.let { isBridge = it }
             condition.isBridgeNot?.let { isBridgeNot = it }
             condition.isDefault?.let { isDefault = it }
             condition.isDefaultNot?.let { isDefaultNot = it }
+            condition.defaultValue?.let { defaultValue = it }
+            condition.defaultValueCondition?.let { defaultValueCondition = it }
         }
     }
 
@@ -164,18 +205,26 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
         get() = super.conditionStringMap + mapOf(
             RETURN_TYPE to returnType,
             RETURN_TYPE_CONDITION to returnTypeCondition,
+            GENERIC_RETURN_TYPE to genericReturnType,
+            GENERIC_RETURN_TYPE_CONDITION to genericReturnTypeCondition,
             IS_BRIDGE to isBridge,
             IS_BRIDGE_NOT to isBridgeNot,
             IS_DEFAULT to isDefault,
-            IS_DEFAULT_NOT to isDefaultNot
+            IS_DEFAULT_NOT to isDefaultNot,
+            DEFAULT_VALUE to defaultValue,
+            DEFAULT_VALUE_CONDITION to defaultValueCondition
         )
 
     companion object {
         const val RETURN_TYPE = "returnType"
         const val RETURN_TYPE_CONDITION = "returnTypeCondition"
+        const val GENERIC_RETURN_TYPE = "genericReturnType"
+        const val GENERIC_RETURN_TYPE_CONDITION = "genericReturnTypeCondition"
         const val IS_BRIDGE = "isBridge"
         const val IS_BRIDGE_NOT = "isBridgeNot"
         const val IS_DEFAULT = "isDefault"
         const val IS_DEFAULT_NOT = "isDefaultNot"
+        const val DEFAULT_VALUE = "defaultValue"
+        const val DEFAULT_VALUE_CONDITION = "defaultValueCondition"
     }
 }

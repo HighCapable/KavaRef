@@ -173,10 +173,20 @@ object MemberProcessor {
         .filter(configuration, MethodCondition.RETURN_TYPE_CONDITION, condition.returnTypeCondition) { key, value ->
             runOrElse { key(value.returnType) }
         }
+        .filter(configuration, MethodCondition.GENERIC_RETURN_TYPE, condition.genericReturnType) { key, value ->
+            key.matches(value.genericReturnType)
+        }
+        .filter(configuration, MethodCondition.GENERIC_RETURN_TYPE_CONDITION, condition.genericReturnTypeCondition) { key, value ->
+            runOrElse { key(value.genericReturnType) }
+        }
         .filter(configuration, MethodCondition.IS_BRIDGE, condition.isBridge) { key, value -> value.isBridge == key }
         .filter(configuration, MethodCondition.IS_BRIDGE_NOT, condition.isBridgeNot) { key, value -> value.isBridge != key }
         .filter(configuration, MethodCondition.IS_DEFAULT, condition.isDefault) { key, value -> value.isDefault == key }
         .filter(configuration, MethodCondition.IS_DEFAULT_NOT, condition.isDefaultNot) { key, value -> value.isDefault != key }
+        .filter(configuration, MethodCondition.DEFAULT_VALUE, condition.defaultValue) { key, value -> value.defaultValue == key }
+        .filter(configuration, MethodCondition.DEFAULT_VALUE_CONDITION, condition.defaultValueCondition) { key, value ->
+            runOrElse { key(value.defaultValue) }
+        }
         .endAccess<Method>()
         .resolve(configuration)
 

@@ -25,6 +25,7 @@ package com.highcapable.kavaref.platform
 
 import java.lang.reflect.Member
 import java.lang.reflect.Method
+import java.lang.reflect.Type
 
 /**
  * Accessor for [Method] to provide platform-specific features.
@@ -34,8 +35,10 @@ internal class MethodAccessor(override val member: Member) : MemberAccessor(memb
     private val method = member as Method
 
     val returnType: Class<*> get() = method.returnType
+    val genericReturnType: Type get() = method.genericReturnType
     val isBridge: Boolean get() = method.isBridge
     val isDefault: Boolean get() = method.isDefault
+    val defaultValue: Any? get() = method.defaultValue
 
     override fun toString() = member.toString()
 }
