@@ -37,13 +37,12 @@ import java.lang.reflect.TypeVariable
  */
 internal class ExecutableAccessor(override val member: Member) : MemberAccessor(member) {
 
-    val parameterTypes: Array<Class<*>>
-        get() = when {
-            Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> (member as Executable).parameterTypes
-            member is Constructor<*> -> member.parameterTypes
-            member is Method -> member.parameterTypes
-            else -> error("Unsupported member type: $member")
-        }
+    val parameterTypes: Array<Class<*>> get() = when {
+        Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> (member as Executable).parameterTypes
+        member is Constructor<*> -> member.parameterTypes
+        member is Method -> member.parameterTypes
+        else -> error("Unsupported member type: $member")
+    }
     val parameterCount: Int get() = when {
         Build.VERSION.SDK_INT >= Build.VERSION_CODES.O -> (member as Executable).parameterCount
         member is Constructor<*> -> member.parameterTypes.size
