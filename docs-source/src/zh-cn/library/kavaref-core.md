@@ -245,7 +245,7 @@ val test = Test::class.resolve()
 
 ::: warning
 
-`Any.resolve()` 方法已在 `1.0.1` 版本被弃用，因为它会污染命名空间 (例如 `File.resolve("/path/to/file")`)，现在请使用 `Any.asResolver()` 来代替。
+`Any.resolve()` 方法已在 `1.0.1` 版本被弃用，在 `1.0.2` 版本被移除，因为它会污染命名空间 (例如 `File.resolve("/path/to/file")`)，现在请使用 `Any.asResolver()` 来代替。
 
 :::
 
