@@ -8,6 +8,14 @@ We will only maintain the latest API version. If you are using an outdated API v
 
 :::
 
+::: warning
+
+To avoid translation time consumption, Changelog will use **Google Translation** from **Chinese** to **English**, please refer to the original text for actual reference.
+
+Time zone of version release date: **UTC+8**
+
+:::
+
 ### 1.1.0 | 2026.06.06 &ensp;<Badge type="tip" text="latest" vertical="middle" />
 
 #### kavaref-core
