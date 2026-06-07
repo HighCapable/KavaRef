@@ -17,23 +17,13 @@ dependencyResolutionManagement {
 }
 
 plugins {
-    id("com.highcapable.gropify") version "1.0.1"
+    id("com.highcapable.gropify") version "1.0.2"
 }
 
 gropify {
     global {
-        android {
-            includeKeys(
-                "^project\\..*$".toRegex(),
-                "^gradle\\..*$".toRegex()
-            )
-            isRestrictedAccessEnabled = true
-        }
-        jvm {
-            includeKeys(
-                "^project\\..*$".toRegex(),
-                "^gradle\\..*$".toRegex()
-            )
+        sourceCode {
+            includeKeys("^project\\..*$".toRegex())
             isRestrictedAccessEnabled = true
         }
     }
@@ -49,14 +39,12 @@ gropify {
             isEnabled = false
         }
     }
+
     projects(
         ":samples:demo-android",
         ":samples:demo-jvm"
     ) {
-        android {
-            isEnabled = false
-        }
-        jvm { 
+        sourceCode {
             isEnabled = false
         }
     }
@@ -74,10 +62,7 @@ gropify {
         ":kavaref-android-lint",
         ":kavaref-jvm",
     ) {
-        android {
-            className = rootProject.name
-        }
-        jvm { 
+        sourceCode {
             className = rootProject.name
         }
     }
