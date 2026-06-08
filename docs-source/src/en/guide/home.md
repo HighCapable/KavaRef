@@ -13,8 +13,7 @@ implemented using Kotlin.
 It was first born in the [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI), and was later decoupled into
 the [YukiReflection](https://github.com/HighCapable/YukiReflection) project.
 
-As you can see, `KavaRef` is now a completely new set of APIs, completely refactored with the design ideas of `YukiReflection`,
-which has no affiliation and will replace `YukiReflection` as a new reflection solution.
+As you can see, `KavaRef` is an entirely new API set refactored around the design principles of `YukiReflection`. It carries no affiliation and has officially replaced `YukiReflection` as the new reflection solution.
 
 If you are using `YukiReflection` or the `YukiHookAPI` project related to it, you can refer to [here](../config/migration) to migrate the reflection API to `KavaRef`.
 
