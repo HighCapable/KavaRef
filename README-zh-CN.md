@@ -25,20 +25,53 @@
 它最早诞生于 [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI)，后期被解耦合为 [YukiReflection](https://github.com/HighCapable/YukiReflection)
 项目。
 
-如你所见，现在 `KavaRef` 是借助 `YukiReflection` 的设计思想完全重构的一套全新 API，它们没有从属关系，并将取代 `YukiReflection` 成为一个全新的反射解决方案。
+如你所见，现在 `KavaRef` 是借助 `YukiReflection` 的设计思想完全重构的一套全新 API，它们没有从属关系，并取代 `YukiReflection` 成为一个全新的反射解决方案。
+
+## 功能一览
+
+> 目标 Java 代码
+
+```java
+public class World {
+
+    private void sayHello(String content) {
+        System.out.println("Hello " + content + "!");
+    }
+}
+```
+
+> 使用 `KavaRef` 调用
+
+```kotlin
+val myWorld = World()
+
+World::class.resolve().firstMethod {
+    name = "sayHello"
+    parameters(String::class)
+}.of(myWorld).invoke("KavaRef")
+```
 
 ## 开始使用
 
-[点击这里](https://highcapable.github.io/KavaRef/zh-cn) 前往文档页面查看更多详细教程和内容。
+| <img src="img-src/icon.svg" width = "30" height = "30" alt="LOGO"/> | [KavaRef 文档](https://highcapable.github.io/KavaRef/zh-cn) |
+|---------------------------------------------------------------------|-----------------------------------------------------------|
 
-## 项目推广
+你可以前往文档页面查看更多详细教程和内容。
+
+### 下一步做什么？
+
+1. **引入依赖**: 将 `kavaref-core` 和对应平台的模块添加到你的项目中。
+2. **同步项目**: 在 Gradle 同步后，你就可以开始使用 `KavaRef` 了。
+
+在打开的页面中，选择侧边栏的 **快速开始** 章节以继续阅读。
+
+## 更多项目
 
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
     <h2>嘿，还请君留步！👋</h2>
-    <h3>这里有 Android 开发工具、UI 设计、Gradle 插件、Xposed 模块和实用软件等相关项目。</h3>
-    <h3>如果下方的项目能为你提供帮助，不妨为我点个 star 吧！</h3>
-    <h3>所有项目免费、开源，遵循对应开源许可协议。</h3>
+    <h3>如果你觉得这个项目能给你提供帮助，不妨继续往下看看我的更多项目吧！</h3>
+    <h3>如果这些项目能为你提供帮助，不妨为我点个关注或者 star ⭐️ 吧！</h3>
     <h1><a href="https://github.com/fankes/fankes/blob/main/project-promote/README-zh-CN.md">→ 查看更多关于我的项目，请点击这里 ←</a></h1>
 </div>
 

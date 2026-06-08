@@ -14,7 +14,7 @@ English | [简体中文](README-zh-CN.md)
 | <img src="https://github.com/HighCapable/.github/blob/main/img-src/logo.jpg?raw=true" width = "30" height = "30" alt="LOGO"/> | [HighCapable](https://github.com/HighCapable) |
 |-------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|
 
-This project belongs to the above-mentioned organization, **click the link above to follow this organization** and discover more good projects.
+This project belongs to the organization above. **Click the link to follow us** and discover more awesome projects.
 
 ## What's this
 
@@ -27,22 +27,55 @@ implemented using Kotlin.
 It was firstborn in the [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI), and was later decoupled into
 the [YukiReflection](https://github.com/HighCapable/YukiReflection) project.
 
-As you can see, now `KavaRef` is a completely new set of APIs completely refactored with the design idea of `YukiReflection`,
-which has no affiliation and will replace `YukiReflection` as a new reflection solution.
+As you can see, `KavaRef` is an entirely new API set refactored around the design principles of `YukiReflection`. It carries no affiliation and has
+officially replaced `YukiReflection` as the new reflection solution.
+
+## Features Overview
+
+> Target Java code
+
+```java
+public class World {
+
+    private void sayHello(String content) {
+        System.out.println("Hello " + content + "!");
+    }
+}
+```
+
+> Calling with `KavaRef`
+
+```kotlin
+val myWorld = World()
+
+World::class.resolve().firstMethod {
+    name = "sayHello"
+    parameters(String::class)
+}.of(myWorld).invoke("KavaRef")
+```
 
 ## Get Started
 
-[Click here](https://highcapable.github.io/KavaRef/en) go to the documentation page for more detailed tutorials and content.
+| <img src="img-src/icon.svg" width = "30" height = "30" alt="LOGO"/> | [KavaRef Documentation](https://highcapable.github.io/KavaRef/en) |
+|---------------------------------------------------------------------|-------------------------------------------------------------------|
 
-## Promotion
+You can go to the documentation page for more detailed tutorials and content.
+
+### What's next?
+
+1. **Add dependencies**: Add `kavaref-core` and the corresponding platform modules to your project.
+2. **Sync the project**: After a Gradle sync, you can start using `KavaRef`.
+
+In the opened page, select the **Quick Start** section in the sidebar to continue reading.
+
+## More Projects
 
 <!--suppress HtmlDeprecatedAttribute -->
 <div align="center">
-     <h2>Hey, please stay! 👋</h2>
-     <h3>Here are related projects such as Android development tools, UI design, Gradle plugins, Xposed Modules and practical software. </h3>
-     <h3>If the project below can help you, please give me a star! </h3>
-     <h3>All projects are free, open source, and follow the corresponding open source license agreement. </h3>
-     <h1><a href="https://github.com/fankes/fankes/blob/main/project-promote/README.md">→ To see more about my projects, please click here ←</a></h1>
+    <h2>Hey, wait a second! 👋</h2>
+    <h3>If this project was helpful, why not stick around and check out more of my work below?</h3>
+    <h3>Feel free to leave a follow or a star ⭐️ if they bring you value!</h3>
+    <h1><a href="https://github.com/fankes/fankes/blob/main/project-promote/README.md">→ Click here to discover more of my projects ←</a></h1>
 </div>
 
 ## Star History
