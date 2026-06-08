@@ -1,0 +1,1 @@
+const a=JSON.parse('{"key":"v-29d6c1ba","path":"/en/config/r8-proguard.html","title":"R8 & ProGuard Obfuscation","lang":"en-US","frontmatter":{},"headers":[],"git":{"updatedTime":1769584500000,"contributors":[{"name":"fankesyooni","email":"qzmmcn@163.com","commits":6}]},"filePathRelative":"en/config/r8-proguard.md"}');export{a as data};

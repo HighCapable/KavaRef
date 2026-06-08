@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>ConstructorCondition</title>
+    <link href="../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../styles/style.css" rel="Stylesheet">
+<link href="../../../styles/main.css" rel="Stylesheet">
+<link href="../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../index.html" tabindex="1">
+                    kavaref-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.1.0        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":kavaref-core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":kavaref-core/main"
+                                       data-filter=":kavaref-core/main"/>
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kavaref-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="kavaref-core::com.highcapable.kavaref.condition/ConstructorCondition///PointingToDeclaration//-1976004838">
+  <div class="breadcrumbs"><a href="../../../index.html">kavaref-core</a><span class="delimiter">/</span><a href="../index.html">com.highcapable.kavaref.condition</a><span class="delimiter">/</span><span class="current">ConstructorCondition</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Constructor</span><wbr></wbr><span><span>Condition</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span> : <a href="../../com.highcapable.kavaref.condition.base/-executable-condition/index.html">ExecutableCondition</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Constructor.html">Constructor</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><a href="../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">, </span><a href="index.html">T</a><span class="token operator">&gt; </span></div><p class="paragraph">Condition for <a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Constructor.html">Constructor</a> of <a href="../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a>.</p></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="CONSTRUCTOR">
+        <h2 class="tableheader">Constructors</h2>
+        <div class="table"><a data-name="-1936294225%2FConstructors%2F-1976004838" anchor-label="ConstructorCondition" id="-1936294225%2FConstructors%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-togglable="CONSTRUCTOR" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-constructor-condition.html"><span>Constructor</span><wbr></wbr><span><span>Condition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1936294225%2FConstructors%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="TYPE">
+        <h2 class="tableheader">Types</h2>
+        <div class="table"><a data-name="838924465%2FClasslikes%2F-1976004838" anchor-label="Companion" id="838924465%2FClasslikes%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="-companion/index.html"><span><span>Companion</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="838924465%2FClasslikes%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">object </span><a href="-companion/index.html">Companion</a></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="PROPERTY">
+        <h2 class="tableheader">Properties</h2>
+        <div class="table"><a data-name="-1004657865%2FProperties%2F-1976004838" anchor-label="annotatedExceptionTypes" id="-1004657865%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-exception-types.html"><span>annotated</span><wbr></wbr><span>Exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1004657865%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-exception-types.html">annotatedExceptionTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-602642768%2FProperties%2F-1976004838" anchor-label="annotatedExceptionTypesNot" id="-602642768%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-exception-types-not.html"><span>annotated</span><wbr></wbr><span>Exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-602642768%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-exception-types-not.html">annotatedExceptionTypesNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1623970543%2FProperties%2F-1976004838" anchor-label="annotatedParameterTypes" id="-1623970543%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-parameter-types.html"><span>annotated</span><wbr></wbr><span>Parameter</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1623970543%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-parameter-types.html">annotatedParameterTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="632870550%2FProperties%2F-1976004838" anchor-label="annotatedParameterTypesNot" id="632870550%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-parameter-types-not.html"><span>annotated</span><wbr></wbr><span>Parameter</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="632870550%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-parameter-types-not.html">annotatedParameterTypesNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2052806472%2FProperties%2F-1976004838" anchor-label="annotatedReceiverType" id="-2052806472%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-receiver-type.html"><span>annotated</span><wbr></wbr><span>Receiver</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2052806472%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-receiver-type.html">annotatedReceiverType</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1585551985%2FProperties%2F-1976004838" anchor-label="annotatedReceiverTypeNot" id="-1585551985%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-receiver-type-not.html"><span>annotated</span><wbr></wbr><span>Receiver</span><wbr></wbr><span>Type</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1585551985%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-receiver-type-not.html">annotatedReceiverTypeNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-63561193%2FProperties%2F-1976004838" anchor-label="annotatedReturnType" id="-63561193%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-return-type.html"><span>annotated</span><wbr></wbr><span>Return</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-63561193%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-return-type.html">annotatedReturnType</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1938195504%2FProperties%2F-1976004838" anchor-label="annotatedReturnTypeNot" id="-1938195504%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-return-type-not.html"><span>annotated</span><wbr></wbr><span>Return</span><wbr></wbr><span>Type</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1938195504%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/annotated-return-type-not.html">annotatedReturnTypeNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-515371579%2FProperties%2F-1976004838" anchor-label="annotations" id="-515371579%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/annotations.html"><span><span>annotations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-515371579%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/annotations.html">annotations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1393899166%2FProperties%2F-1976004838" anchor-label="annotationsNot" id="-1393899166%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/annotations-not.html"><span>annotations</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1393899166%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/annotations-not.html">annotationsNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-592509769%2FProperties%2F-1976004838" anchor-label="exceptionTypes" id="-592509769%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/exception-types.html"><span>exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-592509769%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/exception-types.html">exceptionTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1610214096%2FProperties%2F-1976004838" anchor-label="exceptionTypesNot" id="-1610214096%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/exception-types-not.html"><span>exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1610214096%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/exception-types-not.html">exceptionTypesNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1324736488%2FProperties%2F-1976004838" anchor-label="genericExceptionTypes" id="-1324736488%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-exception-types.html"><span>generic</span><wbr></wbr><span>Exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1324736488%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-exception-types.html">genericExceptionTypes</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1237503441%2FProperties%2F-1976004838" anchor-label="genericExceptionTypesNot" id="-1237503441%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-exception-types-not.html"><span>generic</span><wbr></wbr><span>Exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1237503441%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-exception-types-not.html">genericExceptionTypesNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-779654632%2FProperties%2F-1976004838" anchor-label="genericParameters" id="-779654632%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-parameters.html"><span>generic</span><wbr></wbr><span><span>Parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-779654632%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-parameters.html">genericParameters</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1975277521%2FProperties%2F-1976004838" anchor-label="genericParametersNot" id="-1975277521%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-parameters-not.html"><span>generic</span><wbr></wbr><span>Parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1975277521%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/generic-parameters-not.html">genericParametersNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1771399775%2FProperties%2F-1976004838" anchor-label="genericString" id="-1771399775%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/generic-string.html"><span>generic</span><wbr></wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1771399775%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/generic-string.html">genericString</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="608802702%2FProperties%2F-1976004838" anchor-label="isSynthetic" id="608802702%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/is-synthetic.html"><span>is</span><wbr></wbr><span><span>Synthetic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="608802702%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/is-synthetic.html">isSynthetic</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1022099193%2FProperties%2F-1976004838" anchor-label="isSyntheticNot" id="1022099193%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/is-synthetic-not.html"><span>is</span><wbr></wbr><span>Synthetic</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1022099193%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/is-synthetic-not.html">isSyntheticNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="918585151%2FProperties%2F-1976004838" anchor-label="isVarArgs" id="918585151%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/is-var-args.html"><span>is</span><wbr></wbr><span>Var</span><wbr></wbr><span><span>Args</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="918585151%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/is-var-args.html">isVarArgs</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-133681752%2FProperties%2F-1976004838" anchor-label="isVarArgsNot" id="-133681752%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/is-var-args-not.html"><span>is</span><wbr></wbr><span>Var</span><wbr></wbr><span>Args</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-133681752%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/is-var-args-not.html">isVarArgsNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="327261805%2FProperties%2F-1976004838" anchor-label="modifiers" id="327261805%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers.html"><span><span>modifiers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="327261805%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers.html">modifiers</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-753720718%2FProperties%2F-1976004838" anchor-label="modifiersCondition" id="-753720718%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers-condition.html"><span>modifiers</span><wbr></wbr><span><span>Condition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-753720718%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers-condition.html">modifiersCondition</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1708365754%2FProperties%2F-1976004838" anchor-label="modifiersNot" id="1708365754%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers-not.html"><span>modifiers</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1708365754%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/modifiers-not.html">modifiersNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1187405926%2FProperties%2F-1976004838" anchor-label="name" id="1187405926%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/name.html"><span><span>name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1187405926%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/name.html">name</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="101091481%2FProperties%2F-1976004838" anchor-label="nameCondition" id="101091481%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-member-condition/name-condition.html"><span>name</span><wbr></wbr><span><span>Condition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="101091481%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/name-condition.html">nameCondition</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-303997818%2FProperties%2F-1976004838" anchor-label="parameterAnnotations" id="-303997818%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-annotations.html"><span>parameter</span><wbr></wbr><span><span>Annotations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-303997818%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-annotations.html">parameterAnnotations</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-780241151%2FProperties%2F-1976004838" anchor-label="parameterAnnotationsNot" id="-780241151%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-annotations-not.html"><span>parameter</span><wbr></wbr><span>Annotations</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-780241151%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-annotations-not.html">parameterAnnotationsNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-923350341%2FProperties%2F-1976004838" anchor-label="parameterCount" id="-923350341%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count.html"><span>parameter</span><wbr></wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-923350341%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count.html">parameterCount</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2131750372%2FProperties%2F-1976004838" anchor-label="parameterCountCondition" id="2131750372%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count-condition.html"><span>parameter</span><wbr></wbr><span>Count</span><wbr></wbr><span><span>Condition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2131750372%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count-condition.html">parameterCountCondition</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="761099831%2FProperties%2F-1976004838" anchor-label="parameters" id="761099831%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters.html"><span><span>parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="761099831%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters.html">parameters</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="260861416%2FProperties%2F-1976004838" anchor-label="parametersCondition" id="260861416%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters-condition.html"><span>parameters</span><wbr></wbr><span><span>Condition</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="260861416%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">var </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters-condition.html">parametersCondition</a><span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator">?</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1674562640%2FProperties%2F-1976004838" anchor-label="parametersNot" id="-1674562640%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters-not.html"><span>parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1674562640%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameters-not.html">parametersNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-list/index.html">MutableList</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1379279517%2FProperties%2F-1976004838" anchor-label="typeParameters" id="1379279517%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/type-parameters.html"><span>type</span><wbr></wbr><span><span>Parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1379279517%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/type-parameters.html">typeParameters</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1991665034%2FProperties%2F-1976004838" anchor-label="typeParametersNot" id="1991665034%2FProperties%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/type-parameters-not.html"><span>type</span><wbr></wbr><span>Parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1991665034%2FProperties%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">val </span><a href="../../com.highcapable.kavaref.condition.base/-executable-condition/type-parameters-not.html">typeParametersNot</a><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-mutable-set/index.html">MutableSet</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="-2138668777%2FFunctions%2F-1976004838" anchor-label="annotatedExceptionTypes" id="-2138668777%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-exception-types.html"><span>annotated</span><wbr></wbr><span>Exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2138668777%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-exception-types.html"><span class="token function">annotatedExceptionTypes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="299470862%2FFunctions%2F-1976004838" anchor-label="annotatedExceptionTypesNot" id="299470862%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-exception-types-not.html"><span>annotated</span><wbr></wbr><span>Exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="299470862%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-exception-types-not.html"><span class="token function">annotatedExceptionTypesNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="581142641%2FFunctions%2F-1976004838" anchor-label="annotatedParameterTypes" id="581142641%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-parameter-types.html"><span>annotated</span><wbr></wbr><span>Parameter</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="581142641%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-parameter-types.html"><span class="token function">annotatedParameterTypes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1643385460%2FFunctions%2F-1976004838" anchor-label="annotatedParameterTypesNot" id="1643385460%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-parameter-types-not.html"><span>annotated</span><wbr></wbr><span>Parameter</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1643385460%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-parameter-types-not.html"><span class="token function">annotatedParameterTypesNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2039359640%2FFunctions%2F-1976004838" anchor-label="annotatedReceiverType" id="2039359640%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-receiver-type.html"><span>annotated</span><wbr></wbr><span>Receiver</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2039359640%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-receiver-type.html"><span class="token function">annotatedReceiverType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-208196371%2FFunctions%2F-1976004838" anchor-label="annotatedReceiverTypeNot" id="-208196371%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-receiver-type-not.html"><span>annotated</span><wbr></wbr><span>Receiver</span><wbr></wbr><span>Type</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-208196371%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-receiver-type-not.html"><span class="token function">annotatedReceiverTypeNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-688531337%2FFunctions%2F-1976004838" anchor-label="annotatedReturnType" id="-688531337%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-return-type.html"><span>annotated</span><wbr></wbr><span>Return</span><wbr></wbr><span><span>Type</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-688531337%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-return-type.html"><span class="token function">annotatedReturnType</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1732084562%2FFunctions%2F-1976004838" anchor-label="annotatedReturnTypeNot" id="-1732084562%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotated-return-type-not.html"><span>annotated</span><wbr></wbr><span>Return</span><wbr></wbr><span>Type</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1732084562%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotated-return-type-not.html"><span class="token function">annotatedReturnTypeNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-454074283%2FFunctions%2F-1976004838" anchor-label="annotations" id="-454074283%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotations.html"><span><span>annotations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-454074283%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotations.html"><span class="token function">annotations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>annotations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-638812144%2FFunctions%2F-1976004838" anchor-label="annotationsNot" id="-638812144%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="annotations-not.html"><span>annotations</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-638812144%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="annotations-not.html"><span class="token function">annotationsNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>annotations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1646654482%2FFunctions%2F-1976004838" anchor-label="asResolver" id="1646654482%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../../com.highcapable.kavaref/-kava-ref/-companion/as-resolver.html"><span>as</span><wbr></wbr><span><span>Resolver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1646654482%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/index.html">MemberCondition</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../../com.highcapable.kavaref/-kava-ref/-companion/as-resolver.html"><span class="token function"><strike>asResolver</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/index.html">MemberCondition</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token punctuation">, </span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">This is a fake function call chains to avoid internal calls to themselves.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1005591202%2FFunctions%2F-1976004838" anchor-label="build" id="1005591202%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="build.html"><span><span>build</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1005591202%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="build.html"><span class="token function">build</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">configuration<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.base/-member-condition/-configuration/index.html">MemberCondition.Configuration</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span><span class="token operator"> = </span>null</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Build the condition with the given <a href="../../com.highcapable.kavaref.condition.base/-member-condition/build.html">configuration</a>.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1442838043%2FFunctions%2F-1976004838" anchor-label="copy" id="1442838043%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="copy.html"><span><span>copy</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1442838043%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="copy.html"><span class="token function">copy</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Create a copy of this condition.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1551409779%2FFunctions%2F-1976004838" anchor-label="emptyParameters" id="1551409779%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="empty-parameters.html"><span>empty</span><wbr></wbr><span><span>Parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1551409779%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="empty-parameters.html"><span class="token function">emptyParameters</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Set <a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count.html">parameterCount</a> to <code class="lang-kotlin">0</code> to match methods with no parameters.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1733348852%2FFunctions%2F-1976004838" anchor-label="emptyParametersNot" id="1733348852%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="empty-parameters-not.html"><span>empty</span><wbr></wbr><span>Parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1733348852%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="empty-parameters-not.html"><span class="token function">emptyParametersNot</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Set <a href="../../com.highcapable.kavaref.condition.base/-executable-condition/parameter-count-condition.html">parameterCountCondition</a> to check if the method has parameters.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1564293333%2FFunctions%2F-1976004838" anchor-label="exceptionTypes" id="1564293333%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="exception-types.html"><span>exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1564293333%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="exception-types.html"><span class="token function">exceptionTypes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-991307888%2FFunctions%2F-1976004838" anchor-label="exceptionTypesNot" id="-991307888%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="exception-types-not.html"><span>exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-991307888%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="exception-types-not.html"><span class="token function">exceptionTypesNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1713832368%2FFunctions%2F-1976004838" anchor-label="genericExceptionTypes" id="-1713832368%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generic-exception-types.html"><span>generic</span><wbr></wbr><span>Exception</span><wbr></wbr><span><span>Types</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1713832368%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="generic-exception-types.html"><span class="token function">genericExceptionTypes</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1518938597%2FFunctions%2F-1976004838" anchor-label="genericExceptionTypesNot" id="1518938597%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generic-exception-types-not.html"><span>generic</span><wbr></wbr><span>Exception</span><wbr></wbr><span>Types</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1518938597%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="generic-exception-types-not.html"><span class="token function">genericExceptionTypesNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="287848656%2FFunctions%2F-1976004838" anchor-label="genericParameters" id="287848656%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generic-parameters.html"><span>generic</span><wbr></wbr><span><span>Parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="287848656%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="generic-parameters.html"><span class="token function">genericParameters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-2022580379%2FFunctions%2F-1976004838" anchor-label="genericParametersNot" id="-2022580379%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generic-parameters-not.html"><span>generic</span><wbr></wbr><span>Parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2022580379%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="generic-parameters-not.html"><span class="token function">genericParametersNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-825862366%2FFunctions%2F-1976004838" anchor-label="genericString" id="-825862366%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="generic-string.html"><span>generic</span><wbr></wbr><span><span>String</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-825862366%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="generic-string.html"><span class="token function">genericString</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">genericString<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1237221292%2FFunctions%2F-1976004838" anchor-label="isSynthetic" id="-1237221292%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-synthetic.html"><span>is</span><wbr></wbr><span><span>Synthetic</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1237221292%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-synthetic.html"><span class="token function">isSynthetic</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isSynthetic<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="778674397%2FFunctions%2F-1976004838" anchor-label="isSyntheticNot" id="778674397%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-synthetic-not.html"><span>is</span><wbr></wbr><span>Synthetic</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="778674397%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-synthetic-not.html"><span class="token function">isSyntheticNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isSynthetic<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1549982677%2FFunctions%2F-1976004838" anchor-label="isVarArgs" id="1549982677%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-var-args.html"><span>is</span><wbr></wbr><span>Var</span><wbr></wbr><span><span>Args</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1549982677%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-var-args.html"><span class="token function">isVarArgs</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isVarArgs<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-230618692%2FFunctions%2F-1976004838" anchor-label="isVarArgsNot" id="-230618692%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="is-var-args-not.html"><span>is</span><wbr></wbr><span>Var</span><wbr></wbr><span>Args</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-230618692%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="is-var-args-not.html"><span class="token function">isVarArgsNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">isVarArgs<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1609148921%2FFunctions%2F-1976004838" anchor-label="modifiers" id="1609148921%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="modifiers.html"><span><span>modifiers</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1609148921%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="modifiers.html"><span class="token function">modifiers</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="modifiers.html"><span class="token function">modifiers</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>modifiers<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="844583249%2FFunctions%2F-1976004838" anchor-label="modifiersNot" id="844583249%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="modifiers-not.html"><span>modifiers</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="844583249%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="modifiers-not.html"><span class="token function">modifiersNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>modifiers<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.type/-modifiers/index.html">Modifiers</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1042915829%2FFunctions%2F-1976004838" anchor-label="name" id="-1042915829%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="name.html"><span><span>name</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1042915829%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="name.html"><span class="token function">name</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="name.html"><span class="token function">name</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">name<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-string/index.html">String</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="711132772%2FFunctions%2F-1976004838" anchor-label="parameterAnnotations" id="711132772%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parameter-annotations.html"><span>parameter</span><wbr></wbr><span><span>Annotations</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="711132772%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameter-annotations.html"><span class="token function">parameterAnnotations</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>annotations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="784163361%2FFunctions%2F-1976004838" anchor-label="parameterAnnotationsNot" id="784163361%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parameter-annotations-not.html"><span>parameter</span><wbr></wbr><span>Annotations</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="784163361%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameter-annotations-not.html"><span class="token function">parameterAnnotationsNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>annotations<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-set/index.html">Set</a><span class="token operator">&lt;</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="923158029%2FFunctions%2F-1976004838" anchor-label="parameterCount" id="923158029%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parameter-count.html"><span>parameter</span><wbr></wbr><span><span>Count</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="923158029%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameter-count.html"><span class="token function">parameterCount</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameter-count.html"><span class="token function">parameterCount</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">count<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-int/index.html">Int</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-256797524%2FFunctions%2F-1976004838" anchor-label="parameters" id="-256797524%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parameters.html"><span><span>parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-256797524%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameters.html"><span class="token function">parameters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><span class="token punctuation">(</span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">Class</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameters.html"><span class="token function">parameters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1805977232%2FFunctions%2F-1976004838" anchor-label="parametersNot" id="1805977232%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="parameters-not.html"><span>parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1805977232%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="parameters-not.html"><span class="token function">parametersNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-814978701%2FFunctions%2F-1976004838" anchor-label="superclass" id="-814978701%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="superclass.html"><span><span>superclass</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-814978701%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="superclass.html"><span class="token function"><strike>superclass</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-nothing/index.html">Nothing</a></div><div class="brief "><p class="paragraph">Enable superclass mode.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2086186387%2FFunctions%2F-1976004838" anchor-label="typeParameters" id="2086186387%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="type-parameters.html"><span>type</span><wbr></wbr><span><span>Parameters</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2086186387%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="type-parameters.html"><span class="token function">typeParameters</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1129680834%2FFunctions%2F-1976004838" anchor-label="typeParametersNot" id="1129680834%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="type-parameters-not.html"><span>type</span><wbr></wbr><span>Parameters</span><wbr></wbr><span><span>Not</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1129680834%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">open </span><span class="token keyword">override </span><span class="token keyword">fun </span><a href="type-parameters-not.html"><span class="token function">typeParametersNot</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter "><span class="token keyword">vararg </span>types<span class="token operator">: </span><a href="../../com.highcapable.kavaref.condition.matcher.base/-type-matcher/index.html">TypeMatcher</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>KavaRef | Apache-2.0 License | Copyright (C) 2019 HighCapable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
