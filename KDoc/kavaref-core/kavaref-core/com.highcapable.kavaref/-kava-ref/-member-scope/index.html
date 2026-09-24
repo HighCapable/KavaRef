@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>MemberScope</title>
+    <link href="../../../../images/logo-icon.svg" rel="icon" type="image/svg">
+        <script>var pathToRoot = "../../../../";</script>
+    <script>document.documentElement.classList.replace("no-js", "js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+      if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      } else {
+        const savedDarkMode = JSON.parse(storage)
+        if (savedDarkMode === true) {
+          document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+      }
+    </script>
+<script type="text/javascript" src="../../../../scripts/sourceset_dependencies.js" async="async"></script>
+<link href="../../../../styles/style.css" rel="Stylesheet">
+<link href="../../../../styles/main.css" rel="Stylesheet">
+<link href="../../../../styles/prism.css" rel="Stylesheet">
+<link href="../../../../styles/logo-styles.css" rel="Stylesheet">
+<link href="../../../../ui-kit/ui-kit.min.css" rel="Stylesheet">
+<script type="text/javascript" src="../../../../scripts/safe-local-storage_blocking.js"></script>
+<script type="text/javascript" src="../../../../scripts/navigation-loader.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/platform-content-handler.js" async="async"></script>
+<script type="text/javascript" src="../../../../scripts/main.js" defer="defer"></script>
+<script type="text/javascript" src="../../../../scripts/prism.js" async="async"></script>
+<script type="text/javascript" src="../../../../ui-kit/ui-kit.min.js" defer="defer"></script>
+</head>
+<body>
+<div class="root">
+    <header class="navigation theme-dark" id="navigation-wrapper" role="banner">
+            <a class="library-name--link" href="../../../../index.html" tabindex="1">
+                    kavaref-core
+            </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+1.1.0        </div>
+        <div class="navigation-controls">
+        <ul class="filter-section filter-section_loading" id="filter-section" aria-label="Target filter">
+                <button class="platform-tag platform-selector jvm-like" data-active="" aria-pressed="true"
+                        data-filter=":kavaref-core/main">jvm</button>
+            <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                        data-role="dropdown-toggle"
+                        aria-controls="platform-tags-listbox"
+                        aria-haspopup="listbox"
+                        aria-expanded="false"
+                        aria-label="Toggle source sets"
+                ></button>
+                <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox" aria-label="Target filter">
+                    <div class="dropdown--header"><span>Target filter</span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close target filter">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":kavaref-core/main"
+                                       data-filter=":kavaref-core/main"/>
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </ul>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </header>
+    <div id="container">
+        <nav id="leftColumn" class="sidebar" data-item-type="SECTION" data-item-config='{"defaultSize": 280, "minSize": 200, "maxSize": 400}'>
+            <a class="toc--skip-link" href="#main">Skip to content</a>
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox" aria-label="Table of contents">
+                    <div class="dropdown--header">
+                            <span>
+                                    kavaref-core
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </nav>
+        <div id="resizer" class="resizer" data-item-type="BAR"></div>
+        <div id="main" data-item-type="SECTION" role="main">
+<div class="main-content" data-page-type="classlike" id="content" pageIds="kavaref-core::com.highcapable.kavaref/KavaRef.MemberScope///PointingToDeclaration//-1976004838">
+  <div class="breadcrumbs"><a href="../../../../index.html">kavaref-core</a><span class="delimiter">/</span><a href="../../index.html">com.highcapable.kavaref</a><span class="delimiter">/</span><a href="../index.html">KavaRef</a><span class="delimiter">/</span><span class="current">MemberScope</span></div>
+  <div class="cover ">
+    <h1 class="cover"><span>Member</span><wbr></wbr><span><span>Scope</span></span></h1>
+    <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">class </span><a href="index.html">MemberScope</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator"> : </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-any/index.html">Any</a><span class="token operator">&gt;</span></div><p class="paragraph">The KavaRef scope for member reflection.</p><p class="paragraph"><a href="index.html">T</a> to specify the declaring class type of the member.</p><h4 class="tableheader">Parameters</h4><div class="table"><div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main"><div class="main-subrow keyValue "><div class=""><span class="inline-flex"><div><u><span><span>configuration</span></span></u></div></span></div><div><div class="title"><p class="paragraph">the configuration to be reflected.</p></div></div></div></div></div></div></div>
+  </div>
+  <div class="tabbedcontent">
+    <div class="tabs-section" tabs-section="tabs-section"><button class="section-tab" data-active="" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION">Members</button><button class="section-tab" data-togglable="CONSTRUCTOR,TYPE,PROPERTY,FUNCTION,EXTENSION_PROPERTY,EXTENSION_FUNCTION">Members &amp; Extensions</button></div>
+    <div class="tabs-section-body">
+      <div data-togglable="FUNCTION">
+        <h2 class="tableheader">Functions</h2>
+        <div class="table"><a data-name="1717840085%2FFunctions%2F-1976004838" anchor-label="asResolver" id="1717840085%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-togglable="EXTENSION_FUNCTION" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="../-companion/as-resolver.html"><span>as</span><wbr></wbr><span><span>Resolver</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1717840085%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="index.html">KavaRef.MemberScope</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span><span class="token punctuation">.</span><a href="../-companion/as-resolver.html"><span class="token function"><strike>asResolver</strike></span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">KavaRef.MemberScope</a><span class="token operator">&lt;</span><span class="token operator">*</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">This is a fake function call chains to avoid internal calls to themselves.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="852821925%2FFunctions%2F-1976004838" anchor-label="constructor" id="852821925%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="constructor.html"><span><span>constructor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="852821925%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="constructor.html"><span class="token function">constructor</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="constructor.html"><span class="token function">constructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="constructor.html"><span class="token function">constructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new constructor reflection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-311326171%2FFunctions%2F-1976004838" anchor-label="field" id="-311326171%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="field.html"><span><span>field</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-311326171%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="field.html"><span class="token function">field</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="field.html"><span class="token function">field</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="field.html"><span class="token function">field</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new field reflection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="43601859%2FFunctions%2F-1976004838" anchor-label="firstConstructor" id="43601859%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-constructor.html"><span>first</span><wbr></wbr><span><span>Constructor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="43601859%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-constructor.html"><span class="token function">firstConstructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-constructor.html"><span class="token function">firstConstructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new constructor reflection and return the first matching constructor.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="165860867%2FFunctions%2F-1976004838" anchor-label="firstConstructorOrNull" id="165860867%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-constructor-or-null.html"><span>first</span><wbr></wbr><span>Constructor</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="165860867%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-constructor-or-null.html"><span class="token function">firstConstructorOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-constructor-or-null.html"><span class="token function">firstConstructorOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new constructor reflection and return the first matching constructor or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1186709763%2FFunctions%2F-1976004838" anchor-label="firstField" id="1186709763%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-field.html"><span>first</span><wbr></wbr><span><span>Field</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1186709763%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-field.html"><span class="token function">firstField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-field.html"><span class="token function">firstField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new field reflection and return the first matching field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-329562557%2FFunctions%2F-1976004838" anchor-label="firstFieldOrNull" id="-329562557%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-field-or-null.html"><span>first</span><wbr></wbr><span>Field</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-329562557%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-field-or-null.html"><span class="token function">firstFieldOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-field-or-null.html"><span class="token function">firstFieldOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new field reflection and return the first matching field or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-657835049%2FFunctions%2F-1976004838" anchor-label="firstMethod" id="-657835049%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-method.html"><span>first</span><wbr></wbr><span><span>Method</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-657835049%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-method.html"><span class="token function">firstMethod</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-method.html"><span class="token function">firstMethod</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new method reflection and return the first matching method.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1033270423%2FFunctions%2F-1976004838" anchor-label="firstMethodOrNull" id="1033270423%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="first-method-or-null.html"><span>first</span><wbr></wbr><span>Method</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1033270423%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="first-method-or-null.html"><span class="token function">firstMethodOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="first-method-or-null.html"><span class="token function">firstMethodOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new method reflection and return the first matching method or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1041521093%2FFunctions%2F-1976004838" anchor-label="lastConstructor" id="-1041521093%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-constructor.html"><span>last</span><wbr></wbr><span><span>Constructor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1041521093%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-constructor.html"><span class="token function">lastConstructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-constructor.html"><span class="token function">lastConstructor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new constructor reflection and return the last matching constructor.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-329426073%2FFunctions%2F-1976004838" anchor-label="lastConstructorOrNull" id="-329426073%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-constructor-or-null.html"><span>last</span><wbr></wbr><span>Constructor</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-329426073%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-constructor-or-null.html"><span class="token function">lastConstructorOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-constructor-or-null.html"><span class="token function">lastConstructorOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-constructor-condition/index.html">ConstructorCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-constructor-resolver/index.html">ConstructorResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new constructor reflection and return the last matching constructor or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1587539835%2FFunctions%2F-1976004838" anchor-label="lastField" id="1587539835%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-field.html"><span>last</span><wbr></wbr><span><span>Field</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1587539835%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-field.html"><span class="token function">lastField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-field.html"><span class="token function">lastField</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new field reflection and return the last matching field.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="2108319399%2FFunctions%2F-1976004838" anchor-label="lastFieldOrNull" id="2108319399%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-field-or-null.html"><span>last</span><wbr></wbr><span>Field</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="2108319399%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-field-or-null.html"><span class="token function">lastFieldOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-field-or-null.html"><span class="token function">lastFieldOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-field-condition/index.html">FieldCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-field-resolver/index.html">FieldResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new field reflection and return the last matching field or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-777050269%2FFunctions%2F-1976004838" anchor-label="lastMethod" id="-777050269%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-method.html"><span>last</span><wbr></wbr><span><span>Method</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-777050269%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-method.html"><span class="token function">lastMethod</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-method.html"><span class="token function">lastMethod</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new method reflection and return the last matching method.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-1225985993%2FFunctions%2F-1976004838" anchor-label="lastMethodOrNull" id="-1225985993%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="last-method-or-null.html"><span>last</span><wbr></wbr><span>Method</span><wbr></wbr><span>Or</span><wbr></wbr><span><span>Null</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1225985993%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="last-method-or-null.html"><span class="token function">lastMethodOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="last-method-or-null.html"><span class="token function">lastMethodOrNull</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a><span class="token operator"> = </span>{}</span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">?</span></div><div class="brief "><p class="paragraph">Start a new method reflection and return the last matching method or null.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-176573848%2FFunctions%2F-1976004838" anchor-label="method" id="-176573848%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="method.html"><span><span>method</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-176573848%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="method.html"><span class="token function">method</span></a><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">fun </span><a href="method.html"><span class="token function">method</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="symbol monospace"><span class="token keyword">inline </span><span class="token keyword">fun </span><a href="method.html"><span class="token function">method</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">condition<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.condition/-method-condition/index.html">MethodCondition</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator"> -&gt; </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-unit/index.html">Unit</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin.collections/-list/index.html">List</a><span class="token operator">&lt;</span><a href="../../../com.highcapable.kavaref.resolver/-method-resolver/index.html">MethodResolver</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Start a new method reflection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="1768986787%2FFunctions%2F-1976004838" anchor-label="optional" id="1768986787%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="optional.html"><span><span>optional</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1768986787%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="optional.html"><span class="token function">optional</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">silent<span class="token operator">: </span><a href="https://kotlinlang.org/api/core/kotlin-stdlib/kotlin/-boolean/index.html">Boolean</a><span class="token operator"> = </span><span class="token boolean">false</span></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">KavaRef.MemberScope</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Enable optional mode.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+<a data-name="-866080635%2FFunctions%2F-1976004838" anchor-label="processor" id="-866080635%2FFunctions%2F-1976004838" data-filterable-set=":kavaref-core/main"></a>
+          <div class="table-row table-row_content" data-filterable-current=":kavaref-core/main" data-filterable-set=":kavaref-core/main">
+            <div class="main-subrow keyValue ">
+              <div class=""><span class="inline-flex">
+                  <div><a href="processor.html"><span><span>processor</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-866080635%2FFunctions%2F-1976004838"></span>
+                    <div class="copy-popup-wrapper "><span class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+              <div>
+                <div class="title">
+                  <div class="platform-hinted " data-platform-hinted="data-platform-hinted"><div class="content sourceset-dependent-content" data-active="" data-togglable=":kavaref-core/main"><div class="symbol monospace"><span class="token keyword">fun </span><a href="processor.html"><span class="token function">processor</span></a><span class="token punctuation">(</span><span class="parameters "><span class="parameter ">resolver<span class="token operator">: </span><a href="../../../com.highcapable.kavaref.resolver.processor/-member-processor/-resolver/index.html">MemberProcessor.Resolver</a></span></span><span class="token punctuation">)</span><span class="token operator">: </span><a href="index.html">KavaRef.MemberScope</a><span class="token operator">&lt;</span><a href="index.html">T</a><span class="token operator">&gt;</span></div><div class="brief "><p class="paragraph">Set the <a href="../../../com.highcapable.kavaref.resolver.processor/-member-processor/-resolver/index.html">MemberProcessor.Resolver</a> to be used for this reflection.</p></div></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="footer">
+        <div class="footer--container">
+            <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+            <div class="footer--content">
+                <div>
+                    <span>Generated by </span>
+                    <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                        Dokka
+                    </a>
+                    <div>KavaRef | Apache-2.0 License | Copyright (C) 2019 HighCapable</div>
+                </div>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
