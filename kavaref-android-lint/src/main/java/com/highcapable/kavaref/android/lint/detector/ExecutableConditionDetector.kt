@@ -46,7 +46,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
         val ISSUE = Issue.create(
             id = "UnsupportedExecutableCondition",
-            briefDescription = "Unsupported executable condition on Android.",
+            briefDescription = "Unsupported executable condition on Android",
             explanation = "Annotated executable type conditions are not supported on Android.",
             category = Category.CORRECTNESS,
             priority = 10,
@@ -106,7 +106,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
             context.report(
                 ISSUE, node, location,
-                message = "`$methodName` is not supported on Android.",
+                message = "`$methodName` is not supported on Android",
                 quickfixData = lintFix
             )
         }
@@ -130,7 +130,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
             context.report(
                 ISSUE, reportNode, location,
-                message = "`$propertyName` is not supported on Android.",
+                message = "`$propertyName` is not supported on Android",
                 quickfixData = lintFix
             )
         }

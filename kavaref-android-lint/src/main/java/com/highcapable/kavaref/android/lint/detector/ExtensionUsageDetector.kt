@@ -127,7 +127,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
 
         val ISSUE = Issue.create(
             id = "ReplaceWithKavaRefExtension",
-            briefDescription = "Use KavaRef's extension instead.",
+            briefDescription = "Use KavaRef's extension instead",
             explanation = """
                 Common Java reflection utility patterns can be simplified by using KavaRef extension APIs from \
                 `kavaref-extension` library.
@@ -243,7 +243,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = parent,
             location = context.getLocation(parent),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'ArrayClass'", replacement, ARRAY_CLASS_IMPORT)
         )
     }
@@ -259,7 +259,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'toClass'", replacement, TO_CLASS_IMPORT)
         )
     }
@@ -283,7 +283,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with '$functionName'", replacement, importTarget)
         )
     }
@@ -325,7 +325,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'classOf'", replacement, CLASS_OF_IMPORT)
         )
     }
@@ -342,7 +342,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'isSubclassOf'", replacement, IS_SUBCLASS_OF_IMPORT)
         )
     }
@@ -357,7 +357,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'hasInterfaces'", replacement, HAS_INTERFACES_IMPORT)
         )
     }
@@ -368,7 +368,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'hasInterfaces'", replacement, HAS_INTERFACES_IMPORT)
         )
     }
@@ -397,7 +397,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'hasInterfaces'", replacement, HAS_INTERFACES_IMPORT)
         )
     }
@@ -414,7 +414,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with '$propertyName'", replacement, "$EXTENSION_PACKAGE_NAME.$propertyName")
         )
     }
@@ -428,7 +428,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             issue = ISSUE,
             scope = this,
             location = context.getLocation(this),
-            message = "Can be replaced with `$replacement`.",
+            message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'makeAccessible'", replacement, MAKE_ACCESSIBLE_IMPORT)
         )
     }
