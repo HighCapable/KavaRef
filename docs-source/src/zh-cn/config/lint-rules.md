@@ -12,8 +12,8 @@
 
 | Issue ID                                                                                                                                                           | 类别          | 级别      | 优先级 | 简要描述                                     |
 | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | --------- | ------ | -------------------------------------------- |
-| [UnsupportedExecutableCondition](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExecutableConditionDetector.kt) | `CORRECTNESS` | `ERROR`   | `10`   | Unsupported executable condition on Android. |
-| [ReplaceWithKavaRefExtension](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExtensionUsageDetector.kt)         | `USABILITY`   | `WARNING` | `5`    | Use KavaRef's extension instead.             |
+| [UnsupportedExecutableCondition](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExecutableConditionDetector.kt) | `CORRECTNESS` | `ERROR`   | `10`   | Unsupported executable condition on Android |
+| [ReplaceWithKavaRefExtension](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExtensionUsageDetector.kt)         | `USABILITY`   | `WARNING` | `5`    | Use KavaRef's extension instead              |
 
 </div>
 
