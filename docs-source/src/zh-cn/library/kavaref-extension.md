@@ -249,6 +249,19 @@ val clazz = type.toClass()
 val clazzOrNull = type.toClassOrNull()
 ```
 
+`toClass` 同样支持泛型数组 (`GenericArrayType`)，转换时会保留数组的维度。
+
+> 示例如下
+
+```kotlin
+// 假设这是 List<String>[] 的 Type
+val genericArrayType: GenericArrayType
+// 将会得到 java.util.List[]
+val arrayClass = genericArrayType.toClass()
+```
+
+类型变量 (`TypeVariable`) 和通配符类型 (`WildcardType`) 没有确定的 `Class`，转换时将会抛出异常。
+
 你也可以将符合要求的 `Type` 转换为 `ParameterizedType` 对象。
 
 > 示例如下
@@ -272,9 +285,9 @@ val arguments = myClass.genericSuperclassTypeArguments()
 
 ### 类型引用扩展
 
-在 Java 中，方法的泛型会在编译后被类型擦除，在运行获取到的类型是 `java.lang.Object`。
+在 Java 中，泛型在编译后会被擦除，运行时无法直接从一个对象上得知它的泛型参数。
 
-KavaRef 提供了 `TypeRef` 类来包装你的目标泛型来确保你可以在运行时获取到正确的泛型类型，它的核心功能参考于 [Gson](https://github.com/google/gson) 的 `TypeToken`。
+KavaRef 提供了 `TypeRef` 类，它通过匿名子类的泛型签名来保留完整的类型信息，核心功能参考于 [Gson](https://github.com/google/gson) 的 `TypeToken`。
 
 它的使用方法非常简单，你可以像下面这样使用它。
 
@@ -288,6 +301,17 @@ val type = listStringType.type
 val rawType = listStringType.rawType
 ```
 
+`rawType` 同样支持泛型数组，并会保留数组的维度。
+
+> 示例如下
+
+```kotlin
+// 将会是 java.util.List[]
+val arrayRawType = typeRef<Array<List<String>>>().rawType
+// 多维数组同样适用，将会是 java.util.List[][]
+val nestedArrayRawType = typeRef<Array<Array<List<String>>>>().rawType
+```
+
 在使用 Gson 等需要传入 `Type` 的场景中，你可以为此实现一个带有 `reified` 泛型的扩展方法。
 
 > 示例如下
@@ -295,11 +319,43 @@ val rawType = listStringType.rawType
 ```kotlin
 val gson = Gson()
 
-inline fun <reified T : Any> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
+inline fun <reified T> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
 
 // 使用方法
 val json = listOf("KavaRef", "is", "awesome").toJson()
 ```
+
+::: warning
+
+`TypeRef` 得到的是 Java 的 `Type`，它不包含 Kotlin 的可空性，所以 `typeRef<String?>()` 与 `typeRef<String>()` 是相等的，`List<String?>?` 也同理。
+
+如果你需要区分可空性，请使用 Kotlin 的 `typeOf<T>()` 获取 `KType`。
+
+:::
+
+::: danger
+
+`TypeRef` 只能被直接继承，例如 `object : TypeRef<List<String>>() {}`，继承一个 `TypeRef` 的子类后，获取 `type` 或 `rawType` 时将会抛出异常。
+
+:::
+
+在没有 `reified` 的泛型方法中创建 `TypeRef` 时，泛型参数不会被替换为调用时传入的类型。
+
+> 示例如下
+
+```kotlin
+fun <T> createTypeRef() = object : TypeRef<T>() {}
+
+val typeRef = createTypeRef<String>()
+// 得到的是类型变量 T，而不是 String
+val type = typeRef.type
+// T 没有确定的 Class，这里将会抛出异常
+val rawType = typeRef.rawType
+```
+
+`List<T>` 这类本身有原始类的类型不受影响，`rawType` 仍然是 `List`，但 `T` 和 `Array<T>` 的 `rawType` 都无法获取。
+
+所以，请尽量在带有 `reified` 泛型的方法中使用 `typeRef<T>()`。
 
 ### Java 包装类扩展
 

@@ -264,6 +264,19 @@ val clazz = type.toClass()
 val clazzOrNull = type.toClassOrNull()
 ```
 
+`toClass` also supports generic arrays (`GenericArrayType`), and the array dimensions are preserved during conversion.
+
+> The following example
+
+```kotlin
+// Assume this is the Type of List<String>[].
+val genericArrayType: GenericArrayType
+// This will be java.util.List[].
+val arrayClass = genericArrayType.toClass()
+```
+
+Type variables (`TypeVariable`) and wildcard types (`WildcardType`) have no definite `Class`, so converting them will throw an exception.
+
 You can also convert `Type` that meets the requirements to `ParameterizedType` object.
 
 > The following example
@@ -290,9 +303,9 @@ val arguments = myClass.genericSuperclassTypeArguments()
 
 ### Type Reference Extension
 
-In Java, method generics are erased after compilation, and the type obtained at runtime is `java.lang.Object`.
+In Java, generics are erased after compilation, so you cannot get the generic arguments of an object directly at runtime.
 
-KavaRef provides the `TypeRef` class to wrap your target generics to ensure that you can get the correct generic type at runtime.
+KavaRef provides the `TypeRef` class, which keeps the complete type information through the generic signature of an anonymous subclass.
 Its core functionality is referenced from [Gson](https://github.com/google/gson)'s `TypeToken`.
 
 It is very simple to use, you can use it like this.
@@ -307,6 +320,17 @@ val type = listStringType.type
 val rawType = listStringType.rawType
 ```
 
+`rawType` also supports generic arrays and preserves the array dimensions.
+
+> The following example
+
+```kotlin
+// This will be java.util.List[].
+val arrayRawType = typeRef<Array<List<String>>>().rawType
+// Multidimensional arrays work too, this will be java.util.List[][].
+val nestedArrayRawType = typeRef<Array<Array<List<String>>>>().rawType
+```
+
 In scenarios where you need to pass in `Type` such as when using Gson, you can implement an extension method with `reified` generics for this purpose.
 
 > The following example
@@ -314,11 +338,46 @@ In scenarios where you need to pass in `Type` such as when using Gson, you can i
 ```kotlin
 val gson = Gson()
 
-inline fun <reified T : Any> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
+inline fun <reified T> T.toJson(): String = gson.toJson(this, typeRef<T>().type)
 
 // Usage
 val json = listOf("KavaRef", "is", "awesome").toJson()
 ```
+
+::: warning
+
+`TypeRef` holds a Java `Type`, which does not contain Kotlin nullability,
+so `typeRef<String?>()` and `typeRef<String>()` are equal, and the same goes for `List<String?>?`.
+
+If you need to distinguish nullability, please use Kotlin's `typeOf<T>()` to get a `KType`.
+
+:::
+
+::: danger
+
+`TypeRef` can only be inherited directly, such as `object : TypeRef<List<String>>() {}`.
+If you inherit from a subclass of `TypeRef`, an exception will be thrown when getting `type` or `rawType`.
+
+:::
+
+When you create a `TypeRef` in a generic method without `reified`, the generic argument will not be replaced with the type passed in by the caller.
+
+> The following example
+
+```kotlin
+fun <T> createTypeRef() = object : TypeRef<T>() {}
+
+val typeRef = createTypeRef<String>()
+// You will get the type variable T instead of String.
+val type = typeRef.type
+// T has no definite Class, so an exception will be thrown here.
+val rawType = typeRef.rawType
+```
+
+Types that have their own raw class such as `List<T>` are not affected, and `rawType` is still `List`,
+but the `rawType` of `T` and `Array<T>` cannot be obtained.
+
+So, please try to use `typeRef<T>()` in methods with `reified` generics.
 
 ### Java Wrapper Classes Extension
 
