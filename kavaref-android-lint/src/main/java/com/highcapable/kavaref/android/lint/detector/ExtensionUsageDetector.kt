@@ -36,15 +36,28 @@ import com.highcapable.kavaref.android.lint.detector.extension.containsElement
 import com.highcapable.kavaref.android.lint.detector.extension.createKotlinOnlyUastHandler
 import com.highcapable.kavaref.android.lint.detector.extension.findClassForNameCall
 import com.highcapable.kavaref.android.lint.detector.extension.findParentCastExpression
+import com.intellij.psi.PsiClass
+import com.intellij.psi.PsiClassType
+import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiVariable
+import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtClassLiteralExpression
+import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
+import org.jetbrains.kotlin.psi.KtNameReferenceExpression
+import org.jetbrains.kotlin.psi.KtPsiUtil
+import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.uast.UBinaryExpression
 import org.jetbrains.uast.UBinaryExpressionWithType
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UClassLiteralExpression
 import org.jetbrains.uast.UElement
 import org.jetbrains.uast.UExpression
+import org.jetbrains.uast.UParenthesizedExpression
 import org.jetbrains.uast.UPrefixExpression
 import org.jetbrains.uast.UQualifiedReferenceExpression
+import org.jetbrains.uast.UResolvable
 import org.jetbrains.uast.USimpleNameReferenceExpression
+import org.jetbrains.uast.USuperExpression
 import org.jetbrains.uast.UThisExpression
 import org.jetbrains.uast.UastBinaryExpressionWithTypeKind
 import org.jetbrains.uast.UastBinaryOperator
@@ -79,6 +92,15 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         private const val NUMBER_ZERO = "0"
         private const val BOOLEAN_TRUE = "true"
         private const val GREATER_THAN_OPERATOR = ">"
+        private const val STAR_PROJECTION = "*"
+        private const val TYPE_ARGUMENT_SEPARATOR = ", "
+        private const val KOTLIN_MUTABLE_TYPE_PREFIX = "Mutable"
+
+        private val JAVA_WRAPPER_CLASSES = setOf(
+            "java.lang.Boolean", "java.lang.Character", "java.lang.Byte", "java.lang.Short",
+            "java.lang.Integer", "java.lang.Long", "java.lang.Float", "java.lang.Double", "java.lang.Void"
+        )
+        private val KOTLIN_PRIMITIVE_TYPES = setOf("Boolean", "Char", "Byte", "Short", "Int", "Long", "Float", "Double")
 
         private const val ARRAY_CLASS = "ArrayClass"
         private const val CLASS_OF = "classOf"
@@ -313,10 +335,21 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
     private fun UQualifiedReferenceExpression.reportClassOf(context: JavaContext) {
         val selectorName = selector.asSourceString()
         if (selectorName !in setOf(JAVA_CLASS_LITERAL, JAVA_CLASS_OBJECT_TYPE, JAVA_CLASS_PRIMITIVE_TYPE)) return
+
         val classLiteral = receiver as? UClassLiteralExpression ?: return
-        val typeText = classLiteral.expression?.asSourceString() ?: return
+        val receiverExpression = classLiteral.expression ?: return
+        if (!receiverExpression.isTypeReceiver()) return
+
+        val literalClass = (classLiteral.type as? PsiClassType)?.resolve()
+        val typeText = classLiteral.classOfTypeText(literalClass) ?: return
+        val isWrapperClass = literalClass?.qualifiedName in JAVA_WRAPPER_CLASSES
+        val isKotlinPrimitive = isWrapperClass && classLiteral.receiverName() in KOTLIN_PRIMITIVE_TYPES &&
+            classLiteral.resolveReceiverTypeAlias() == null
         val replacement = when (selectorName) {
-            JAVA_CLASS_LITERAL, JAVA_CLASS_PRIMITIVE_TYPE -> "$CLASS_OF<$typeText>()"
+            JAVA_CLASS_LITERAL ->
+                if (isWrapperClass && !isKotlinPrimitive) "$CLASS_OF<$typeText>($PRIMITIVE_TYPE_PARAMETER = false)"
+                else "$CLASS_OF<$typeText>()"
+            JAVA_CLASS_PRIMITIVE_TYPE -> if (isWrapperClass) "$CLASS_OF<$typeText>()" else return
             JAVA_CLASS_OBJECT_TYPE -> "$CLASS_OF<$typeText>($PRIMITIVE_TYPE_PARAMETER = false)"
             else -> return
         }
@@ -328,6 +361,42 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'classOf'", replacement, CLASS_OF_IMPORT)
         )
+    }
+
+    private fun UExpression.isTypeReceiver(): Boolean = when (this) {
+        is UParenthesizedExpression -> expression.isTypeReceiver()
+        is UThisExpression, is USuperExpression -> false
+        is UCallExpression -> resolve() == null
+        is UResolvable -> resolve().let { it !is PsiVariable && it !is PsiMethod }
+        else -> false
+    }
+
+    private fun UClassLiteralExpression.receiverPsi() =
+        (sourcePsi as? KtClassLiteralExpression)?.receiverExpression?.let { KtPsiUtil.safeDeparenthesize(it) }
+
+    private fun UClassLiteralExpression.receiverNameReference() = when (val receiver = receiverPsi()) {
+        is KtNameReferenceExpression -> receiver
+        is KtDotQualifiedExpression -> receiver.selectorExpression as? KtNameReferenceExpression
+        else -> null
+    }
+
+    private fun UClassLiteralExpression.receiverName() = receiverNameReference()?.getReferencedName()
+
+    private fun UClassLiteralExpression.resolveReceiverTypeAlias() =
+        receiverNameReference()?.references?.firstNotNullOfOrNull { it.resolve() } as? KtTypeAlias
+
+    private fun UClassLiteralExpression.classOfTypeText(literalClass: PsiClass?): String? {
+        val receiver = receiverPsi() ?: return null
+        if (receiver is KtCallExpression) return receiver.text
+        if (literalClass == null) return null
+        val typeAlias = resolveReceiverTypeAlias()
+        val typeParameterCount = typeAlias?.typeParameters?.size ?: literalClass.typeParameters.size
+        if (typeAlias == null && typeParameterCount > 0 &&
+            receiverName()?.removePrefix(KOTLIN_MUTABLE_TYPE_PREFIX) != literalClass.name
+        ) return null
+        if (typeParameterCount == 0) return receiver.text
+
+        return "${receiver.text}<${List(typeParameterCount) { STAR_PROJECTION }.joinToString(TYPE_ARGUMENT_SEPARATOR)}>"
     }
 
     private fun UCallExpression.reportAssignableFrom(context: JavaContext) {
