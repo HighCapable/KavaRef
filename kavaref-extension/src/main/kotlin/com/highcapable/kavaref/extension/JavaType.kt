@@ -24,12 +24,16 @@
 
 package com.highcapable.kavaref.extension
 
+import java.lang.reflect.GenericArrayType
 import java.lang.reflect.ParameterizedType
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 /**
  * Convert [Type] to [Class].
+ *
+ * Generic arrays use the raw class of their component type, preserving array dimensions.
+ * Type variables and wildcard types cannot be converted.
  * @see Type.toClassOrNull
  * @receiver the [Type] to be converted.
  * @return [Class]<[T]>
@@ -39,6 +43,7 @@ import kotlin.reflect.KClass
 tailrec fun <T : Any> Type.toClass(): Class<T> = when (this) {
     is Class<*> -> this as Class<T>
     is ParameterizedType -> rawType.toClass<T>()
+    is GenericArrayType -> ArrayClass(genericComponentType.toClass()) as Class<T>
     else -> throw TypeCastException("Cannot cast type $this to java.lang.Class object.")
 }
 

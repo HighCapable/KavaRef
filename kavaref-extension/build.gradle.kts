@@ -9,4 +9,5 @@ version = gropify.project.kavaref.bom.version
 
 dependencies {
     implementation(libs.androidx.annotation)
+    testImplementation(libs.junit)
 }
