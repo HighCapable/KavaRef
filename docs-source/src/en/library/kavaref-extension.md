@@ -140,10 +140,24 @@ val mySuperClass = MyClass::class.createInstanceAsType<MySuperClass>("Hello", 12
 val mySuperClassOrNull = MyClass::class.createInstanceAsTypeOrNull<MySuperClass>("Hello", 123)
 ```
 
+If more than one constructor can accept the parameters, KavaRef refers to Java's overload rules,
+constructors that match without unboxing are preferred, and then the one with the most specific parameter types is used.
+
+> The following example
+
+```kotlin
+// Assume that MyClass has both MyClass(Object) and MyClass(String) constructors.
+// MyClass(String) will be used here.
+val myClass = MyClass::class.createInstance("Hello")
+```
+
 ::: tip
 
 After the `createInstance` method is successfully matched once, it will cache the results to prevent performance losses
 caused by duplicated reflections. It is thread-safe and you can use it in any standard scenario with confidence.
+
+The cache does not prevent the `Class` and its `ClassLoader` from being collected,
+so you can also use it in scenarios such as plugins that load and unload `ClassLoader` dynamically.
 
 :::
 
@@ -153,6 +167,9 @@ When you pass in a parameter with `null`, KavaRef tries to use it as part of the
 
 The `createInstance` method does not allow all parameters to be `null` (the conditions are completely vague),
 and an exception will be thrown directly because this situation cannot be determined which instance to create.
+
+If there is no single constructor with the most specific parameter types (for example, a `null` parameter makes multiple constructors indistinguishable),
+an exception will also be thrown directly instead of choosing one of them at random.
 
 :::
 
@@ -176,6 +193,8 @@ val myClass = VariousClass("com.example.a", "com.example.b").load()
 // instead of throwing an exception if Class is not found.
 val myClassOrNull = VariousClass("com.example.a", "com.example.b").loadOrNull()
 ```
+
+`VariousClass` uses the same `ClassLoader` as the `toClass` method when loading `Class`.
 
 #### Lazy Loading Class Object
 

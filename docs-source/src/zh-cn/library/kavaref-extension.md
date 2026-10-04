@@ -129,9 +129,21 @@ val mySuperClass = MyClass::class.createInstanceAsType<MySuperClass>("Hello", 12
 val mySuperClassOrNull = MyClass::class.createInstanceAsTypeOrNull<MySuperClass>("Hello", 123)
 ```
 
+如果有多个构造方法都可以接受传入的参数，KavaRef 会参考 Java 的重载规则，优先选择无需拆箱即可匹配的构造方法，然后选择其中参数类型最具体的一个。
+
+> 示例如下
+
+```kotlin
+// 假设 MyClass 同时存在 MyClass(Object) 与 MyClass(String) 两个构造方法
+// 这里将会使用 MyClass(String)
+val myClass = MyClass::class.createInstance("Hello")
+```
+
 ::: tip
 
 `createInstance` 方法在成功匹配一次后，会将结果进行缓存防止重复反射造成的性能损耗，它是线程安全的，你可以放心在任何标准场景下使用。
+
+缓存不会阻止 `Class` 及其 `ClassLoader` 被回收，在插件化等需要动态装载和卸载 `ClassLoader` 的场景下也可以放心使用。
 
 :::
 
@@ -140,6 +152,8 @@ val mySuperClassOrNull = MyClass::class.createInstanceAsTypeOrNull<MySuperClass>
 当你传入带有 `null` 的参数时，KavaRef 会尝试将其作为可匹配到条件的一部分 (模糊条件)，准确性可能会下降。
 
 `createInstance` 方法不允许所有参数均为 `null` 的情况 (条件完全模糊)，会直接抛出异常，因为这种情况无法确定要创建哪个实例。
+
+如果无法确定唯一一个参数类型最具体的构造方法 (例如传入的 `null` 使多个构造方法无法区分)，也会直接抛出异常，而不是随意选择其中一个。
 
 :::
 
@@ -162,6 +176,8 @@ val myClass = VariousClass("com.example.a", "com.example.b").load()
 // 你也可以使用后缀名为 OrNull 的方法在找不到 Class 时返回 null 而不是抛出异常
 val myClassOrNull = VariousClass("com.example.a", "com.example.b").loadOrNull()
 ```
+
+`VariousClass` 装载 `Class` 时使用的 `ClassLoader` 与 `toClass` 方法相同。
 
 #### 延迟装载 Class 对象
 
