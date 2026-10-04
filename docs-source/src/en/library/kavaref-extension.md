@@ -76,6 +76,15 @@ ClassLoaderProvider.classLoader = MyCustomClassLoader()
 
 You can also manually pass a `ClassLoader` parameter to the `toClass` method to specify which `ClassLoader` to use.
 
+If no `ClassLoader` is passed in and `ClassLoaderProvider.classLoader` is not set, the `ClassLoader` that loaded KavaRef will be used.
+
+::: tip
+
+The `toClass` method does not initialize the `Class` by default (its static initializers will not be executed),
+if you need to initialize it, please set `initialize = true`.
+
+:::
+
 #### Class Object Reference
 
 Referring to a Java Class in Kotlin requires writing a very long statement,

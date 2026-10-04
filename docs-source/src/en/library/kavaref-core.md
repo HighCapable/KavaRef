@@ -355,7 +355,7 @@ box.asResolver()
     .firstMethod {
         name = "print"
         // Set generic parameter conditions.
-        genericParametes(
+        genericParameters(
             // Filter generic name "T".
             typeVar("T"),
             // Create TypeMatcher through Class.
@@ -391,6 +391,9 @@ At this time, we can get this method in the superclass.
 
 `superclass()` once set it,it will automatically loop backwards whether there is this method in all inherited
 superclasses until the target has no superclass (the inheritance relationship is `java.lang.Object`).
+
+`superclass()` only takes effect on the current filter condition,
+other filter conditions created in the same `resolve()` will not be affected.
 
 :::
 
@@ -623,7 +626,7 @@ condition.parameters(String::class)
 val configuration = Test::class.java.createConfiguration(
     memberInstance = test, // Setting up instance.
     processorResolver = null, // Use the default resolver, refer to the "Custom Resolver" below.
-    superclass = false, // Whether to filter in superclass.
+    superclass = false, // Whether to filter in superclass, applies to all conditions using this configuration.
     optional = MemberCondition.Configuration.Optional.NO // Configure optional conditions.
 )
 // Create and start filtering.

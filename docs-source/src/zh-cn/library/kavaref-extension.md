@@ -74,6 +74,14 @@ ClassLoaderProvider.classLoader = MyCustomClassLoader()
 
 你也可以手动向 `toClass` 方法传入一个 `ClassLoader` 参数来指定使用哪个 `ClassLoader`。
 
+如果没有传入 `ClassLoader` 且未设置 `ClassLoaderProvider.classLoader`，将会使用装载 KavaRef 的 `ClassLoader`。
+
+::: tip
+
+`toClass` 方法默认不会初始化 `Class` (不会执行其中的静态代码块)，如果你需要初始化，请设置 `initialize = true`。
+
+:::
+
 #### Class 对象引用
 
 在 Kotlin 中引用 Java Class 需要写很长的声明，例如 `MyClass::class.java`，此时你可以用以下方式来简化。

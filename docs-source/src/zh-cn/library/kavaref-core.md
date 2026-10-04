@@ -341,7 +341,7 @@ box.asResolver()
     .firstMethod {
         name = "print"
         // 设置泛型参数条件
-        genericParametes(
+        genericParameters(
             // 过滤泛型名称 "T"
             typeVar("T"),
             // 通过 Class 创建 TypeMatcher
@@ -376,6 +376,8 @@ Test::class.resolve()
 ::: tip
 
 `superclass()` 一旦设置就会自动循环向后过滤全部继承的超类中是否有这个方法，直到过滤到目标没有超类 (继承关系为 `java.lang.Object`) 为止。
+
+`superclass()` 仅对当前的过滤条件生效，在同一个 `resolve()` 中创建的其它过滤条件不会受到影响。
 
 :::
 
@@ -600,7 +602,7 @@ condition.parameters(String::class)
 val configuration = Test::class.java.createConfiguration(
     memberInstance = test, // 设置实例
     processorResolver = null, // 使用默认的解析器，可参考下方的 "自定义解析器"
-    superclass = false, // 是否在超类中过滤
+    superclass = false, // 是否在超类中过滤，对使用此配置的全部过滤条件生效
     optional = MemberCondition.Configuration.Optional.NO // 配置可选条件
 )
 // 创建并开始过滤
