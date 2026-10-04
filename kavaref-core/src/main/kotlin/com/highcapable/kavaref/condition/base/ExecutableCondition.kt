@@ -57,22 +57,22 @@ abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any
     var parameterCountCondition: ((Int) -> Boolean)? = null
 
     /** @see Executable.getExceptionTypes */
-    val exceptionTypes = mutableSetOf<Any>()
+    val exceptionTypes = mutableListOf<Any>()
 
     /** @see Executable.getExceptionTypes */
-    val exceptionTypesNot = mutableSetOf<Any>()
+    val exceptionTypesNot = mutableListOf<Any>()
 
     /** @see Executable.getGenericExceptionTypes */
-    val genericExceptionTypes = mutableSetOf<TypeMatcher>()
+    val genericExceptionTypes = mutableListOf<TypeMatcher>()
 
     /** @see Executable.getGenericExceptionTypes */
-    val genericExceptionTypesNot = mutableSetOf<TypeMatcher>()
+    val genericExceptionTypesNot = mutableListOf<TypeMatcher>()
 
     /** @see Executable.getGenericParameterTypes */
-    val genericParameters = mutableSetOf<TypeMatcher>()
+    val genericParameters = mutableListOf<TypeMatcher>()
 
     /** @see Executable.getGenericParameterTypes */
-    val genericParametersNot = mutableSetOf<TypeMatcher>()
+    val genericParametersNot = mutableListOf<TypeMatcher>()
 
     /** @see Executable.isVarArgs */
     var isVarArgs: Boolean? = null
@@ -99,16 +99,16 @@ abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any
     val annotatedReceiverTypeNot = mutableSetOf<Any>()
 
     /** @see Executable.getAnnotatedParameterTypes */
-    val annotatedParameterTypes = mutableSetOf<Any>()
+    val annotatedParameterTypes = mutableListOf<Any>()
 
     /** @see Executable.getAnnotatedParameterTypes */
-    val annotatedParameterTypesNot = mutableSetOf<Any>()
+    val annotatedParameterTypesNot = mutableListOf<Any>()
 
     /** @see Executable.getAnnotatedExceptionTypes */
-    val annotatedExceptionTypes = mutableSetOf<Any>()
+    val annotatedExceptionTypes = mutableListOf<Any>()
 
     /** @see Executable.getAnnotatedExceptionTypes */
-    val annotatedExceptionTypesNot = mutableSetOf<Any>()
+    val annotatedExceptionTypesNot = mutableListOf<Any>()
 
     /** @see Executable.getParameterTypes */
     open fun parameters(vararg types: Any) = apply {

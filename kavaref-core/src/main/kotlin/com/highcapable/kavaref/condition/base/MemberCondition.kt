@@ -47,6 +47,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
      * If you want to change the global processor resolver, you can set it using [MemberProcessor.globalResolver].
      * @param superclass the superclass mode, which means that when the condition cannot find the corresponding member,
      * it will search the [declaringClass]'s superclass, default is false.
+     * It applies to every condition built with this configuration, use [MemberCondition.superclass] to enable it for a single condition.
      * @param optional the optional mode, which means that when the condition cannot find the corresponding member,
      * do not throw an exception or do not print any logs, but return an empty list, default is [Optional.NO].
      */
@@ -102,6 +103,11 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     @get:JvmSynthetic
     @set:JvmSynthetic
     internal var configuration: Configuration<T>? = null
+
+    /** Whether superclass mode is enabled by [superclass] for this condition only. */
+    @get:JvmSynthetic
+    @set:JvmSynthetic
+    internal var isSuperclass = false
 
     /** @see Member.getName */
     var name: String? = null
@@ -190,11 +196,13 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Enable superclass mode.
+     * Enable superclass mode for this condition only.
+     *
+     * It does not affect other conditions created from the same scope.
      * @see Configuration.superclass
      */
     open fun superclass() = apply {
-        configuration?.superclass = true
+        isSuperclass = true
     }
 
     /**
@@ -211,6 +219,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         newSelf.annotations.addAll(annotations)
         newSelf.annotationsNot.addAll(annotationsNot)
         newSelf.genericString = genericString
+        newSelf.isSuperclass = isSuperclass
     }
 
     /**
@@ -240,6 +249,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
             annotationsNot.addAll(it)
         }
         other.genericString?.let { genericString = it }
+        if (other.isSuperclass) isSuperclass = true
     }
 
     /**

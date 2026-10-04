@@ -303,18 +303,17 @@ fun <T : Any> lazyClassOrNull(variousClass: VariousClass, initialize: Boolean = 
  * Convert [String] class name to [Class] with [ClassLoader] and initialize.
  * @see String.toClassOrNull
  * @receiver the class name to be converted.
- * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded `KavaRef` will be used.
  * @param initialize whether to initialize the class with [loader], default is false.
  * @return [Class]
  */
 @JvmOverloads
 @JvmName("create")
 fun String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Class<Any> {
-    val createLoader = loader ?: ClassLoaderProvider.classLoader
+    val createLoader = loader ?: ClassLoaderProvider.classLoader ?: ClassLoaderProvider::class.java.classLoader
 
-    return ((if (createLoader != null)
-        Class.forName(this, initialize, createLoader)
-    else Class.forName(this)) ?: error("JVM class not resolved: $this")) as Class<Any>
+    return (Class.forName(this, initialize, createLoader) ?: error("JVM class not resolved: $this")) as Class<Any>
 }
 
 /**

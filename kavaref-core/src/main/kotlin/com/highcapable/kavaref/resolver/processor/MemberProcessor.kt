@@ -152,7 +152,7 @@ object MemberProcessor {
             return throwIfNotOptional(condition, configuration)
 
         return result(declaringClass).ifEmpty {
-            if (configuration.superclass)
+            if (condition.isSuperclass(configuration))
                 resolveInClass(condition, configuration, declaringClass.superclass, result)
             else throwIfNotOptional(condition, configuration)
         }
@@ -344,11 +344,12 @@ object MemberProcessor {
         configuration: MemberCondition.Configuration<T>
     ): List<R> {
         val exceptionNote = "If you want to ignore this exception, adding optional() in your condition."
-        val superclassNote = if (configuration.superclass) " (Also tried for superclass)" else ""
+        val isSuperclass = condition.isSuperclass(configuration)
+        val superclassNote = if (isSuperclass) " (Also tried for superclass)" else ""
 
-        val memberSuggestion = if (!configuration.superclass) {
+        val memberSuggestion = if (!isSuperclass)
             "Members in superclass are not reflected in the current class, you can try adding superclass() in your condition and try again. "
-        } else "Check if the conditions are correct and valid, and try again. "
+        else "Check if the conditions are correct and valid, and try again. "
 
         val conditionTable = buildConditionTable(condition, configuration)
         val message = when (condition) {
@@ -520,6 +521,9 @@ object MemberProcessor {
 
         return@runCatching listOf(headerBorder, header, border, content, border).joinToString("\n")
     }.getOrDefault("${configuration.declaringClass.toStringIgnore()}\nFailed to build condition table.")
+
+    private fun MemberCondition<*, *, *>.isSuperclass(configuration: MemberCondition.Configuration<*>) =
+        isSuperclass || configuration.superclass
 
     private val <T : Any> MemberCondition.Configuration<T>.currentProcessorResolver
         get() = processorResolver ?: globalResolver
