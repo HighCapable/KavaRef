@@ -24,34 +24,159 @@
 
 package com.highcapable.kavaref.extension
 
+import com.highcapable.kavaref.extension.InstanceCreator.constructorsCache
+import com.highcapable.kavaref.extension.InstanceCreator.create
+import java.lang.ref.WeakReference
 import java.lang.reflect.Constructor
 import java.lang.reflect.Modifier
-import java.util.concurrent.ConcurrentHashMap
+import java.util.WeakHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
 /** Definition [ClassLoader] Loading instance function body type. */
 private typealias ClassLoaderInitializer = () -> ClassLoader?
 
-/** Structured key for [createInstance] constructor cache. */
-private data class CreateInstanceConstructorCacheKey(
-    val targetClass: Class<*>,
-    val parameterTypes: List<CreateInstanceArgumentType>,
-    val isPublic: Boolean
-)
+/**
+ * The implementation of [createInstance].
+ *
+ * Selects the constructor like Java overload resolution and creates the instance.
+ */
+private object InstanceCreator {
 
-/** Argument type descriptor for [createInstance] constructor cache. */
-private sealed interface CreateInstanceArgumentType {
+    private val primitiveWideningTargets = mapOf<Class<*>, Set<Class<*>>>(
+        JByte.TYPE to setOf(JShort.TYPE, JInteger.TYPE, JLong.TYPE, JFloat.TYPE, JDouble.TYPE),
+        JShort.TYPE to setOf(JInteger.TYPE, JLong.TYPE, JFloat.TYPE, JDouble.TYPE),
+        JCharacter.TYPE to setOf(JInteger.TYPE, JLong.TYPE, JFloat.TYPE, JDouble.TYPE),
+        JInteger.TYPE to setOf(JLong.TYPE, JFloat.TYPE, JDouble.TYPE),
+        JLong.TYPE to setOf(JFloat.TYPE, JDouble.TYPE),
+        JFloat.TYPE to setOf(JDouble.TYPE)
+    )
 
-    /** Null argument marker that preserves position in constructor cache keys. */
-    data object Null : CreateInstanceArgumentType
+    /**
+     * Cache for the selected constructors.
+     *
+     * Nothing in it strongly references the declaring class or the argument classes,
+     * so their [ClassLoader] can still be collected.
+     */
+    private val constructorsCache = WeakHashMap<Class<*>, MutableMap<ArgumentTypes, CachedConstructor>>()
 
-    /** Runtime argument type marker used by constructor cache keys. */
-    data class Runtime(val type: Class<*>) : CreateInstanceArgumentType
+    /**
+     * The argument types of a [create] call, held weakly as a key of [constructorsCache].
+     */
+    private class ArgumentTypes(args: Array<out Any?>, private val isPublic: Boolean) {
+
+        private val types = args.map { arg -> arg?.javaClass?.let { WeakReference(it) } }
+        private val hashCode = args.fold(isPublic.hashCode()) { hash, arg -> 31 * hash + System.identityHashCode(arg?.javaClass) }
+
+        override fun hashCode() = hashCode
+
+        override fun equals(other: Any?) = other is ArgumentTypes && isPublic == other.isPublic &&
+            types.size == other.types.size && types.indices.all { index ->
+                val type = types[index]
+                val otherType = other.types[index]
+
+                if (type == null || otherType == null)
+                    type == null && otherType == null
+                else type.get()?.let { it === otherType.get() } == true
+            }
+    }
+
+    /**
+     * The selected constructor of [constructorsCache].
+     *
+     * It is held weakly and found again by [index] in [Class.getDeclaredConstructors] after being collected,
+     * the found one is only used if the constructors [count] is unchanged, and it passes [get]'s validation,
+     * otherwise the constructor needs to be selected again.
+     */
+    private class CachedConstructor(private val index: Int, private val count: Int, constructor: Constructor<*>) {
+
+        @Volatile
+        private var reference = WeakReference(constructor)
+
+        fun get(declaringClass: Class<*>, isValid: (Constructor<*>) -> Boolean) = reference.get()
+            ?: declaringClass.declaredConstructors.takeIf { it.size == count }?.getOrNull(index)
+                ?.takeIf(isValid)?.also { reference = WeakReference(it) }
+    }
+
+    fun <T : Any> create(declaringClass: Class<T>, args: Array<out Any?>, isPublic: Boolean): T {
+        // If all arguments are null, throw an exception.
+        if (args.isNotEmpty() && args.all { it == null })
+            error("Not allowed to create an instance with all null arguments for $declaringClass.")
+
+        val constructor = cachedOrSelect(declaringClass, args, isPublic) ?: throw NoSuchMethodError(
+            "Could not find a suitable constructor for $declaringClass with arguments: ${args.describe()}."
+        )
+        require(constructor.makeAccessible()) {
+            "Failed to make the constructor \"$constructor\" accessible. " +
+                "Please check if the constructor is accessible or if the security manager allows it."
+        }
+
+        return constructor.newInstance(*args) as T
+    }
+
+    private fun cachedOrSelect(declaringClass: Class<*>, args: Array<out Any?>, isPublic: Boolean): Constructor<*>? {
+        val key = ArgumentTypes(args, isPublic)
+        synchronized(constructorsCache) { constructorsCache[declaringClass]?.get(key) }
+            ?.get(declaringClass) { it.isApplicable(args, isPublic) }?.let { return it }
+        val constructors = declaringClass.declaredConstructors
+        val (index, constructor) = select(declaringClass, constructors, args, isPublic) ?: return null
+        synchronized(constructorsCache) {
+            constructorsCache.getOrPut(declaringClass) { HashMap() }[key] = CachedConstructor(index, constructors.size, constructor)
+        }
+
+        return constructor
+    }
+
+    private fun select(
+        declaringClass: Class<*>,
+        constructors: Array<Constructor<*>>,
+        args: Array<out Any?>,
+        isPublic: Boolean
+    ): IndexedValue<Constructor<*>>? {
+        // Read the parameter types only once, because they are copied on every access.
+        val candidates = constructors.withIndex().mapNotNull { constructor ->
+            constructor.value.parameterTypes.takeIf { (!isPublic || constructor.value.isPublic) && it.size == args.size }?.let { constructor to it }
+        }
+        // Same as Java overload resolution: try without unboxing first, then allow unboxing and widening.
+        booleanArrayOf(false, true).forEach { allowUnboxing ->
+            val applicable = candidates.filter { (_, types) -> types.indices.all { types[it].acceptsArgument(args[it], allowUnboxing) } }
+            if (applicable.isEmpty()) return@forEach
+            val mostSpecific = applicable.filter { (_, types) ->
+                applicable.all { (_, otherTypes) -> types === otherTypes || types.isMoreSpecificThan(otherTypes) }
+            }
+
+            return mostSpecific.singleOrNull()?.first ?: throw IllegalArgumentException(
+                "Ambiguous constructors for $declaringClass with arguments: ${args.describe()}, " +
+                    "candidates: ${applicable.joinToString { it.first.value.toString() }}."
+            )
+        }
+
+        return null
+    }
+
+    private fun Constructor<*>.isApplicable(args: Array<out Any?>, isPublic: Boolean) =
+        (!isPublic || this.isPublic) && parameterTypes.let { types ->
+            types.size == args.size && types.indices.all { types[it].acceptsArgument(args[it], allowUnboxing = true) }
+        }
+
+    private fun Class<*>.isWideningTo(target: Class<*>) = this == target || primitiveWideningTargets[this]?.contains(target) == true
+
+    private fun Class<*>.acceptsArgument(arg: Any?, allowUnboxing: Boolean) = when {
+        arg == null -> !isPrimitive
+        isPrimitive -> allowUnboxing && arg.javaClass.kotlin.javaPrimitiveType?.isWideningTo(this) == true
+        else -> isInstance(arg)
+    }
+
+    private fun Class<*>.isMoreSpecificThan(other: Class<*>) = when {
+        isPrimitive && other.isPrimitive -> isWideningTo(other)
+        isPrimitive -> other.isAssignableFrom(kotlin.javaObjectType)
+        other.isPrimitive -> false
+        else -> other.isAssignableFrom(this)
+    }
+
+    private fun Array<Class<*>>.isMoreSpecificThan(other: Array<Class<*>>) = indices.all { this[it].isMoreSpecificThan(other[it]) }
+    private fun Array<out Any?>.describe() = joinToString().ifBlank { "(empty)" }
 }
-
-/** Cache for [createInstance] function to store constructors for faster access. */
-private val createInstanceConstructorsCache = ConcurrentHashMap<CreateInstanceConstructorCacheKey, Constructor<*>>()
 
 /**
  * Provide a [ClassLoader] for reflection operations.
@@ -79,7 +204,8 @@ class VariousClass(vararg names: String) {
      *
      * If no class is found, it throws a [NoClassDefFoundError].
      * @see loadOrNull
-     * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+     * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+     * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
      * @param initialize whether to initialize the class with [loader], default is false.
      * @return [Class]
      * @throws NoClassDefFoundError if no class is found.
@@ -106,18 +232,14 @@ class VariousClass(vararg names: String) {
      *
      * If no class is found, it returns null.
      * @see load
-     * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+     * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+     * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
      * @param initialize whether to initialize the class with [loader], default is false.
      * @return [Class] or null if no class is found.
      */
     @JvmOverloads
-    fun loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false): Class<Any>? {
-        val currentLoader = loader
-            ?: ClassLoaderProvider.classLoader
-            ?: ClassLoader.getSystemClassLoader()
-
-        return classNames.firstOrNull { currentLoader.hasClass(it) }?.toClass(loader, initialize)
-    }
+    fun loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false): Class<Any>? =
+        classNames.firstOrNull { it.toClassOrNull(loader) != null }?.toClass(loader, initialize)
 
     /**
      * Load the first class that matches the given names using the specified [ClassLoader].
@@ -212,7 +334,8 @@ abstract class LazyClass<T : Any> private constructor(
  * @see lazyClassOrNull
  * @param name the fully qualified class name.
  * @param initialize whether to initialize the class with [loader], default is false.
- * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
  * @return [LazyClass.NonNull]
  */
 @JvmSynthetic
@@ -235,7 +358,8 @@ fun <T : Any> lazyClass(name: String, initialize: Boolean = false, loader: Class
  * @see lazyClassOrNull
  * @param variousClass the [VariousClass] to be loaded.
  * @param initialize whether to initialize the class with [loader], default is false.
- * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
  * @return [LazyClass.NonNull]
  */
 @JvmSynthetic
@@ -258,7 +382,8 @@ fun <T : Any> lazyClass(variousClass: VariousClass, initialize: Boolean = false,
  * @see lazyClass
  * @param name the fully qualified class name.
  * @param initialize whether to initialize the class with [loader], default is false.
- * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
  * @return [LazyClass.Nullable]
  */
 @JvmSynthetic
@@ -281,7 +406,8 @@ fun <T : Any> lazyClassOrNull(name: String, initialize: Boolean = false, loader:
  * @see lazyClass
  * @param variousClass the [VariousClass] to be loaded.
  * @param initialize whether to initialize the class with [loader], default is false.
- * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader the [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded KavaRef will be used.
  * @return [LazyClass.Nullable]
  */
 @JvmSynthetic
@@ -355,6 +481,10 @@ fun <T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Bool
 /**
  * Create an instance of [Class] with the given arguments.
  *
+ * The constructor is selected like Java overload resolution, constructors that accept the arguments
+ * without unboxing are preferred, otherwise unboxing and primitive widening are allowed,
+ * then the most specific one is used.
+ *
  * - Note: If you give a null argument, it will be treated as an any type value for the constructor parameter,
  *   but if all arguments are null, it will throw an [IllegalStateException].
  * @see Class.createInstanceOrNull
@@ -364,60 +494,13 @@ fun <T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Bool
  * @param args the arguments to be passed to the constructor.
  * @param isPublic whether to only consider public constructors, default is true.
  * @return [T]
- * @throws NoSuchMethodException if no suitable constructor is found.
+ * @throws NoSuchMethodError if no suitable constructor is found.
+ * @throws IllegalArgumentException if more than one constructor is the most specific.
  * @throws IllegalStateException if all arguments are null.
  */
 @JvmOverloads
-fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = true): T {
-    fun Class<*>.wrap() = when (this) {
-        JBoolean.TYPE -> classOf<JBoolean>(primitiveType = false)
-        JByte.TYPE -> classOf<JByte>(primitiveType = false)
-        JCharacter.TYPE -> classOf<JCharacter>(primitiveType = false)
-        JShort.TYPE -> classOf<JShort>(primitiveType = false)
-        JInteger.TYPE -> classOf<JInteger>(primitiveType = false)
-        JLong.TYPE -> classOf<JLong>(primitiveType = false)
-        JFloat.TYPE -> classOf<JFloat>(primitiveType = false)
-        JDouble.TYPE -> classOf<JDouble>(primitiveType = false)
-        JVoid.TYPE -> classOf<JVoid>(primitiveType = false)
-        else -> this
-    }
-
-    fun filterConstructor() = declaredConstructors.asSequence()
-        .filter { !isPublic || it.isPublic }
-        .filter { it.parameterTypes.size == args.size }.firstOrNull {
-            it.parameterTypes.zip(args).all { (type, arg) ->
-                val isBoxed = arg == null && !type.isPrimitive
-                isBoxed || arg?.javaClass?.isSubclassOf(type.wrap()) == true
-            }
-        }
-
-    fun Constructor<*>?.create() = this?.newInstance(*args) as? T? ?: throw NoSuchMethodError(
-        "Could not find a suitable constructor for $this with arguments: ${args.joinToString().ifBlank { "(empty)" }}."
-    )
-
-    // If all arguments are null, throw an exception.
-    if (args.isNotEmpty() && args.all { it == null })
-        error("Not allowed to create an instance with all null arguments for $this.")
-
-    val constructorKey = CreateInstanceConstructorCacheKey(
-        targetClass = this,
-        parameterTypes = args.map {
-            it?.javaClass?.let(CreateInstanceArgumentType::Runtime) ?: CreateInstanceArgumentType.Null
-        },
-        isPublic = isPublic
-    )
-
-    return createInstanceConstructorsCache[constructorKey]?.create() ?: run {
-        val constructor = filterConstructor()?.also {
-            require(it.makeAccessible()) {
-                "Failed to make the constructor \"$it\" accessible. " +
-                    "Please check if the constructor is accessible or if the security manager allows it."
-            }
-            createInstanceConstructorsCache[constructorKey] = it
-        }
-        constructor.create()
-    }
-}
+fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = true) =
+    InstanceCreator.create(this, args, isPublic)
 
 /**
  * Create an instance of [KClass.java] with the given arguments.

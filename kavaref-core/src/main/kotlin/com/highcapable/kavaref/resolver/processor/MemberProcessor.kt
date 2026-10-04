@@ -33,7 +33,6 @@ import com.highcapable.kavaref.condition.type.Modifiers
 import com.highcapable.kavaref.condition.type.VagueType
 import com.highcapable.kavaref.extension.classOf
 import com.highcapable.kavaref.extension.toClass
-import com.highcapable.kavaref.extension.toClassOrNull
 import com.highcapable.kavaref.generated.KavaRefProperties
 import com.highcapable.kavaref.platform.ExecutableAccessor
 import com.highcapable.kavaref.platform.FieldAccessor
@@ -50,6 +49,7 @@ import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Member
 import java.lang.reflect.Method
+import java.lang.reflect.Modifier
 import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
@@ -124,19 +124,20 @@ object MemberProcessor {
             "You must provide a configuration to resolve the member use build(configuration)."
         }
 
+        val types = TypeClassResolver(configuration)
         return when (condition) {
             is MethodCondition -> resolveInClass(
                 condition, configuration, configuration.declaringClass
             ) { declaringClass ->
-                methodFilters(condition, configuration, declaringClass)
+                methodFilters(condition, configuration, declaringClass, types)
             }
-            is ConstructorCondition -> constructorFilters(condition, configuration).ifEmpty {
+            is ConstructorCondition -> constructorFilters(condition, configuration, types).ifEmpty {
                 throwIfNotOptional(condition, configuration)
             }
             is FieldCondition -> resolveInClass(
                 condition, configuration, configuration.declaringClass
             ) { declaringClass ->
-                fieldFilters(condition, configuration, declaringClass)
+                fieldFilters(condition, configuration, declaringClass, types)
             }
             else -> error("Unsupported condition type: $condition")
         } as List<R>
@@ -161,14 +162,15 @@ object MemberProcessor {
     private fun <T : Any> methodFilters(
         condition: MethodCondition<T>,
         configuration: MemberCondition.Configuration<T>,
-        declaringClass: Class<*>
+        declaringClass: Class<*>,
+        types: TypeClassResolver
     ): List<MethodResolver<T>> = configuration.currentProcessorResolver.getDeclaredMethods(declaringClass)
         .asSequence()
-        .baseFilters(condition, configuration)
-        .executableFilters(condition, configuration)
+        .baseFilters(condition, configuration, types)
+        .executableFilters(condition, configuration, types)
         .asAccess<MethodAccessor>()
         .filter(configuration, MethodCondition.RETURN_TYPE, condition.returnType) { key, value ->
-            value.returnType == key.toTypeClass(configuration, noVague = "Method: returnType")
+            value.returnType == key.toTypeClass(types, noVague = "Method: returnType")
         }
         .filter(configuration, MethodCondition.RETURN_TYPE_CONDITION, condition.returnTypeCondition) { key, value ->
             runOrElse { key(value.returnType) }
@@ -192,26 +194,28 @@ object MemberProcessor {
 
     private fun <T : Any> constructorFilters(
         condition: ConstructorCondition<T>,
-        configuration: MemberCondition.Configuration<T>
+        configuration: MemberCondition.Configuration<T>,
+        types: TypeClassResolver
     ): List<ConstructorResolver<T>> = configuration.currentProcessorResolver.getDeclaredConstructors(configuration.declaringClass)
         .asSequence()
-        .baseFilters(condition, configuration)
-        .executableFilters(condition, configuration)
+        .baseFilters(condition, configuration, types)
+        .executableFilters(condition, configuration, types)
         .endAccess<Constructor<T>>()
         .resolve(configuration)
 
     private fun <T : Any> fieldFilters(
         condition: FieldCondition<T>,
         configuration: MemberCondition.Configuration<T>,
-        declaringClass: Class<*>
+        declaringClass: Class<*>,
+        types: TypeClassResolver
     ): List<FieldResolver<T>> = configuration.currentProcessorResolver.getDeclaredFields(declaringClass)
         .asSequence()
-        .baseFilters(condition, configuration)
+        .baseFilters(condition, configuration, types)
         .asAccess<FieldAccessor>()
         .filter(configuration, FieldCondition.IS_ENUM_CONSTANT, condition.isEnumConstant) { key, value -> value.isEnumConstant == key }
         .filter(configuration, FieldCondition.IS_ENUM_CONSTANT_NOT, condition.isEnumConstantNot) { key, value -> value.isEnumConstant != key }
         .filter(configuration, FieldCondition.TYPE, condition.type) { key, value ->
-            value.type == key.toTypeClass(configuration, noVague = "Field: type")
+            value.type == key.toTypeClass(types, noVague = "Field: type")
         }
         .filter(configuration, FieldCondition.TYPE_CONDITION, condition.typeCondition) { key, value -> key(value.type) }
         .filter(configuration, FieldCondition.GENERIC_TYPE, condition.genericType) { key, value -> key.matches(value.genericType) }
@@ -221,40 +225,42 @@ object MemberProcessor {
 
     private fun <M : Member, T : Any> Sequence<M>.baseFilters(
         condition: MemberCondition<*, *, *>,
-        configuration: MemberCondition.Configuration<T>
+        configuration: MemberCondition.Configuration<T>,
+        types: TypeClassResolver
     ) = this.beginAccess()
         .filter(configuration, MemberCondition.NAME, condition.name) { key, value -> value.name == key }
         .filter(configuration, MemberCondition.NAME_CONDITION, condition.nameCondition) { key, value -> runOrElse { key(value.name) } }
         .filter(configuration, MemberCondition.MODIFIERS, condition.modifiers) { key, value ->
-            key.all { it.matches(value.modifiers) }
+            key.all { it.matches(value.sourceModifiers) }
         }
         .filter(configuration, MemberCondition.MODIFIERS_NOT, condition.modifiersNot) { key, value ->
-            key.none { it.matches(value.modifiers) }
+            key.none { it.matches(value.sourceModifiers) }
         }
         .filter(configuration, MemberCondition.MODIFIERS_CONDITION, condition.modifiersCondition) { key, value ->
-            runOrElse { key(Modifiers.matching(value.modifiers)) }
+            runOrElse { key(Modifiers.matching(value.sourceModifiers)) }
         }
         .filter(configuration, MemberCondition.IS_SYNTHETIC, condition.isSynthetic) { key, value -> value.isSynthetic == key }
         .filter(configuration, MemberCondition.IS_SYNTHETIC_NOT, condition.isSyntheticNot) { key, value -> value.isSynthetic != key }
         .filter(configuration, MemberCondition.ANNOTATIONS, condition.annotations) { key, value ->
             val annotations = value.annotations.map { it.annotationClass.java }
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, MemberCondition.ANNOTATIONS_NOT, condition.annotationsNot) { key, value ->
             val annotations = value.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
         .filter(configuration, MemberCondition.GENERIC_STRING, condition.genericString) { key, value -> value.genericString == key }
 
     private fun <T : Any> Sequence<MemberAccessor>.executableFilters(
         condition: ExecutableCondition<*, *, *>,
-        configuration: MemberCondition.Configuration<T>
+        configuration: MemberCondition.Configuration<T>,
+        types: TypeClassResolver
     ) = this.asAccess<ExecutableAccessor>()
         .filter(configuration, ExecutableCondition.PARAMETERS, condition.parameters) { key, value ->
-            compareElementTypes(key, value.parameterTypes.toList(), configuration)
+            compareElementTypes(key, value.parameterTypes.toList(), types)
         }
         .filter(configuration, ExecutableCondition.PARAMETERS_NOT, condition.parametersNot) { key, value ->
-            compareElementTypesNot(key, value.parameterTypes.toList(), configuration)
+            compareElementTypesNot(key, value.parameterTypes.toList(), types)
         }
         .filter(configuration, ExecutableCondition.PARAMETERS_CONDITION, condition.parametersCondition) { key, value ->
             runOrElse { key(value.parameterTypes.toList()) }
@@ -270,10 +276,10 @@ object MemberProcessor {
             !compareMatcherTypes(key, value.typeParameters.toList())
         }
         .filter(configuration, ExecutableCondition.EXCEPTION_TYPES, condition.exceptionTypes) { key, value ->
-            compareElementTypes(key, value.exceptionTypes.toList(), configuration)
+            compareElementTypes(key, value.exceptionTypes.toList(), types)
         }
         .filter(configuration, ExecutableCondition.EXCEPTION_TYPES_NOT, condition.exceptionTypesNot) { key, value ->
-            compareElementTypesNot(key, value.exceptionTypes.toList(), configuration)
+            compareElementTypesNot(key, value.exceptionTypes.toList(), types)
         }
         .filter(configuration, ExecutableCondition.GENERIC_EXCEPTION_TYPES, condition.genericExceptionTypes) { key, value ->
             compareMatcherTypes(key, value.genericExceptionTypes.toList())
@@ -291,43 +297,43 @@ object MemberProcessor {
         .filter(configuration, ExecutableCondition.IS_VAR_ARGS_NOT, condition.isVarArgsNot) { key, value -> value.isVarArgs != key }
         .filter(configuration, ExecutableCondition.PARAMETER_ANNOTATIONS, condition.parameterAnnotations) { key, value ->
             val annotations = value.parameterAnnotations.map { it.map { e -> e.annotationClass.java } }
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.PARAMETER_ANNOTATIONS_NOT, condition.parameterAnnotationsNot) { key, value ->
             val annotations = value.parameterAnnotations.map { it.map { e -> e.annotationClass.java } }
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RETURN_TYPE, condition.annotatedReturnType) { key, value ->
             val annotations = value.annotatedReturnType.annotations.map { it.annotationClass.java }
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RETURN_TYPE_NOT, condition.annotatedReturnTypeNot) { key, value ->
             val annotations = value.annotatedReturnType.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RECEIVER_TYPE, condition.annotatedReceiverType) { key, value ->
             val annotations = value.annotatedReceiverType.annotations.map { it.annotationClass.java }
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RECEIVER_TYPE_NOT, condition.annotatedReceiverTypeNot) { key, value ->
             val annotations = value.annotatedReceiverType.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES, condition.annotatedParameterTypes) { key, value ->
             val annotations = value.annotatedParameterTypes.collectTypes()
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES_NOT, condition.annotatedParameterTypesNot) { key, value ->
             val annotations = value.annotatedParameterTypes.collectTypes()
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES, condition.annotatedExceptionTypes) { key, value ->
             val annotations = value.annotatedExceptionTypes.collectTypes()
-            compareElementTypes(key, annotations, configuration)
+            compareElementTypes(key, annotations, types)
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES_NOT, condition.annotatedExceptionTypesNot) { key, value ->
             val annotations = value.annotatedExceptionTypes.collectTypes()
-            compareElementTypesNot(key, annotations, configuration)
+            compareElementTypesNot(key, annotations, types)
         }
 
     private inline fun <reified M : Member, reified R : MemberResolver<M, T>, T : Any> Sequence<M>.resolve(
@@ -403,10 +409,10 @@ object MemberProcessor {
         } ?: true
     }
 
-    private fun <T : Any> compareElementTypes(
+    private fun compareElementTypes(
         conditionKey: Collection<Any>,
         typesValue: List<Class<*>>,
-        configuration: MemberCondition.Configuration<T>
+        types: TypeClassResolver
     ): Boolean {
         // If size is different at first, return false.
         if (conditionKey.size != typesValue.size) return false
@@ -414,7 +420,7 @@ object MemberProcessor {
         var index = 0
         conditionKey.forEach { conditionType ->
             val target = typesValue[index++]
-            val expected = conditionType.toTypeClass(configuration)
+            val expected = conditionType.toTypeClass(types)
 
             if (expected != classOf<VagueType>() && target != expected)
                 return false
@@ -423,17 +429,17 @@ object MemberProcessor {
         return true
     }
 
-    private fun <T : Any> compareElementTypesNot(
+    private fun compareElementTypesNot(
         conditionKey: Collection<Any>,
         typesValue: List<Class<*>>,
-        configuration: MemberCondition.Configuration<T>
-    ) = !conditionKey.hasUnresolvedType(configuration) && !compareElementTypes(conditionKey, typesValue, configuration)
+        types: TypeClassResolver
+    ) = !conditionKey.hasUnresolvedType(types) && !compareElementTypes(conditionKey, typesValue, types)
 
     @JvmName("compareElementTypesMultiple")
-    private fun <T : Any> compareElementTypes(
+    private fun compareElementTypes(
         conditionKey: Collection<Collection<Any>>,
         typesValue: List<List<Class<*>>>,
-        configuration: MemberCondition.Configuration<T>
+        types: TypeClassResolver
     ): Boolean {
         // If size is different at first, return false.
         if (conditionKey.size != typesValue.size) return false
@@ -441,7 +447,7 @@ object MemberProcessor {
         var index = 0
         conditionKey.forEach { conditionType ->
             val target = typesValue[index++]
-            if (!compareElementTypes(conditionType, target, configuration))
+            if (!compareElementTypes(conditionType, target, types))
                 return false
         }
 
@@ -449,11 +455,11 @@ object MemberProcessor {
     }
 
     @JvmName("compareElementTypesNotMultiple")
-    private fun <T : Any> compareElementTypesNot(
+    private fun compareElementTypesNot(
         conditionKey: Collection<Collection<Any>>,
         typesValue: List<List<Class<*>>>,
-        configuration: MemberCondition.Configuration<T>
-    ) = conditionKey.none { it.hasUnresolvedType(configuration) } && !compareElementTypes(conditionKey, typesValue, configuration)
+        types: TypeClassResolver
+    ) = conditionKey.none { it.hasUnresolvedType(types) } && !compareElementTypes(conditionKey, typesValue, types)
 
     private fun compareMatcherTypes(
         conditionKey: Collection<TypeMatcher>,
@@ -522,6 +528,19 @@ object MemberProcessor {
         return@runCatching listOf(headerBorder, header, border, content, border).joinToString("\n")
     }.getOrDefault("${configuration.declaringClass.toStringIgnore()}\nFailed to build condition table.")
 
+    /**
+     * Get the source-level modifiers of the member.
+     *
+     * The JVM reuses some modifier bits for bridge and varargs methods,
+     * so they are masked out by the member type to avoid false matches.
+     */
+    private val MemberAccessor.sourceModifiers get() = modifiers and when (member) {
+        is Method -> Modifier.methodModifiers()
+        is Constructor<*> -> Modifier.constructorModifiers()
+        is Field -> Modifier.fieldModifiers()
+        else -> modifiers
+    }
+
     private fun MemberCondition<*, *, *>.isSuperclass(configuration: MemberCondition.Configuration<*>) =
         isSuperclass || configuration.superclass
 
@@ -546,11 +565,10 @@ object MemberProcessor {
         this.optional != MemberCondition.Configuration.Optional.SILENT &&
             KavaRefRuntime.logLevel.ordinal <= KavaRefRuntime.LogLevel.DEBUG.ordinal
 
-    private fun <T : Any> Collection<Any>.hasUnresolvedType(configuration: MemberCondition.Configuration<T>) =
-        configuration.optional != MemberCondition.Configuration.Optional.NO &&
-            any { it is String && it.toClassOrNull(configuration.declaringClass.classLoader) == null }
+    private fun Collection<Any>.hasUnresolvedType(types: TypeClassResolver) =
+        types.isOptional && any { it is String && types.resolve(it).isFailure }
 
-    private fun <T : Any> Any.toTypeClass(configuration: MemberCondition.Configuration<T>, noVague: String? = null): Class<*> {
+    private fun Any.toTypeClass(types: TypeClassResolver, noVague: String? = null): Class<*> {
         fun Class<*>.parseVagueType() =
             if (this == classOf<VagueType>())
                 noVague?.let { error("VagueType is not supported for \"$it\".") } ?: this
@@ -559,10 +577,10 @@ object MemberProcessor {
         return when (this) {
             is Class<*> -> this
             is KClass<*> -> this.java
-            is String -> if (configuration.optional == MemberCondition.Configuration.Optional.NO)
-                toClass(configuration.declaringClass.classLoader)
+            is String -> if (!types.isOptional)
+                types.resolve(this).getOrThrow()
             // If enabled optional mode, use a non-match sentinel when not found so unresolved strings fail closed.
-            else toClassOrNull(configuration.declaringClass.classLoader) ?: classOf<UnresolvedTypeSentinel>()
+            else types.resolve(this).getOrNull() ?: classOf<UnresolvedTypeSentinel>()
             is VagueType -> javaClass
             else -> error("Unsupported type: $this, supported types are Class, KClass, String and VagueType.")
         }.parseVagueType()
@@ -587,4 +605,18 @@ object MemberProcessor {
 
     /** Internal sentinel type used when optional string type resolution fails. */
     private class UnresolvedTypeSentinel
+
+    /**
+     * Resolve the class names in conditions once per resolving,
+     * failures are cached too, so the same exception is thrown again on reuse.
+     */
+    internal class TypeClassResolver(configuration: MemberCondition.Configuration<*>) {
+
+        private val classLoader = configuration.declaringClass.classLoader
+        private val resolved = mutableMapOf<String, Result<Class<*>>>()
+
+        val isOptional = configuration.optional != MemberCondition.Configuration.Optional.NO
+
+        fun resolve(name: String) = resolved.getOrPut(name) { runCatching { name.toClass(classLoader) } }
+    }
 }
