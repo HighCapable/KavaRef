@@ -28,15 +28,6 @@ package com.highcapable.kavaref.runtime
  */
 class DefaultLogger : KavaRefRuntime.Logger {
 
-    companion object {
-
-        /**
-         * Initialize the logger.
-         * @param value the log level to set for the logger.
-         */
-        fun init(value: KavaRefRuntime.LogLevel): Unit = error("Stub!")
-    }
-
     override val tag get() = kotlin.error("Stub!")
 
     override fun debug(msg: Any?, throwable: Throwable?) = kotlin.error("Stub!")

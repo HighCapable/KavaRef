@@ -3,7 +3,6 @@ agp = "9.3.2"
 kotlin = "2.4.10"
 dokka = "2.2.0"
 maven-publish = "0.37.0"
-slf4j = "2.0.18"
 androidx-annotation = "1.10.0"
 # The project current support min sdk version is 21,
 # suppress the warning about using newer versions of dependencies that may require higher min sdk version.
@@ -36,8 +35,6 @@ maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "maven-publ
 
 [libraries]
 kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin" }
-slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j" }
-slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j" }
 betterandroid-bom = { group = "com.highcapable.betterandroid", name = "android-bom", version.ref = "betterandroid-android-bom" }
 betterandroid-ui-component = { group = "com.highcapable.betterandroid", name = "ui-component" }
 betterandroid-ui-component-adapter = { group = "com.highcapable.betterandroid", name = "ui-component-adapter" }

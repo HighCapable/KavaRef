@@ -214,6 +214,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         newSelf.nameCondition = nameCondition
         newSelf.modifiers.addAll(modifiers)
         newSelf.modifiersNot.addAll(modifiersNot)
+        newSelf.modifiersCondition = modifiersCondition
         newSelf.isSynthetic = isSynthetic
         newSelf.isSyntheticNot = isSyntheticNot
         newSelf.annotations.addAll(annotations)
@@ -238,6 +239,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
             modifiersNot.clear()
             modifiersNot.addAll(it)
         }
+        other.modifiersCondition?.let { modifiersCondition = it }
         other.isSynthetic?.let { isSynthetic = it }
         other.isSyntheticNot?.let { isSyntheticNot = it }
         other.annotations.takeIf { it.isNotEmpty() }?.let {

@@ -103,10 +103,6 @@ object KavaRefRuntime {
     @get:JvmSynthetic
     @set:JvmSynthetic
     internal var logLevel = LogLevel.WARN
-        set(value) {
-            DefaultLogger.init(value)
-            field = value
-        }
 
     /**
      * Set the logger for `KavaRef`.
@@ -117,11 +113,6 @@ object KavaRefRuntime {
     @JvmSynthetic
     internal fun setLogger(logger: Logger) {
         this.logger = logger
-    }
-
-    init {
-        // Initialize the log level to WARN if not set.
-        logLevel = logLevel
     }
 
     /**

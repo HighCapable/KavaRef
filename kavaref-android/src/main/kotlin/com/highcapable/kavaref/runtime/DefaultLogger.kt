@@ -31,15 +31,6 @@ import com.highcapable.kavaref.android.generated.KavaRefProperties
  */
 internal class DefaultLogger : KavaRefRuntime.Logger {
 
-    companion object {
-
-        /**
-         * Initialize the logger.
-         * @param value the log level to set for the logger.
-         */
-        fun init(value: KavaRefRuntime.LogLevel) = Unit
-    }
-
     override val tag = KavaRefProperties.PROJECT_NAME
 
     override fun debug(msg: Any?, throwable: Throwable?) {

@@ -24,42 +24,25 @@
 package com.highcapable.kavaref.runtime
 
 import com.highcapable.kavaref.generated.KavaRefProperties
-import org.slf4j.LoggerFactory
 
 /**
  * Default logger implementation for `KavaRef`.
+ *
+ * Prints logs to [System.err], the log level is only controlled by `KavaRef.logLevel`.
  */
 internal class DefaultLogger : KavaRefRuntime.Logger {
 
-    companion object {
-
-        /**
-         * Initialize the logger.
-         * @param value the log level to set for the logger.
-         */
-        fun init(value: KavaRefRuntime.LogLevel) {
-            // Enable level for SLF4J.
-            System.setProperty("org.slf4j.simpleLogger.defaultLogLevel", value.levelName)
-        }
-    }
-
-    private val slf4jLogger by lazy { LoggerFactory.getLogger(tag) }
-
     override val tag = KavaRefProperties.PROJECT_NAME
 
-    override fun debug(msg: Any?, throwable: Throwable?) {
-        slf4jLogger.debug(msg.toString(), throwable)
-    }
+    override fun debug(msg: Any?, throwable: Throwable?) = print(KavaRefRuntime.LogLevel.DEBUG, msg, throwable)
+    override fun info(msg: Any?, throwable: Throwable?) = print(KavaRefRuntime.LogLevel.INFO, msg, throwable)
+    override fun warn(msg: Any?, throwable: Throwable?) = print(KavaRefRuntime.LogLevel.WARN, msg, throwable)
+    override fun error(msg: Any?, throwable: Throwable?) = print(KavaRefRuntime.LogLevel.ERROR, msg, throwable)
 
-    override fun info(msg: Any?, throwable: Throwable?) {
-        slf4jLogger.info(msg.toString(), throwable)
-    }
-
-    override fun warn(msg: Any?, throwable: Throwable?) {
-        slf4jLogger.warn(msg.toString(), throwable)
-    }
-
-    override fun error(msg: Any?, throwable: Throwable?) {
-        slf4jLogger.error(msg.toString(), throwable)
+    private fun print(level: KavaRefRuntime.LogLevel, msg: Any?, throwable: Throwable?) {
+        synchronized(System.err) {
+            System.err.println("[$tag] ${level.levelName.uppercase()} $msg")
+            throwable?.printStackTrace(System.err)
+        }
     }
 }

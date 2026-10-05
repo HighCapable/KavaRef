@@ -40,16 +40,18 @@ private var isTrySetAccessibleSupported = true
 
 /**
  * Make [AccessibleObject] implements [Member] accessible.
+ *
+ * If it is already accessible, it returns directly without checking again.
  * @receiver the [Member] to be made accessible.
  * @return [Boolean]
  */
 fun Member.makeAccessible() = (this as? AccessibleObject?)?.let {
-    fun doAccessible() = runCatching {
-        @Suppress("DEPRECATION")
-        if (!it.isAccessible) it.isAccessible = true
+    // Avoid calling trySetAccessible every time, it checks the caller on each call.
+    @Suppress("DEPRECATION")
+    if (it.isAccessible) return@let true
 
-        true
-    }.getOrDefault(false)
+    @Suppress("DEPRECATION")
+    fun doAccessible() = runCatching { it.isAccessible = true }.isSuccess
 
     if (!isTrySetAccessibleSupported) return@let doAccessible()
 

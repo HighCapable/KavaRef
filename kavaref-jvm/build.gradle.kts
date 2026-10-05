@@ -9,5 +9,4 @@ version = gropify.project.kavaref.bom.version
 
 dependencies {
     implementation(projects.kavarefCore)
-    implementation(libs.slf4j.api)
 }
