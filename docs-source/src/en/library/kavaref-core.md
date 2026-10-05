@@ -428,6 +428,38 @@ KavaRef will call `Class.getDeclaredMethods()` to get the current `Class` method
 
 :::
 
+If you also need to filter the members in interfaces, such as default methods in interfaces, you can use `superclass(interfaces = true)`.
+
+> The following example
+
+```kotlin
+// Suppose this is an instance of this Class, it implements the interface that declares the doApiTask method.
+val test: Test
+// Call and execute with KavaRef.
+Test::class.resolve()
+    .firstMethod {
+        name = "doApiTask"
+        // Filter in superclasses and interfaces.
+        superclass(interfaces = true)
+    }.of(test).invoke()
+```
+
+::: tip
+
+`superclass(interfaces = true)` will filter all superclasses in the way of `superclass()` first, then filter all interfaces,
+a sub-interface is always filtered before its super-interfaces.
+
+Default methods, static methods and constants in interfaces can all be filtered.
+
+:::
+
+::: warning
+
+On Android, if the minSdk of the app is lower than 24, D8 will move the static methods in interfaces to its generated helper classes at compile time,
+and these static methods cannot be filtered in interfaces at this time.
+
+:::
+
 ### Other Conditions
 
 KavaRef provides some filtering conditions to assist in the use of the Java reflection API.
@@ -693,7 +725,10 @@ condition.parameters(String::class)
 val configuration = Test::class.java.createConfiguration(
     memberInstance = test, // Setting up instance.
     processorResolver = null, // Use the default resolver, refer to the "Custom Resolver" below.
-    superclass = false, // Whether to filter in superclass, applies to all conditions using this configuration.
+    // Whether to filter in superclass, applies to all conditions using this configuration.
+    // NO means not to filter, NORMAL is the same as superclass(),
+    // INCLUDE_INTERFACES is the same as superclass(interfaces = true).
+    superclass = MemberCondition.Configuration.Superclass.NO,
     optional = MemberCondition.Configuration.Optional.NO // Configure optional conditions.
 )
 // Create and start filtering.

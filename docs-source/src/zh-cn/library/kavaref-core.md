@@ -406,6 +406,36 @@ KavaRef 会调用 `Class.getDeclaredMethods()` 来获取当前 `Class` 的方法
 
 :::
 
+如果你还需要过滤接口中的成员，例如接口中的 default 方法，可以使用 `superclass(interfaces = true)`。
+
+> 示例如下
+
+```kotlin
+// 假设这就是这个 Class 的实例，它实现了声明 doApiTask 方法的接口
+val test: Test
+// 使用 KavaRef 调用并执行
+Test::class.resolve()
+    .firstMethod {
+        name = "doApiTask"
+        // 在超类与接口中过滤
+        superclass(interfaces = true)
+    }.of(test).invoke()
+```
+
+::: tip
+
+`superclass(interfaces = true)` 会先按照 `superclass()` 的方式过滤全部超类，然后再过滤全部接口，子接口总是会在其父接口之前被过滤。
+
+接口中的 default 方法、静态方法与常量都可以被过滤到。
+
+:::
+
+::: warning
+
+在 Android 中，如果应用的 minSdk 低于 24，D8 会在编译时将接口中的静态方法移动到其生成的辅助类中，此时无法在接口中过滤到这些静态方法。
+
+:::
+
 ### 更多条件
 
 KavaRef 提供了一些过滤条件来辅助 Java 反射 API 的使用。
@@ -660,7 +690,9 @@ condition.parameters(String::class)
 val configuration = Test::class.java.createConfiguration(
     memberInstance = test, // 设置实例
     processorResolver = null, // 使用默认的解析器，可参考下方的 "自定义解析器"
-    superclass = false, // 是否在超类中过滤，对使用此配置的全部过滤条件生效
+    // 是否在超类中过滤，对使用此配置的全部过滤条件生效
+    // NO 为不过滤，NORMAL 等同于 superclass()，INCLUDE_INTERFACES 等同于 superclass(interfaces = true)
+    superclass = MemberCondition.Configuration.Superclass.NO,
     optional = MemberCondition.Configuration.Optional.NO // 配置可选条件
 )
 // 创建并开始过滤
