@@ -237,6 +237,7 @@ val test = Test::class.resolve()
         // For the zero parameter constructor,
         // the following condition can be used to filter.
         // It is equivalent to parameterCount = 0.
+        // Do not write it as parameters(), it adds no condition without parameter types.
         emptyParameters()
     }.create() // Create a new Test instance.
 ```
@@ -253,6 +254,8 @@ val test = Test::class.resolve()
 ```
 
 ::: tip
+
+The `T` in `get<T>()` and `invoke<T>()` only declares the type of the return value and does not perform any type conversion, if the actual type does not match `T`, a `ClassCastException` will be thrown when the return value is used, and so do `getQuietly<T>()` and `invokeQuietly<T>()`.
 
 In addition to methods such as `firstMethod`, you can also use methods such as `lastMethod` to get the last matching `MethodResolver` instance, which is equivalent to `method { ... }.last()`.
 
@@ -499,6 +502,8 @@ Test::class.resolve()
         parameters("java.lang.String")
     }.of(test).invoke("task_name")
 ```
+
+To filter an empty result, such as methods that declare no exceptions, use the functions starting with `empty` like `emptyExceptionTypes()`, `exceptionTypes()` without arguments adds no condition.
 
 ### Exception Handling
 

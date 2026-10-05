@@ -225,6 +225,7 @@ val test = Test::class.resolve()
     .firstConstructor {
         // 对于零参构造方法，可以使用以下条件过滤
         // 它等价于 parameterCount = 0
+        // 请不要写成 parameters()，不传入参数类型时它不会添加任何条件
         emptyParameters()
     }.create() // 创建一个新的 Test 实例
 ```
@@ -241,6 +242,8 @@ val test = Test::class.resolve()
 ```
 
 ::: tip
+
+`get<T>()`、`invoke<T>()` 中的 `T` 只用于声明返回值的类型，不会进行类型转换，如果实际类型与 `T` 不一致，会在使用返回值时抛出 `ClassCastException`，`getQuietly<T>()`、`invokeQuietly<T>()` 同样如此。
 
 除了 `firstMethod` 等方法外，你也可以使用 `lastMethod` 等方法来获取最后一个匹配到的 `MethodResolver` 实例，它等价于 `method { ... }.last()`。
 
@@ -475,6 +478,8 @@ Test::class.resolve()
         parameters("java.lang.String")
     }.of(test).invoke("task_name")
 ```
+
+如果要过滤结果为空的情况，例如不声明任何异常的方法，请使用 `emptyExceptionTypes()` 这类以 `empty` 开头的函数，不传入参数的 `exceptionTypes()` 不会添加任何条件。
 
 ### 异常处理
 

@@ -10,10 +10,11 @@ The following are all Lint rules currently in effect (Some rules are only effect
 
 <div class="lint-rules-table">
 
-| Issue ID                                                                                                                                                           | Category      | Severity  | Priority | Brief Description                            |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | --------- | -------- | -------------------------------------------- |
-| [UnsupportedExecutableCondition](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExecutableConditionDetector.kt) | `CORRECTNESS` | `ERROR`   | `10`     | Unsupported executable condition on Android |
-| [ReplaceWithKavaRefExtension](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExtensionUsageDetector.kt)         | `USABILITY`   | `WARNING` | `5`      | Use KavaRef's extension instead              |
+| Issue ID                                                                                                                                                           | Category      | Severity        | Priority | Brief Description                           |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | --------------- | -------- | ------------------------------------------- |
+| [UnsupportedExecutableCondition](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExecutableConditionDetector.kt) | `CORRECTNESS` | `ERROR`         | `10`     | Unsupported executable condition on Android |
+| [EmptyConditionArguments](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExecutableConditionDetector.kt)        | `CORRECTNESS` | `INFORMATIONAL` | `5`      | Condition function without arguments        |
+| [ReplaceWithKavaRefExtension](repo://tree/main/kavaref-android-lint/src/main/java/com/highcapable/kavaref/android/lint/detector/ExtensionUsageDetector.kt)         | `USABILITY`   | `WARNING`       | `5`      | Use KavaRef's extension instead             |
 
 </div>
 
