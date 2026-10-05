@@ -24,8 +24,6 @@
 
 package com.highcapable.kavaref.extension
 
-import com.highcapable.kavaref.extension.InstanceCreator.constructorsCache
-import com.highcapable.kavaref.extension.InstanceCreator.create
 import java.lang.ref.WeakReference
 import java.lang.reflect.Constructor
 import java.lang.reflect.Modifier
