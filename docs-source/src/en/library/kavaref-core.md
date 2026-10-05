@@ -202,6 +202,16 @@ test.asResolver()
     .invoke("task_name")
 ```
 
+::: danger
+
+`asResolver()` always uses the caller as the instance, it cannot be used on `Class` or `KClass`,
+calling it directly on `Class` or `KClass` will cause a compilation error, please use `resolve()` to reflect the members of a class.
+
+If the type of the caller is declared as `Any` or other types but it is actually a `Class` or `KClass` object,
+it will also be used as the instance, and the members of `Class` or `KClass` itself will be reflected at this time.
+
+:::
+
 Next, we need to get the `isTaskRunning` variable, which can be written in the following form.
 
 > The following example
@@ -339,6 +349,19 @@ Test::class.resolve()
     }.of(test).invoke("task_name")
 ```
 
+::: tip
+
+All conditions are filtered in a fixed order inside KavaRef instead of the order you write them,
+once a member is excluded by a condition, the subsequent conditions will no longer be evaluated for it.
+
+If a freedom condition throws an exception while filtering a member, the member will be treated as not matched,
+so you can write freedom conditions only for the members you care about.
+
+If no member is found in the end, these exceptions will be listed in the exception message of no member found,
+please refer to [Exception Handling](#exception-handling) for details.
+
+:::
+
 ### Generic Conditions
 
 KavaRef supports adding generic filtering conditions, which you can use the relevant functions provided by `TypeMatcher`.
@@ -390,7 +413,7 @@ At this time, we can get this method in the superclass.
 ::: tip
 
 `superclass()` once set it,it will automatically loop backwards whether there is this method in all inherited
-superclasses until the target has no superclass (the inheritance relationship is `java.lang.Object`).
+superclasses until `java.lang.Object` (including `java.lang.Object` itself).
 
 `superclass()` only takes effect on the current filter condition,
 other filter conditions created in the same `resolve()` will not be affected.
@@ -486,6 +509,47 @@ No method found matching the condition for current class.
 +------------+-----------------------------------+
 ```
 
+If the [Freedom Conditions](#freedom-conditions) throw exceptions during filtering, these conditions will be marked with `[!]` in the table,
+and the members that threw exceptions and their complete exception stack traces will be listed below by condition name.
+
+If all members have been excluded by other conditions before reaching a freedom condition,
+this freedom condition will not be evaluated in this filtering, and it will be marked with `[-]` in the table.
+
+> The following example
+
+```kotlin
+Test::class.resolve()
+    .method {
+        // For methods whose return type is not an array, componentType is null,
+        // so a NullPointerException will be thrown here.
+        returnType { it.componentType.name == "java.lang.String" }
+        // All methods have been excluded by the condition above, so this condition will not be evaluated.
+        genericReturnType { it is ParameterizedType }
+    } // NoSuchMethodException will be thrown here.
+```
+
+The printed exception content is as follows.
+
+> The following example
+
+``` :no-line-numbers
+No method found matching the condition for current class.
++------------------------------------------------------+
+| class com.demo                                       |
++----------------------------+-------------------------+
+| returnTypeCondition        | [!] (Runtime Condition) |
+| genericReturnTypeCondition | [-] (Runtime Condition) |
++----------------------------+-------------------------+
+Suggestion: ...
+[!] Exceptions thrown by runtime conditions:
+[returnTypeCondition]
+- public void com.demo.doTask(java.lang.String)
+java.lang.NullPointerException: ...
+    at ...
+```
+
+When using `optional()`, the WARN level log will also contain these contents.
+
 If you don't want KavaRef to throw or print anything, you can use `optional(silent = true)` to silently handle it,
 but we **do not recommend this**, which will mask the problem unless it is necessary.
 
@@ -526,11 +590,11 @@ If you want to turn off all log printing of KavaRef, you can set `KavaRef.logLev
 
 ::: tip
 
-On the JVM platform, KavaRef uses SLF4J as the implementation of log printing, and you can control log printing by configuring the implementation of SLF4J.
-
-By default, you only need to introduce `org.slf4j:slf4j-simple` as a dependency to complete the log provider implementation, and in projects such as SpringBoot, you do not need additional configuration.
+On the JVM platform, KavaRef prints logs to the standard error output (`System.err`) by default, you don't need to introduce any logging framework.
 
 On the Android platform, KavaRef uses `android.util.Log` as an implementation of log printing, and you don't need additional configuration.
+
+On any platform, the log level of KavaRef is only controlled by `KavaRef.logLevel`.
 
 :::
 
@@ -569,6 +633,9 @@ Then, set it to KavaRef.
 ```kotlin
 KavaRef.setLogger(MyLogger())
 ```
+
+If you need to integrate KavaRef logs into third-party logging frameworks such as SLF4J,
+you can find the corresponding integration methods in [here](../config/runtime-loggers.md).
 
 ### Advanced Usage
 
@@ -823,3 +890,10 @@ public class Main {
     }
 }
 ```
+
+::: tip
+
+When calling `KavaRef.resolveObject(...)` in Java, the passed `Class` object will also be used as the instance without any compilation error,
+please use `KavaRef.resolveClass(...)` to reflect the members of a class.
+
+:::

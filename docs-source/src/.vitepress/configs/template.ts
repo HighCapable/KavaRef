@@ -34,6 +34,7 @@ const navigationSections: NavigationSection[] = [{
     title: { en: 'Configs', 'zh-cn': '配置' },
     links: [
         { path: '/config/r8-proguard', title: { en: 'R8 & ProGuard Obfuscation', 'zh-cn': 'R8 与 Proguard 混淆' } },
+        { path: '/config/runtime-loggers', title: { en: 'Third-party Loggers', 'zh-cn': '第三方日志记录器' } },
         { path: '/config/processor-resolvers', title: { en: 'Third-party Member Resolvers', 'zh-cn': '第三方 Member 解析器' } },
         { path: '/config/migration', title: { en: 'Migration to KavaRef', 'zh-cn': '迁移至 KavaRef' } },
         { path: '/config/lint-rules', title: { en: 'Lint Rules', 'zh-cn': 'Lint 静态检查规范' } }

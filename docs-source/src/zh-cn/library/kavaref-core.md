@@ -193,6 +193,14 @@ test.asResolver()
     .invoke("task_name")
 ```
 
+::: danger
+
+`asResolver()` 总是会将调用者作为实例，它不能用于 `Class` 或 `KClass`，在 `Class` 或 `KClass` 上直接调用将会出现编译错误，请使用 `resolve()` 来反射一个类中的成员。
+
+如果调用者的类型被声明为 `Any` 等类型，但实际上是一个 `Class` 或 `KClass` 对象，它同样会被作为实例，此时反射的是 `Class` 或 `KClass` 自身的成员。
+
+:::
+
 接下来，我们需要得到 `isTaskRunning` 变量，可以写作以下形式。
 
 > 示例如下
@@ -325,6 +333,16 @@ Test::class.resolve()
     }.of(test).invoke("task_name")
 ```
 
+::: tip
+
+所有条件都会按照 KavaRef 内部固定的顺序进行过滤，而不是按照你编写的顺序，一个成员一旦被某个条件排除，后续的条件将不再对它执行。
+
+如果自由条件在过滤某个成员时抛出了异常，这个成员会被视为不匹配，所以你可以只针对你关心的成员编写自由条件。
+
+如果最终没有找到任何成员，这些异常会在找不到成员的异常信息中列出，详情请参考 [异常处理](#异常处理)。
+
+:::
+
 ### 泛型条件
 
 KavaRef 支持添加泛型过滤条件，你可以使用 `TypeMatcher` 提供的相关功能来实现。
@@ -375,7 +393,7 @@ Test::class.resolve()
 
 ::: tip
 
-`superclass()` 一旦设置就会自动循环向后过滤全部继承的超类中是否有这个方法，直到过滤到目标没有超类 (继承关系为 `java.lang.Object`) 为止。
+`superclass()` 一旦设置就会自动循环向后过滤全部继承的超类中是否有这个方法，直到 `java.lang.Object` 为止 (包括 `java.lang.Object` 本身)。
 
 `superclass()` 仅对当前的过滤条件生效，在同一个 `resolve()` 中创建的其它过滤条件不会受到影响。
 
@@ -468,6 +486,44 @@ No method found matching the condition for current class.
 +------------+-----------------------------------+
 ```
 
+如果 [自由条件](#自由条件) 在过滤过程中抛出了异常，这些条件会在表格中以 `[!]` 标记，并在下方按照条件名称列出抛出异常的成员及其完整的异常堆栈。
+
+如果所有成员在到达某个自由条件之前就已经被其他条件排除，这个自由条件在本次过滤中不会被执行，它会在表格中以 `[-]` 标记。
+
+> 示例如下
+
+```kotlin
+Test::class.resolve()
+    .method {
+        // 返回类型不是数组的方法，componentType 为 null，这里会抛出 NullPointerException
+        returnType { it.componentType.name == "java.lang.String" }
+        // 所有方法已经被上面的条件排除，这个条件不会被执行
+        genericReturnType { it is ParameterizedType }
+    } // 这里会抛出 NoSuchMethodException
+```
+
+此时打印的异常内容如下。
+
+> 示例如下
+
+``` :no-line-numbers
+No method found matching the condition for current class.
++------------------------------------------------------+
+| class com.demo                                       |
++----------------------------+-------------------------+
+| returnTypeCondition        | [!] (Runtime Condition) |
+| genericReturnTypeCondition | [-] (Runtime Condition) |
++----------------------------+-------------------------+
+Suggestion: ...
+[!] Exceptions thrown by runtime conditions:
+[returnTypeCondition]
+- public void com.demo.doTask(java.lang.String)
+java.lang.NullPointerException: ...
+    at ...
+```
+
+在使用 `optional()` 时，WARN 级别的日志中同样会包含这些内容。
+
 如果你不希望 KavaRef 抛出或打印任何内容，你可以使用 `optional(silent = true)` 静默化处理，但是我们**不建议这样做**，这会掩盖问题，除非有必要这么做。
 
 ::: danger
@@ -503,11 +559,11 @@ KavaRef 提供了其自身的日志管理功能，你可以通过 `KavaRef.logLe
 
 ::: tip
 
-在 JVM 平台，KavaRef 使用 SLF4J 作为日志打印的实现，你可以通过配置 SLF4J 的实现来控制日志的打印。
-
-默认情况下，你只需要引入 `org.slf4j:slf4j-simple` 作为依赖即可完成日志提供者实现，在 SpringBoot 等项目中，你无需额外配置。
+在 JVM 平台，KavaRef 默认会将日志打印到标准错误输出 (`System.err`)，你无需引入任何日志框架。
 
 在 Android 平台，KavaRef 使用 `android.util.Log` 作为日志打印的实现，你无需额外配置。
+
+无论在哪个平台，KavaRef 的日志级别都仅由 `KavaRef.logLevel` 控制。
 
 :::
 
@@ -546,6 +602,8 @@ class MyLogger : KavaRefRuntime.Logger {
 ```kotlin
 KavaRef.setLogger(MyLogger())
 ```
+
+如果你需要将 KavaRef 的日志接入 SLF4J 等第三方日志框架，你可以在 [这里](../config/runtime-loggers.md) 找到对应的接入方式。
 
 ### 进阶用法
 
@@ -794,3 +852,9 @@ public class Main {
     }
 }
 ```
+
+::: tip
+
+在 Java 中调用 `KavaRef.resolveObject(...)` 时，传入的 `Class` 对象同样会被作为实例，并且不会出现编译错误，反射一个类中的成员请使用 `KavaRef.resolveClass(...)`。
+
+:::
