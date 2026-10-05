@@ -129,13 +129,13 @@ object MemberProcessor {
 
         val context = ResolveContext(configuration)
         return when (condition) {
-            is MethodCondition -> resolveInClass(context, condition, configuration, configuration.declaringClass) { declaringClass ->
+            is MethodCondition -> resolveInClass(context, condition, configuration) { declaringClass ->
                 methodFilters(context, condition, configuration, declaringClass)
             }
             is ConstructorCondition -> constructorFilters(context, condition, configuration).ifEmpty {
                 throwIfNotOptional(context, condition, configuration)
             }
-            is FieldCondition -> resolveInClass(context, condition, configuration, configuration.declaringClass) { declaringClass ->
+            is FieldCondition -> resolveInClass(context, condition, configuration) { declaringClass ->
                 fieldFilters(context, condition, configuration, declaringClass)
             }
             else -> error("Unsupported condition type: $condition")
@@ -146,15 +146,46 @@ object MemberProcessor {
         context: ResolveContext,
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>,
-        declaringClass: Class<*>?,
         result: (declaringClass: Class<*>) -> List<R>
     ): List<R> {
-        if (declaringClass == null) return throwIfNotOptional(context, condition, configuration)
+        configuration.declaringClass.searchClasses(condition.superclassMode(configuration)).forEach { declaringClass ->
+            result(declaringClass).takeIf { it.isNotEmpty() }?.let { return it }
+        }
 
-        return result(declaringClass).ifEmpty {
-            if (condition.isSuperclass(configuration))
-                resolveInClass(context, condition, configuration, declaringClass.superclass, result)
-            else throwIfNotOptional(context, condition, configuration)
+        return throwIfNotOptional(context, condition, configuration)
+    }
+
+    /**
+     * Get the classes to be searched in order by the superclass [mode].
+     *
+     * The superclasses are searched until `java.lang.Object` (including `java.lang.Object` itself),
+     * then all the interfaces, a sub-interface is always searched before its super-interfaces.
+     */
+    private fun Class<*>.searchClasses(mode: MemberCondition.Configuration.Superclass) = sequence {
+        val superclasses = generateSequence(this@searchClasses) { it.superclass }
+        when (mode) {
+            MemberCondition.Configuration.Superclass.NO -> yield(this@searchClasses)
+            MemberCondition.Configuration.Superclass.NORMAL -> yieldAll(superclasses)
+            MemberCondition.Configuration.Superclass.INCLUDE_INTERFACES -> {
+                yieldAll(superclasses)
+                yieldAll(superclasses.interfaces())
+            }
+        }
+    }
+
+    /** Get all the interfaces of these classes, a sub-interface is always before its super-interfaces. */
+    private fun Sequence<Class<*>>.interfaces(): List<Class<*>> {
+        val collected = linkedSetOf<Class<*>>()
+        val queue = ArrayDeque(flatMap { it.interfaces.asSequence() }.toList())
+        while (queue.isNotEmpty()) queue.removeFirst().takeIf { collected.add(it) }?.let { queue.addAll(it.interfaces) }
+
+        val remaining = collected.toMutableList()
+        return buildList {
+            while (remaining.isNotEmpty()) {
+                val next = remaining.first { candidate -> remaining.none { it !== candidate && candidate.isAssignableFrom(it) } }
+                add(next)
+                remaining.remove(next)
+            }
         }
     }
 
@@ -352,10 +383,14 @@ object MemberProcessor {
         configuration: MemberCondition.Configuration<T>
     ): List<R> {
         val exceptionNote = "If you want to ignore this exception, adding optional() in your condition."
-        val isSuperclass = condition.isSuperclass(configuration)
-        val superclassNote = if (isSuperclass) " (Also tried for superclass)" else ""
+        val superclassMode = condition.superclassMode(configuration)
+        val superclassNote = when (superclassMode) {
+            MemberCondition.Configuration.Superclass.NO -> ""
+            MemberCondition.Configuration.Superclass.NORMAL -> " (Also tried for superclass)"
+            MemberCondition.Configuration.Superclass.INCLUDE_INTERFACES -> " (Also tried for superclass and interfaces)"
+        }
 
-        val memberSuggestion = if (!isSuperclass)
+        val memberSuggestion = if (superclassMode == MemberCondition.Configuration.Superclass.NO)
             "Members in superclass are not reflected in the current class, you can try adding superclass() in your condition and try again. "
         else "Check if the conditions are correct and valid, and try again. "
 
@@ -578,8 +613,8 @@ object MemberProcessor {
         else -> modifiers
     }
 
-    private fun MemberCondition<*, *, *>.isSuperclass(configuration: MemberCondition.Configuration<*>) =
-        isSuperclass || configuration.superclass
+    private fun MemberCondition<*, *, *>.superclassMode(configuration: MemberCondition.Configuration<*>) =
+        maxOf(superclassMode, configuration.superclass)
 
     private val <T : Any> MemberCondition.Configuration<T>.currentProcessorResolver
         get() = processorResolver ?: globalResolver

@@ -84,6 +84,9 @@ class ConstructorCondition<T : Any> : ExecutableCondition<Constructor<T>, Constr
     @Deprecated(message = SUPERCLASS_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
     override fun superclass(): Nothing = error(SUPERCLASS_EXCEPTION_MESSAGE)
 
+    @Deprecated(message = SUPERCLASS_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
+    override fun superclass(interfaces: Boolean): Nothing = error(SUPERCLASS_EXCEPTION_MESSAGE)
+
     override fun copy() = ConstructorCondition<T>().also {
         initializeCopiedData(it)
     }

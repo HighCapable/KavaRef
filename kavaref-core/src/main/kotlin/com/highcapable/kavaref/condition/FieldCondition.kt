@@ -66,6 +66,7 @@ class FieldCondition<T : Any> : MemberCondition<Field, FieldResolver<T>, T>() {
     override fun genericString(genericString: String) = apply { super.genericString(genericString) }
 
     override fun superclass() = apply { super.superclass() }
+    override fun superclass(interfaces: Boolean) = apply { super.superclass(interfaces) }
 
     /** @see Field.isEnumConstant */
     fun isEnumConstant(isEnumConstant: Boolean) = apply {

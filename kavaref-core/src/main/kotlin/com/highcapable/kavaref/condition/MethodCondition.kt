@@ -107,6 +107,7 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
     override fun annotatedExceptionTypesNot(vararg types: Any) = apply { super.annotatedExceptionTypesNot(*types) }
 
     override fun superclass() = apply { super.superclass() }
+    override fun superclass(interfaces: Boolean) = apply { super.superclass(interfaces) }
 
     /** @see Method.getReturnType */
     fun returnType(type: Any) = apply {
