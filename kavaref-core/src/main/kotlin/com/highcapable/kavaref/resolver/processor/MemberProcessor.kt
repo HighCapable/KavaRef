@@ -44,7 +44,6 @@ import com.highcapable.kavaref.resolver.MethodResolver
 import com.highcapable.kavaref.resolver.base.InstanceAwareResolver
 import com.highcapable.kavaref.resolver.base.MemberResolver
 import com.highcapable.kavaref.runtime.KavaRefRuntime
-import java.lang.reflect.AnnotatedElement
 import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Member
@@ -215,7 +214,10 @@ object MemberProcessor {
         .filter(configuration, MethodCondition.IS_BRIDGE_NOT, condition.isBridgeNot) { key, value -> value.isBridge != key }
         .filter(configuration, MethodCondition.IS_DEFAULT, condition.isDefault) { key, value -> value.isDefault == key }
         .filter(configuration, MethodCondition.IS_DEFAULT_NOT, condition.isDefaultNot) { key, value -> value.isDefault != key }
-        .filter(configuration, MethodCondition.DEFAULT_VALUE, condition.defaultValue) { key, value -> value.defaultValue == key }
+        .filter(configuration, MethodCondition.DEFAULT_VALUE, condition.defaultValue) { key, value ->
+            // The default value of an annotation method can be an array, compare its content instead of its reference.
+            arrayOf(value.defaultValue).contentDeepEquals(arrayOf(key))
+        }
         .filterCondition(context, configuration, MethodCondition.DEFAULT_VALUE_CONDITION, condition.defaultValueCondition) { key, value ->
             key(value.defaultValue)
         }
@@ -275,12 +277,13 @@ object MemberProcessor {
         .filter(configuration, MemberCondition.IS_SYNTHETIC_NOT, condition.isSyntheticNot) { key, value -> value.isSynthetic != key }
         .filter(configuration, MemberCondition.ANNOTATIONS, condition.annotations) { key, value ->
             val annotations = value.annotations.map { it.annotationClass.java }
-            compareElementTypes(context, key, annotations)
+            compareAnnotationTypes(context, key, annotations, noVague = "Member: annotations")
         }
         .filter(configuration, MemberCondition.ANNOTATIONS_NOT, condition.annotationsNot) { key, value ->
             val annotations = value.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(context, key, annotations)
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Member: annotationsNot")
         }
+        .filterEmpty(configuration, condition, MemberCondition.EMPTY_ANNOTATIONS, MemberCondition.EMPTY_ANNOTATIONS_NOT) { it.annotations.size }
         .filter(configuration, MemberCondition.GENERIC_STRING, condition.genericString) { key, value -> value.genericString == key }
 
     private fun <T : Any> Sequence<MemberAccessor>.executableFilters(
@@ -307,17 +310,26 @@ object MemberProcessor {
         .filter(configuration, ExecutableCondition.TYPE_PARAMETERS_NOT, condition.typeParametersNot) { key, value ->
             !compareMatcherTypes(key, value.typeParameters.toList())
         }
+        .filterEmpty(configuration, condition, ExecutableCondition.EMPTY_TYPE_PARAMETERS, ExecutableCondition.EMPTY_TYPE_PARAMETERS_NOT) {
+            it.typeParameters.size
+        }
         .filter(configuration, ExecutableCondition.EXCEPTION_TYPES, condition.exceptionTypes) { key, value ->
             compareElementTypes(context, key, value.exceptionTypes.toList())
         }
         .filter(configuration, ExecutableCondition.EXCEPTION_TYPES_NOT, condition.exceptionTypesNot) { key, value ->
             compareElementTypesNot(context, key, value.exceptionTypes.toList())
         }
+        .filterEmpty(configuration, condition, ExecutableCondition.EMPTY_EXCEPTION_TYPES, ExecutableCondition.EMPTY_EXCEPTION_TYPES_NOT) {
+            it.exceptionTypes.size
+        }
         .filter(configuration, ExecutableCondition.GENERIC_EXCEPTION_TYPES, condition.genericExceptionTypes) { key, value ->
             compareMatcherTypes(key, value.genericExceptionTypes.toList())
         }
         .filter(configuration, ExecutableCondition.GENERIC_EXCEPTION_TYPES_NOT, condition.genericExceptionTypesNot) { key, value ->
             !compareMatcherTypes(key, value.genericExceptionTypes.toList())
+        }
+        .filterEmpty(configuration, condition, ExecutableCondition.EMPTY_GENERIC_EXCEPTION_TYPES, ExecutableCondition.EMPTY_GENERIC_EXCEPTION_TYPES_NOT) {
+            it.genericExceptionTypes.size
         }
         .filter(configuration, ExecutableCondition.GENERIC_PARAMETERS, condition.genericParameters) { key, value ->
             compareMatcherTypes(key, value.genericParameterTypes.toList())
@@ -329,43 +341,43 @@ object MemberProcessor {
         .filter(configuration, ExecutableCondition.IS_VAR_ARGS_NOT, condition.isVarArgsNot) { key, value -> value.isVarArgs != key }
         .filter(configuration, ExecutableCondition.PARAMETER_ANNOTATIONS, condition.parameterAnnotations) { key, value ->
             val annotations = value.parameterAnnotations.map { it.map { e -> e.annotationClass.java } }
-            compareElementTypes(context, key, annotations)
+            compareAnnotationTypes(context, key, annotations, noVague = "Executable: parameterAnnotations")
         }
         .filter(configuration, ExecutableCondition.PARAMETER_ANNOTATIONS_NOT, condition.parameterAnnotationsNot) { key, value ->
             val annotations = value.parameterAnnotations.map { it.map { e -> e.annotationClass.java } }
-            compareElementTypesNot(context, key, annotations)
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: parameterAnnotationsNot")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RETURN_TYPE, condition.annotatedReturnType) { key, value ->
             val annotations = value.annotatedReturnType.annotations.map { it.annotationClass.java }
-            compareElementTypes(context, key, annotations)
+            compareAnnotationTypes(context, key, annotations, noVague = "Executable: annotatedReturnType")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RETURN_TYPE_NOT, condition.annotatedReturnTypeNot) { key, value ->
             val annotations = value.annotatedReturnType.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(context, key, annotations)
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: annotatedReturnTypeNot")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RECEIVER_TYPE, condition.annotatedReceiverType) { key, value ->
-            val annotations = value.annotatedReceiverType.annotations.map { it.annotationClass.java }
-            compareElementTypes(context, key, annotations)
+            val annotations = value.annotatedReceiverType?.annotations.orEmpty().map { it.annotationClass.java }
+            compareAnnotationTypes(context, key, annotations, noVague = "Executable: annotatedReceiverType")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_RECEIVER_TYPE_NOT, condition.annotatedReceiverTypeNot) { key, value ->
-            val annotations = value.annotatedReceiverType.annotations.map { it.annotationClass.java }
-            compareElementTypesNot(context, key, annotations)
+            val annotations = value.annotatedReceiverType?.annotations.orEmpty().map { it.annotationClass.java }
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: annotatedReceiverTypeNot")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES, condition.annotatedParameterTypes) { key, value ->
-            val annotations = value.annotatedParameterTypes.collectTypes()
-            compareElementTypes(context, key, annotations)
+            val annotations = value.annotatedParameterTypes.map { it.annotations.map { e -> e.annotationClass.java } }
+            compareAnnotationTypes(context, key, annotations, noVague = "Executable: annotatedParameterTypes")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_PARAMETER_TYPES_NOT, condition.annotatedParameterTypesNot) { key, value ->
-            val annotations = value.annotatedParameterTypes.collectTypes()
-            compareElementTypesNot(context, key, annotations)
+            val annotations = value.annotatedParameterTypes.map { it.annotations.map { e -> e.annotationClass.java } }
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: annotatedParameterTypesNot")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES, condition.annotatedExceptionTypes) { key, value ->
-            val annotations = value.annotatedExceptionTypes.collectTypes()
-            compareElementTypes(context, key, annotations)
+            val annotations = value.annotatedExceptionTypes.map { it.annotations.map { e -> e.annotationClass.java } }
+            compareAnnotationTypes(context, key, annotations, noVague = "Executable: annotatedExceptionTypes")
         }
         .filter(configuration, ExecutableCondition.ANNOTATED_EXCEPTION_TYPES_NOT, condition.annotatedExceptionTypesNot) { key, value ->
-            val annotations = value.annotatedExceptionTypes.collectTypes()
-            compareElementTypesNot(context, key, annotations)
+            val annotations = value.annotatedExceptionTypes.map { it.annotations.map { e -> e.annotationClass.java } }
+            compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: annotatedExceptionTypesNot")
         }
 
     private inline fun <reified M : Member, reified R : MemberResolver<M, T>, T : Any> Sequence<M>.resolve(
@@ -476,6 +488,15 @@ object MemberProcessor {
         }
     }
 
+    private fun <T> Sequence<T>.filterEmpty(
+        configuration: MemberCondition.Configuration<*>,
+        condition: MemberCondition<*, *, *>,
+        name: String,
+        notName: String,
+        size: (T) -> Int
+    ) = filter(configuration, name, name.takeIf { it in condition.emptyConditions }) { _, value -> size(value) == 0 }
+        .filter(configuration, notName, notName.takeIf { it in condition.emptyConditions }) { _, value -> size(value) > 0 }
+
     private fun compareElementTypes(
         context: ResolveContext,
         conditionKey: Collection<Any>,
@@ -502,31 +523,42 @@ object MemberProcessor {
         typesValue: List<Class<*>>
     ) = !conditionKey.hasUnresolvedType(context) && !compareElementTypes(context, conditionKey, typesValue)
 
-    @JvmName("compareElementTypesMultiple")
-    private fun compareElementTypes(
+    private fun compareAnnotationTypes(
         context: ResolveContext,
-        conditionKey: Collection<Collection<Any>>,
-        typesValue: List<List<Class<*>>>
+        conditionKey: Collection<Any>,
+        annotations: List<Class<*>>,
+        noVague: String
     ): Boolean {
-        // If size is different at first, return false.
-        if (conditionKey.size != typesValue.size) return false
-
-        var index = 0
-        conditionKey.forEach { conditionType ->
-            val target = typesValue[index++]
-            if (!compareElementTypes(context, conditionType, target))
-                return false
-        }
-
-        return true
+        // The order of annotations is not defined, compare them as a set.
+        if (conditionKey.size != annotations.size) return false
+        return conditionKey.mapTo(mutableSetOf()) { it.toTypeClass(context, noVague) } == annotations.toSet()
     }
 
-    @JvmName("compareElementTypesNotMultiple")
-    private fun compareElementTypesNot(
+    private fun compareAnnotationTypesNot(
+        context: ResolveContext,
+        conditionKey: Collection<Any>,
+        annotations: List<Class<*>>,
+        noVague: String
+    ) = !conditionKey.hasUnresolvedType(context) && !compareAnnotationTypes(context, conditionKey, annotations, noVague)
+
+    @JvmName("compareAnnotationTypesMultiple")
+    private fun compareAnnotationTypes(
         context: ResolveContext,
         conditionKey: Collection<Collection<Any>>,
-        typesValue: List<List<Class<*>>>
-    ) = conditionKey.none { it.hasUnresolvedType(context) } && !compareElementTypes(context, conditionKey, typesValue)
+        annotations: List<List<Class<*>>>,
+        noVague: String
+    ): Boolean {
+        if (conditionKey.size != annotations.size) return false
+        return conditionKey.zip(annotations).all { (key, value) -> compareAnnotationTypes(context, key, value, noVague) }
+    }
+
+    @JvmName("compareAnnotationTypesNotMultiple")
+    private fun compareAnnotationTypesNot(
+        context: ResolveContext,
+        conditionKey: Collection<Collection<Any>>,
+        annotations: List<List<Class<*>>>,
+        noVague: String
+    ) = conditionKey.none { it.hasUnresolvedType(context) } && !compareAnnotationTypes(context, conditionKey, annotations, noVague)
 
     private fun compareMatcherTypes(
         conditionKey: Collection<TypeMatcher>,
@@ -618,20 +650,6 @@ object MemberProcessor {
 
     private val <T : Any> MemberCondition.Configuration<T>.currentProcessorResolver
         get() = processorResolver ?: globalResolver
-
-    private fun Array<out AnnotatedElement>.collectTypes(): List<Class<*>> {
-        var size = 0
-        this.forEach { size += it.annotations.size }
-        if (size == 0) return emptyList()
-
-        return buildList {
-            this@collectTypes.forEach { element ->
-                element.annotations.forEach { annotation ->
-                    this += annotation.annotationClass.java
-                }
-            }
-        }
-    }
 
     private fun MemberCondition.Configuration<*>.shouldLogFilterDebug() =
         this.optional != MemberCondition.Configuration.Optional.SILENT &&

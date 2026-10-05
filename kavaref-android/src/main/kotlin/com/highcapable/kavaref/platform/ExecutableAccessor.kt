@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2026/6/5.
  */
-@file:Suppress("unused")
+@file:Suppress("unused", "RedundantNullableReturnType")
 
 package com.highcapable.kavaref.platform
 
@@ -86,7 +86,7 @@ internal class ExecutableAccessor(override val member: Member) : MemberAccessor(
         else -> error("Unsupported member type: $member")
     }
     val annotatedReturnType: AnnotatedElement get() = error("getAnnotatedReturnType is not supported on Android.")
-    val annotatedReceiverType: AnnotatedElement get() = error("getAnnotatedReceiverType is not supported on Android.")
+    val annotatedReceiverType: AnnotatedElement? get() = error("getAnnotatedReceiverType is not supported on Android.")
     val annotatedParameterTypes: Array<AnnotatedElement> get() = error("getAnnotatedParameterTypes is not supported on Android.")
     val annotatedExceptionTypes: Array<AnnotatedElement> get() = error("getAnnotatedExceptionTypes is not supported on Android.")
 

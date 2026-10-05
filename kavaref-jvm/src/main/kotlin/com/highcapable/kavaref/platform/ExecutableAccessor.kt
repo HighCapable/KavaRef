@@ -45,7 +45,7 @@ internal class ExecutableAccessor(override val member: Member) : MemberAccessor(
     val isVarArgs: Boolean get() = executable.isVarArgs
     val parameterAnnotations: Array<Array<Annotation>> get() = executable.parameterAnnotations
     val annotatedReturnType: AnnotatedElement get() = executable.annotatedReturnType
-    val annotatedReceiverType: AnnotatedElement get() = executable.annotatedReceiverType
+    val annotatedReceiverType: AnnotatedElement? get() = executable.annotatedReceiverType
     val annotatedParameterTypes: Array<AnnotatedElement> get() = executable.annotatedParameterTypes as Array<AnnotatedElement>
     val annotatedExceptionTypes: Array<AnnotatedElement> get() = executable.annotatedExceptionTypes as Array<AnnotatedElement>
 

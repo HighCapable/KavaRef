@@ -32,6 +32,7 @@ import com.android.tools.lint.detector.api.Location
 import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
 import com.highcapable.kavaref.android.lint.DeclaredSymbol
+import com.highcapable.kavaref.android.lint.detector.extension.buildReplaceFix
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
 import org.jetbrains.uast.UBinaryExpression
@@ -44,7 +45,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
     companion object {
 
-        val ISSUE = Issue.create(
+        val UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE = Issue.create(
             id = "UnsupportedExecutableCondition",
             briefDescription = "Unsupported executable condition on Android",
             explanation = "Annotated executable type conditions are not supported on Android.",
@@ -57,14 +58,38 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
             )
         )
 
+        val EMPTY_CONDITION_ARGUMENTS_ISSUE = Issue.create(
+            id = "EmptyConditionArguments",
+            briefDescription = "Condition function without arguments",
+            explanation = """
+              A condition function without any arguments adds no condition, it matches members with anything. \
+              To match members whose result is empty, use the corresponding empty condition function instead, \
+              such as `emptyParameters()` for `parameters()`.
+            """,
+            category = Category.CORRECTNESS,
+            priority = 5,
+            severity = Severity.INFORMATIONAL,
+            implementation = Implementation(
+                ExecutableConditionDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+        )
+
         private const val EXECUTABLE_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.base.ExecutableCondition"
         private const val CONSTRUCTOR_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.ConstructorCondition"
         private const val METHOD_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.MethodCondition"
+        private const val MEMBER_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.base.MemberCondition"
+        private const val FIELD_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.FieldCondition"
 
         private val EXECUTABLE_CONDITION_CLASSES = setOf(
             EXECUTABLE_CONDITION_CLASS,
             CONSTRUCTOR_CONDITION_CLASS,
             METHOD_CONDITION_CLASS
+        )
+
+        private val MEMBER_CONDITION_CLASSES = EXECUTABLE_CONDITION_CLASSES + setOf(
+            MEMBER_CONDITION_CLASS,
+            FIELD_CONDITION_CLASS
         )
 
         private val ANDROID_UNSUPPORTED_ANNOTATED_CONDITION_FUNCTIONS = setOf(
@@ -77,6 +102,27 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
             "annotatedExceptionTypes",
             "annotatedExceptionTypesNot"
         )
+
+        private val EMPTY_CONDITION_FUNCTIONS = mapOf(
+            "annotations" to "emptyAnnotations",
+            "annotationsNot" to "emptyAnnotationsNot",
+            "parameters" to "emptyParameters",
+            "parametersNot" to "emptyParametersNot",
+            "genericParameters" to "emptyParameters",
+            "genericParametersNot" to "emptyParametersNot",
+            "parameterAnnotations" to "emptyParameters",
+            "parameterAnnotationsNot" to "emptyParametersNot",
+            "annotatedParameterTypes" to "emptyParameters",
+            "annotatedParameterTypesNot" to "emptyParametersNot",
+            "typeParameters" to "emptyTypeParameters",
+            "typeParametersNot" to "emptyTypeParametersNot",
+            "exceptionTypes" to "emptyExceptionTypes",
+            "exceptionTypesNot" to "emptyExceptionTypesNot",
+            "annotatedExceptionTypes" to "emptyExceptionTypes",
+            "annotatedExceptionTypesNot" to "emptyExceptionTypesNot",
+            "genericExceptionTypes" to "emptyGenericExceptionTypes",
+            "genericExceptionTypesNot" to "emptyGenericExceptionTypesNot"
+        )
     }
 
     override fun getApplicableUastTypes(): List<Class<out UElement>> = listOf(
@@ -88,8 +134,11 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
         override fun visitCallExpression(node: UCallExpression) {
             val methodName = node.methodName ?: return
-            if (methodName !in ANDROID_UNSUPPORTED_ANNOTATED_CONDITION_FUNCTIONS) return
+            if (methodName in ANDROID_UNSUPPORTED_ANNOTATED_CONDITION_FUNCTIONS) reportUnsupportedCondition(node, methodName)
+            EMPTY_CONDITION_FUNCTIONS[methodName]?.let { reportEmptyConditionArguments(node, it) }
+        }
 
+        private fun reportUnsupportedCondition(node: UCallExpression, methodName: String) {
             val method = node.resolve() ?: return
             if (!method.isExecutableConditionFunction()) return
 
@@ -105,8 +154,28 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
                 .build()
 
             context.report(
-                ISSUE, node, location,
+                UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE, node, location,
                 message = "`$methodName` is not supported on Android",
+                quickfixData = lintFix
+            )
+        }
+
+        private fun reportEmptyConditionArguments(node: UCallExpression, emptyFunction: String) {
+            if (node.valueArgumentCount != 0) return
+
+            val method = node.resolve() ?: return
+            if (method.containingClass?.qualifiedName !in MEMBER_CONDITION_CLASSES) return
+
+            val location = context.getCallLocation(node, includeReceiver = false, includeArguments = true)
+            val lintFix = buildReplaceFix(
+                name = "Replace with $emptyFunction()",
+                replacement = "$emptyFunction()",
+                range = location
+            )
+
+            context.report(
+                EMPTY_CONDITION_ARGUMENTS_ISSUE, node, location,
+                message = "No arguments are found, did you mean `$emptyFunction()`?",
                 quickfixData = lintFix
             )
         }
@@ -129,7 +198,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
                 .build()
 
             context.report(
-                ISSUE, reportNode, location,
+                UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE, reportNode, location,
                 message = "`$propertyName` is not supported on Android",
                 quickfixData = lintFix
             )

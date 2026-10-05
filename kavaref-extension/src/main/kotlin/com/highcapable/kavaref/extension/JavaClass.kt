@@ -262,22 +262,24 @@ abstract class LazyClass<T : Any> private constructor(
     private val loader: ClassLoaderInitializer?
 ) {
 
+    @Volatile
     private var baseDefinition: Class<T>? = null
+
+    /** Whether the class is not found, the nullable instance does not try to load it again. */
+    @Volatile
+    private var isMissing = false
 
     /**
      * Get non-null instance of [Class].
      * @return [Class]<[T]>
      */
     @get:JvmSynthetic
-    internal val nonNull get(): Class<T> {
-        if (baseDefinition == null)
-            baseDefinition = when (classDefinition) {
-                is String -> classDefinition.toClass<T>(loader?.invoke(), initialize)
-                is VariousClass -> classDefinition.load<T>(loader?.invoke(), initialize)
-                else -> error("Unknown lazy class type \"$classDefinition\"")
-            }
-
-        return baseDefinition ?: error("Exception has been thrown above.")
+    internal val nonNull get(): Class<T> = baseDefinition ?: synchronized(this) {
+        baseDefinition ?: when (classDefinition) {
+            is String -> classDefinition.toClass<T>(loader?.invoke(), initialize)
+            is VariousClass -> classDefinition.load<T>(loader?.invoke(), initialize)
+            else -> error("Unknown lazy class type \"$classDefinition\"")
+        }.also { baseDefinition = it }
     }
 
     /**
@@ -285,15 +287,13 @@ abstract class LazyClass<T : Any> private constructor(
      * @return [Class]<[T]> or null.
      */
     @get:JvmSynthetic
-    internal val nullable get(): Class<T>? {
-        if (baseDefinition == null)
-            baseDefinition = when (classDefinition) {
-                is String -> classDefinition.toClassOrNull<T>(loader?.invoke(), initialize)
-                is VariousClass -> classDefinition.loadOrNull<T>(loader?.invoke(), initialize)
-                else -> error("Unknown lazy class type \"$classDefinition\".")
-            }
-
-        return baseDefinition
+    internal val nullable get(): Class<T>? = baseDefinition ?: if (isMissing) null else synchronized(this) {
+        if (isMissing) return@synchronized null
+        baseDefinition ?: when (classDefinition) {
+            is String -> classDefinition.toClassOrNull<T>(loader?.invoke(), initialize)
+            is VariousClass -> classDefinition.loadOrNull<T>(loader?.invoke(), initialize)
+            else -> error("Unknown lazy class type \"$classDefinition\".")
+        }.also { if (it != null) baseDefinition = it else isMissing = true }
     }
 
     /**

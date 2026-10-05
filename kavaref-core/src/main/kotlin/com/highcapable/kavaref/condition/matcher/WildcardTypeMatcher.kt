@@ -25,6 +25,7 @@ package com.highcapable.kavaref.condition.matcher
 
 import com.highcapable.kavaref.condition.matcher.base.TypeMatcher
 import com.highcapable.kavaref.condition.matcher.extension.matchesAll
+import com.highcapable.kavaref.condition.matcher.extension.toTypeMatcher
 import java.lang.reflect.Type
 import java.lang.reflect.WildcardType
 
@@ -36,7 +37,7 @@ import java.lang.reflect.WildcardType
  * @param lowerBounds the lower bounds of the wildcard type.
  */
 data class WildcardTypeMatcher(
-    val upperBounds: List<TypeMatcher> = emptyList(),
+    val upperBounds: List<TypeMatcher> = listOf(Any::class.toTypeMatcher()),
     val lowerBounds: List<TypeMatcher> = emptyList()
 ) : TypeMatcher {
 

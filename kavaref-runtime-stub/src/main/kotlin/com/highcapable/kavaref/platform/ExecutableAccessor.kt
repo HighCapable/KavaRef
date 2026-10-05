@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2026/6/5.
  */
-@file:Suppress("unused")
+@file:Suppress("unused", "RedundantNullableReturnType")
 
 package com.highcapable.kavaref.platform
 
@@ -42,7 +42,7 @@ class ExecutableAccessor(override val member: Member) : MemberAccessor(member) {
     val isVarArgs: Boolean get() = error("Stub!")
     val parameterAnnotations: Array<Array<Annotation>> get() = error("Stub!")
     val annotatedReturnType: AnnotatedElement get() = error("Stub!")
-    val annotatedReceiverType: AnnotatedElement get() = error("Stub!")
+    val annotatedReceiverType: AnnotatedElement? get() = error("Stub!")
     val annotatedParameterTypes: Array<AnnotatedElement> get() = error("Stub!")
     val annotatedExceptionTypes: Array<AnnotatedElement> get() = error("Stub!")
 }

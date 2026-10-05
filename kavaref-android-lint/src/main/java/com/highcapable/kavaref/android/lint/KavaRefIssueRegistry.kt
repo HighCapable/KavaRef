@@ -33,7 +33,8 @@ import com.highcapable.kavaref.generated.KavaRefProperties
 class KavaRefIssueRegistry : IssueRegistry() {
 
     override val issues get() = listOf(
-        ExecutableConditionDetector.ISSUE,
+        ExecutableConditionDetector.UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE,
+        ExecutableConditionDetector.EMPTY_CONDITION_ARGUMENTS_ISSUE,
         ExtensionUsageDetector.ISSUE
     )
 

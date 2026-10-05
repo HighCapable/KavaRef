@@ -45,7 +45,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      * @return [T] or null.
      */
     @JvmName("invokeTyped")
-    fun <T : Any?> invoke(vararg args: Any?): T? {
+    fun <T> invoke(vararg args: Any?): T? {
         requireAccessible()
         return self.invoke(instance, *args) as? T?
     }
@@ -57,7 +57,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      * @return [T] or null.
      */
     @JvmName("invokeQuietlyTyped")
-    fun <T : Any?> invokeQuietly(vararg args: Any?) = runCatching { invoke<T>(*args) }.getOrNull()
+    fun <T> invokeQuietly(vararg args: Any?) = runCatching { invoke<T>(*args) }.getOrNull()
 
     /**
      * Invoke the method with the given arguments.

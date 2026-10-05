@@ -63,6 +63,8 @@ class FieldCondition<T : Any> : MemberCondition<Field, FieldResolver<T>, T>() {
     override fun isSyntheticNot(isSynthetic: Boolean) = apply { super.isSyntheticNot(isSynthetic) }
     override fun annotations(vararg annotations: Any) = apply { super.annotations(*annotations) }
     override fun annotationsNot(vararg annotations: Any) = apply { super.annotationsNot(*annotations) }
+    override fun emptyAnnotations() = apply { super.emptyAnnotations() }
+    override fun emptyAnnotationsNot() = apply { super.emptyAnnotationsNot() }
     override fun genericString(genericString: String) = apply { super.genericString(genericString) }
 
     override fun superclass() = apply { super.superclass() }

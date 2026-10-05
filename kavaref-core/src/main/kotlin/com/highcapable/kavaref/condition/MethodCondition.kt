@@ -76,6 +76,8 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
     override fun isSyntheticNot(isSynthetic: Boolean) = apply { super.isSyntheticNot(isSynthetic) }
     override fun annotations(vararg annotations: Any) = apply { super.annotations(*annotations) }
     override fun annotationsNot(vararg annotations: Any) = apply { super.annotationsNot(*annotations) }
+    override fun emptyAnnotations() = apply { super.emptyAnnotations() }
+    override fun emptyAnnotationsNot() = apply { super.emptyAnnotationsNot() }
     override fun genericString(genericString: String) = apply { super.genericString(genericString) }
 
     override fun parameters(vararg types: Any) = apply { super.parameters(*types) }
@@ -85,12 +87,18 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
     override fun emptyParametersNot() = apply { super.emptyParametersNot() }
     override fun typeParameters(vararg types: TypeMatcher) = apply { super.typeParameters(*types) }
     override fun typeParametersNot(vararg types: TypeMatcher) = apply { super.typeParametersNot(*types) }
+    override fun emptyTypeParameters() = apply { super.emptyTypeParameters() }
+    override fun emptyTypeParametersNot() = apply { super.emptyTypeParametersNot() }
     override fun parameterCount(count: Int) = apply { super.parameterCount(count) }
     override fun parameterCount(condition: (Int) -> Boolean) = apply { super.parameterCount(condition) }
     override fun exceptionTypes(vararg types: Any) = apply { super.exceptionTypes(*types) }
     override fun exceptionTypesNot(vararg types: Any) = apply { super.exceptionTypesNot(*types) }
+    override fun emptyExceptionTypes() = apply { super.emptyExceptionTypes() }
+    override fun emptyExceptionTypesNot() = apply { super.emptyExceptionTypesNot() }
     override fun genericExceptionTypes(vararg types: TypeMatcher) = apply { super.genericExceptionTypes(*types) }
     override fun genericExceptionTypesNot(vararg types: TypeMatcher) = apply { super.genericExceptionTypesNot(*types) }
+    override fun emptyGenericExceptionTypes() = apply { super.emptyGenericExceptionTypes() }
+    override fun emptyGenericExceptionTypesNot() = apply { super.emptyGenericExceptionTypesNot() }
     override fun genericParameters(vararg types: TypeMatcher) = apply { super.genericParameters(*types) }
     override fun genericParametersNot(vararg types: TypeMatcher) = apply { super.genericParametersNot(*types) }
     override fun isVarArgs(isVarArgs: Boolean) = apply { super.isVarArgs(isVarArgs) }
@@ -101,10 +109,10 @@ class MethodCondition<T : Any> : ExecutableCondition<Method, MethodResolver<T>, 
     override fun annotatedReturnTypeNot(vararg types: Any) = apply { super.annotatedReturnTypeNot(*types) }
     override fun annotatedReceiverType(vararg types: Any) = apply { super.annotatedReceiverType(*types) }
     override fun annotatedReceiverTypeNot(vararg types: Any) = apply { super.annotatedReceiverTypeNot(*types) }
-    override fun annotatedParameterTypes(vararg types: Any) = apply { super.annotatedParameterTypes(*types) }
-    override fun annotatedParameterTypesNot(vararg types: Any) = apply { super.annotatedParameterTypesNot(*types) }
-    override fun annotatedExceptionTypes(vararg types: Any) = apply { super.annotatedExceptionTypes(*types) }
-    override fun annotatedExceptionTypesNot(vararg types: Any) = apply { super.annotatedExceptionTypesNot(*types) }
+    override fun annotatedParameterTypes(vararg types: Set<Any>) = apply { super.annotatedParameterTypes(*types) }
+    override fun annotatedParameterTypesNot(vararg types: Set<Any>) = apply { super.annotatedParameterTypesNot(*types) }
+    override fun annotatedExceptionTypes(vararg types: Set<Any>) = apply { super.annotatedExceptionTypes(*types) }
+    override fun annotatedExceptionTypesNot(vararg types: Set<Any>) = apply { super.annotatedExceptionTypesNot(*types) }
 
     override fun superclass() = apply { super.superclass() }
     override fun superclass(interfaces: Boolean) = apply { super.superclass(interfaces) }

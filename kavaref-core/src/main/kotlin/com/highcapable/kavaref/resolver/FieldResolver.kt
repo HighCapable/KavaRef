@@ -45,7 +45,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      * @return [T] or null.
      */
     @JvmName("getTyped")
-    fun <T : Any?> get(): T? {
+    fun <T> get(): T? {
         requireAccessible()
         return self.get(instance) as? T?
     }
@@ -57,7 +57,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      * @return [T] or null.
      */
     @JvmName("getQuietlyTyped")
-    fun <T : Any?> getQuietly() = runCatching { get<T>() }.getOrNull()
+    fun <T> getQuietly() = runCatching { get<T>() }.getOrNull()
 
     /**
      * Get the value of the field.

@@ -126,6 +126,10 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     @set:JvmSynthetic
     internal var superclassMode = Configuration.Superclass.NO
 
+    /** The names of the empty conditions that have been set. */
+    @get:JvmSynthetic
+    internal val emptyConditions = mutableSetOf<String>()
+
     /** @see Member.getName */
     var name: String? = null
 
@@ -204,6 +208,16 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         this.annotationsNot.addAll(annotations.toList())
     }
 
+    /** @see AnnotatedElement.getDeclaredAnnotations */
+    open fun emptyAnnotations() = apply {
+        emptyConditions += EMPTY_ANNOTATIONS
+    }
+
+    /** @see AnnotatedElement.getDeclaredAnnotations */
+    open fun emptyAnnotationsNot() = apply {
+        emptyConditions += EMPTY_ANNOTATIONS_NOT
+    }
+
     /**
      * @see Executable.toGenericString
      * @see Field.toGenericString
@@ -251,6 +265,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         newSelf.annotationsNot.addAll(annotationsNot)
         newSelf.genericString = genericString
         newSelf.superclassMode = superclassMode
+        newSelf.emptyConditions.addAll(emptyConditions)
     }
 
     /**
@@ -282,6 +297,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         }
         other.genericString?.let { genericString = it }
         superclassMode = maxOf(superclassMode, other.superclassMode)
+        emptyConditions.addAll(other.emptyConditions)
     }
 
     /**
@@ -316,8 +332,18 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         IS_SYNTHETIC_NOT to isSyntheticNot,
         ANNOTATIONS to annotations,
         ANNOTATIONS_NOT to annotationsNot,
+        EMPTY_ANNOTATIONS to emptyConditionOf(EMPTY_ANNOTATIONS),
+        EMPTY_ANNOTATIONS_NOT to emptyConditionOf(EMPTY_ANNOTATIONS_NOT),
         GENERIC_STRING to genericString
     )
+
+    /**
+     * Get the display value of the empty condition [name].
+     * @param name the name of the empty condition.
+     * @return [Boolean] or null.
+     */
+    @JvmSynthetic
+    internal fun emptyConditionOf(name: String) = true.takeIf { name in emptyConditions }
 
     companion object {
         const val NAME = "name"
@@ -329,6 +355,8 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         const val IS_SYNTHETIC_NOT = "isSyntheticNot"
         const val ANNOTATIONS = "annotations"
         const val ANNOTATIONS_NOT = "annotationsNot"
+        const val EMPTY_ANNOTATIONS = "emptyAnnotations"
+        const val EMPTY_ANNOTATIONS_NOT = "emptyAnnotationsNot"
         const val GENERIC_STRING = "genericString"
     }
 
