@@ -32,7 +32,7 @@ import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 /**
- * Creates a [TypeMatcher] for a specific class type.
+ * Creates a [TypeMatcher] for a type variable with the given name.
  * @param name the name of the type variable.
  * @return [TypeVariableMatcher]
  */

@@ -31,7 +31,7 @@ import java.util.WeakHashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty
 
-/** Definition [ClassLoader] Loading instance function body type. */
+/** The function type that provides a [ClassLoader] instance. */
 private typealias ClassLoaderInitializer = () -> ClassLoader?
 
 /**
@@ -99,10 +99,10 @@ private object InstanceCreator {
     fun <T : Any> create(declaringClass: Class<T>, args: Array<out Any?>, isPublic: Boolean): T {
         // If all arguments are null, throw an exception.
         if (args.isNotEmpty() && args.all { it == null })
-            error("Not allowed to create an instance with all null arguments for $declaringClass.")
+            error("Not allowed to create an instance with all null arguments for $declaringClass")
 
         val constructor = cachedOrSelect(declaringClass, args, isPublic) ?: throw NoSuchMethodError(
-            "Could not find a suitable constructor for $declaringClass with arguments: ${args.describe()}."
+            "Could not find a suitable constructor for $declaringClass with arguments: ${args.describe()}"
         )
         require(constructor.makeAccessible()) {
             "Failed to make the constructor \"$constructor\" accessible. " +
@@ -145,7 +145,7 @@ private object InstanceCreator {
 
             return mostSpecific.singleOrNull()?.first ?: throw IllegalArgumentException(
                 "Ambiguous constructors for $declaringClass with arguments: ${args.describe()}, " +
-                    "candidates: ${applicable.joinToString { it.first.value.toString() }}."
+                    "candidates: ${applicable.joinToString { it.first.value.toString() }}"
             )
         }
 
@@ -184,7 +184,7 @@ object ClassLoaderProvider {
     /**
      * The [ClassLoader] used for reflection operations.
      *
-     * If null, it will be determined according to the default behavior of the current JVM.
+     * If null, the [ClassLoader] that loaded KavaRef will be used.
      */
     var classLoader: ClassLoader? = null
 }
@@ -210,7 +210,7 @@ class VariousClass(vararg names: String) {
      */
     @JvmOverloads
     fun load(loader: ClassLoader? = null, initialize: Boolean = false) = loadOrNull(loader, initialize)
-        ?: throw NoClassDefFoundError("VariousClass matches failed of $classNames.")
+        ?: throw NoClassDefFoundError("Failed to match any class of VariousClass $classNames")
 
     /**
      * Load the first class that matches the given names using the specified [ClassLoader].
@@ -218,12 +218,11 @@ class VariousClass(vararg names: String) {
      * @see loadOrNull
      * @return [Class]<[T]>
      * @throws NoClassDefFoundError if no class is found.
-     * @throws IllegalStateException if the class cannot be cast to type [T].
      */
     @JvmOverloads
     @JvmName("loadTyped")
     fun <T : Any> load(loader: ClassLoader? = null, initialize: Boolean = false) = load(loader, initialize) as? Class<T>?
-        ?: error("VariousClass type cast failed of $classNames.")
+        ?: error("Failed to cast the class type of VariousClass $classNames")
 
     /**
      * Load the first class that matches the given names using the specified [ClassLoader].
@@ -292,7 +291,7 @@ abstract class LazyClass<T : Any> private constructor(
         baseDefinition ?: when (classDefinition) {
             is String -> classDefinition.toClassOrNull<T>(loader?.invoke(), initialize)
             is VariousClass -> classDefinition.loadOrNull<T>(loader?.invoke(), initialize)
-            else -> error("Unknown lazy class type \"$classDefinition\".")
+            else -> error("Unknown lazy class type \"$classDefinition\"")
         }.also { if (it != null) baseDefinition = it else isMissing = true }
     }
 
@@ -455,9 +454,10 @@ fun <T : Any> String.toClass(loader: ClassLoader? = null, initialize: Boolean = 
  * Convert [String] class name to [Class] with [ClassLoader] and initialize.
  * @see String.toClassOrNull
  * @receiver the class name to be converted.
- * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader].
+ * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
+ * if it is also null, the [ClassLoader] that loaded `KavaRef` will be used.
  * @param initialize whether to initialize the class with [loader], default is false.
- * @return [Class] or null if the class not found.
+ * @return [Class] or null if the class is not found.
  */
 @JvmOverloads
 @JvmName("createOrNull")
@@ -469,7 +469,7 @@ fun String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = fals
  * Convert [String] class name to [Class] with [ClassLoader] and initialize.
  * @see Class.toClass
  * @see String.toClassOrNull
- * @return [Class]<[T]> or null if the class not found or type cast failed.
+ * @return [Class]<[T]> or null if the class is not found.
  */
 @JvmOverloads
 @JvmName("createOrNullTyped")
@@ -483,7 +483,7 @@ fun <T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Bool
  * without unboxing are preferred, otherwise unboxing and primitive widening are allowed,
  * then the most specific one is used.
  *
- * - Note: If you give a null argument, it will be treated as an any type value for the constructor parameter,
+ * - Note: If you give a null argument, it will be treated as a value of any non-primitive type for the constructor parameter,
  *   but if all arguments are null, it will throw an [IllegalStateException].
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsType
@@ -509,21 +509,21 @@ fun <T : Any> KClass<T>.createInstance(vararg args: Any?, isPublic: Boolean = tr
     java.createInstance(*args, isPublic = isPublic)
 
 /**
- * Create an instance of [Class] with the given arguments or return null if not found.
+ * Create an instance of [Class] with the given arguments or return null if failed.
  * @see Class.createInstance
  * @see Class.createInstanceAsType
  * @see Class.createInstanceAsTypeOrNull
  * @receiver the [Class] to be instantiated.
  * @param args the arguments to be passed to the constructor.
  * @param isPublic whether to only consider public constructors, default is true.
- * @return [T] or null if no suitable constructor is found.
+ * @return [T] or null if the instance cannot be created.
  */
 @JvmOverloads
 fun <T : Any> Class<T>.createInstanceOrNull(vararg args: Any?, isPublic: Boolean = true) =
     runCatching { createInstance(*args, isPublic = isPublic) }.getOrNull()
 
 /**
- * Create an instance of [KClass.java] with the given arguments or return null if not found.
+ * Create an instance of [KClass.java] with the given arguments or return null if failed.
  * @see Class.createInstanceOrNull
  */
 @JvmSynthetic
@@ -536,11 +536,11 @@ fun <T : Any> KClass<T>.createInstanceOrNull(vararg args: Any?, isPublic: Boolea
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsTypeOrNull
  * @return [T]
- * @throws NoSuchMethodException if no suitable constructor is found.
+ * @throws NoSuchMethodError if no suitable constructor is found.
  * @throws IllegalStateException if the instance cannot be cast to type [T] or if all arguments are null.
  */
 inline fun <reified T : Any> Class<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
-    createInstance(*args, isPublic = isPublic) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}.")
+    createInstance(*args, isPublic = isPublic) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
 
 /**
  * Create an instance of [KClass.java] with the given arguments and cast it to the specified type [T].
@@ -550,17 +550,17 @@ inline fun <reified T : Any> KClass<*>.createInstanceAsType(vararg args: Any?, i
     java.createInstanceAsType<T>(*args, isPublic = isPublic)
 
 /**
- * Create an instance of [Class] with the given arguments and cast it to the specified type [T] or return null if not found.
+ * Create an instance of [Class] with the given arguments and cast it to the specified type [T] or return null if failed.
  * @see Class.createInstance
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsType
- * @return [T] or null if no suitable constructor is found or the instance cannot be cast to type [T].
+ * @return [T] or null if the instance cannot be created or cannot be cast to type [T].
  */
 inline fun <reified T : Any> Class<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
     runCatching { createInstanceAsType<T>(*args, isPublic = isPublic) }.getOrNull()
 
 /**
- * Create an instance of [KClass.java] with the given arguments and cast it to the specified type [T] or return null if not found.
+ * Create an instance of [KClass.java] with the given arguments and cast it to the specified type [T] or return null if failed.
  * @see Class.createInstanceAsTypeOrNull
  */
 inline fun <reified T : Any> KClass<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
@@ -583,7 +583,7 @@ fun ClassLoader.loadClassOrNull(name: String) = runCatching { loadClass(name) as
 fun ClassLoader.hasClass(name: String) = loadClassOrNull(name) != null
 
 /**
- * Typecast [T] to [Class].
+ * Get the [Class] of [T].
  * @param primitiveType whether to return the primitive type of [T] if it is a primitive type, default is true.
  * @return [Class]<[T]>
  */
@@ -651,16 +651,16 @@ infix fun <T : Any> KClass<T>.isNotSubclassOf(superclass: Class<*>) = java isNot
 infix fun <T : Any> Class<T>.isNotSubclassOf(superclass: KClass<*>) = this isNotSubclassOf superclass.java
 
 /**
- * Whether the current [Class] has inheritance relationship,
- * and the superclass is [Any] will be considered to have no inheritance relationship.
+ * Whether the current [Class] has a superclass,
+ * [Any] is not considered as a superclass.
  * @receiver the [Class] to be checked.
  * @return [Boolean]
  */
 val <T : Any> Class<T>.hasSuperclass get() = superclass != null && superclass != classOf<Any>()
 
 /**
- * Whether the current [KClass.java] has inheritance relationship,
- * and the superclass is [Any] will be considered to have no inheritance relationship.
+ * Whether the current [KClass.java] has a superclass,
+ * [Any] is not considered as a superclass.
  * @see Class.hasSuperclass
  */
 @get:JvmSynthetic

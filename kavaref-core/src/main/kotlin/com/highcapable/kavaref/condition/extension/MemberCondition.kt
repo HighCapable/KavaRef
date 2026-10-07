@@ -28,8 +28,8 @@ import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Member
 
 /**
- * Merge this condition with another [other] condition.
- * @receiver the condition to merge from.
- * @param other the other condition to merge with.
+ * Merge the data set in the [other] condition into this condition.
+ * @receiver the condition to merge into.
+ * @param other the other condition to merge from.
  */
 infix fun <M : Member, R : MemberResolver<M, T>, T : Any, U : MemberCondition<M, R, T>> U.mergeWith(other: U) = initializeMergedData(other)

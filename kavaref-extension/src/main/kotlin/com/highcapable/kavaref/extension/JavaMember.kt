@@ -39,7 +39,7 @@ import java.lang.reflect.Modifier
 private var isTrySetAccessibleSupported = true
 
 /**
- * Make [AccessibleObject] implements [Member] accessible.
+ * Make the [Member] that extends [AccessibleObject] accessible.
  *
  * If it is already accessible, it returns directly without checking again.
  * @receiver the [Member] to be made accessible.

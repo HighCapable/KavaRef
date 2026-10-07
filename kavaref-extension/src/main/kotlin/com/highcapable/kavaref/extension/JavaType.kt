@@ -44,7 +44,7 @@ tailrec fun <T : Any> Type.toClass(): Class<T> = when (this) {
     is Class<*> -> this as Class<T>
     is ParameterizedType -> rawType.toClass<T>()
     is GenericArrayType -> ArrayClass(genericComponentType.toClass()) as Class<T>
-    else -> throw TypeCastException("Cannot cast type $this to java.lang.Class object.")
+    else -> throw TypeCastException("Cannot cast type $this to a java.lang.Class object.")
 }
 
 /**
@@ -75,7 +75,7 @@ fun Type.toClassOrNull() = toClassOrNull<Any>()
 /**
  * Convert [Type] to [ParameterizedType].
  * @see Type.asParameterizedTypeOrNull
- * @receiver the [Class] to get the [ParameterizedType].
+ * @receiver the [Type] to be converted.
  * @return [ParameterizedType]
  */
 inline fun <reified T : Type> T.asParameterizedType() = this as ParameterizedType
@@ -83,7 +83,7 @@ inline fun <reified T : Type> T.asParameterizedType() = this as ParameterizedTyp
 /**
  * Safely convert [Type] to [ParameterizedType] or return null if it fails.
  * @see Type.asParameterizedType
- * @receiver the [Class] to get the [ParameterizedType].
+ * @receiver the [Type] to be converted.
  * @return [ParameterizedType] or null.
  */
 inline fun <reified T : Type> T.asParameterizedTypeOrNull() = this as? ParameterizedType?
@@ -91,7 +91,7 @@ inline fun <reified T : Type> T.asParameterizedTypeOrNull() = this as? Parameter
 /**
  * Get the type arguments of the superclass of this [Class] or return an empty array if it fails.
  *
- * This function will implement the following functions:
+ * This function is equivalent to the following code:
  *
  * ```kotlin
  * (Class.genericSuperclass as ParameterizedType).actualTypeArguments

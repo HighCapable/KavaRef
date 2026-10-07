@@ -52,9 +52,9 @@ abstract class TypeRef<T> {
             is ParameterizedType ->
                 if (superclass.rawType == classOf<TypeRef<*>>()) 
                     superclass.actualTypeArguments.firstOrNull() ?: error("Type argument cannot be null.")
-                else error("Must only create direct subclasses of TypeRef.")
-            classOf<TypeRef<*>>() -> error("TypeRef must be created with a type argument: object : TypeRef<...>() {}.")
-            else -> error("Must only create direct subclasses of TypeRef.")
+                else error("Only direct subclasses of TypeRef are allowed.")
+            classOf<TypeRef<*>>() -> error("TypeRef must be created with a type argument: object : TypeRef<...>() {}")
+            else -> error("Only direct subclasses of TypeRef are allowed.")
         }
     }
 

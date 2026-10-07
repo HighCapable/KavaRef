@@ -57,7 +57,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      */
     inline fun <reified T : Any> createAsType(vararg args: Any?): T {
         requireAccessible()
-        return self.newInstance(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}.")
+        return self.newInstance(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
     }
 
     /**

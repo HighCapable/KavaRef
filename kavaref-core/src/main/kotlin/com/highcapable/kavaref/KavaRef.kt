@@ -91,14 +91,14 @@ class KavaRef private constructor() {
 
         // region Deprecated functions to prevent misuse
 
-        private const val EXTERNAL_DEPRECATED_MESSAGE = "You are calling asResolver() on a class, it's an error and should use resolve() instead."
+        private const val EXTERNAL_DEPRECATED_MESSAGE = "You are calling asResolver() on a class, this is not allowed, use resolve() instead."
         private const val EXTERNAL_EXCEPTION_MESSAGE = "Not allowed to call asResolver() on a class, please use resolve() instead."
 
-        private const val INTERNAL_DEPRECATED_MESSAGE = "You are calling asResolver() in KavaRef internal component, it's an error and should delete it."
-        private const val INTERNAL_EXCEPTION_MESSAGE = "Not allowed to call asResolver() in KavaRef internal component, please delete it."
+        private const val INTERNAL_DEPRECATED_MESSAGE = "You are calling asResolver() in a KavaRef internal component, this is not allowed, please delete it."
+        private const val INTERNAL_EXCEPTION_MESSAGE = "Not allowed to call asResolver() in a KavaRef internal component, please delete it."
 
         /**
-         * This is a fake function call chains to avoid calling on a [KClass], use [KClass.resolve] instead.
+         * This is a fake function to prevent calling on a [KClass], use [KClass.resolve] instead.
          */
         @Deprecated(
             message = EXTERNAL_DEPRECATED_MESSAGE,
@@ -109,7 +109,7 @@ class KavaRef private constructor() {
         fun <T : Any> KClass<T>.asResolver(): MemberScope<T> = error(EXTERNAL_EXCEPTION_MESSAGE)
 
         /**
-         * This is a fake function call chains to avoid calling on a [Class], use [Class.resolve] instead.
+         * This is a fake function to prevent calling on a [Class], use [Class.resolve] instead.
          */
         @Deprecated(
             message = EXTERNAL_DEPRECATED_MESSAGE,
@@ -120,28 +120,28 @@ class KavaRef private constructor() {
         fun <T : Any> Class<T>.asResolver(): MemberScope<T> = error(EXTERNAL_EXCEPTION_MESSAGE)
 
         /**
-         * This is a fake function call chains to avoid internal calls to themselves.
+         * This is a fake function to prevent KavaRef internal components from calling it.
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
         fun MemberScope<*>.asResolver(): MemberScope<*> = error(INTERNAL_EXCEPTION_MESSAGE)
 
         /**
-         * This is a fake function call chains to avoid internal calls to themselves.
+         * This is a fake function to prevent KavaRef internal components from calling it.
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
         fun MemberCondition<*, *, *>.asResolver(): MemberCondition<*, *, *> = error(INTERNAL_EXCEPTION_MESSAGE)
 
         /**
-         * This is a fake function call chains to avoid internal calls to themselves.
+         * This is a fake function to prevent KavaRef internal components from calling it.
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
         fun MemberResolver<*, *>.asResolver(): MemberResolver<*, *> = error(INTERNAL_EXCEPTION_MESSAGE)
 
         /**
-         * This is a fake function call chains to avoid internal calls to themselves.
+         * This is a fake function to prevent KavaRef internal components from calling it.
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic

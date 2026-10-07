@@ -53,7 +53,7 @@ import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 /**
- * Processing member resolver core implementation.
+ * The core implementation of member resolution.
  */
 object MemberProcessor {
 
@@ -88,7 +88,7 @@ object MemberProcessor {
          */
         open fun <T : Any> getDeclaredFields(declaringClass: Class<T>): List<Field> =
             runCatching { declaringClass.declaredFields.toList() }.onFailure {
-                KavaRefRuntime.warn("Failed to get declared fields in $this because got an exception.", it)
+                KavaRefRuntime.warn("Failed to get declared fields in $declaringClass because an exception was thrown", it)
             }.getOrNull() ?: emptyList()
 
         /**
@@ -98,7 +98,7 @@ object MemberProcessor {
          */
         open fun <T : Any> getDeclaredMethods(declaringClass: Class<T>): List<Method> =
             runCatching { declaringClass.declaredMethods.toList() }.onFailure {
-                KavaRefRuntime.warn("Failed to get declared methods in $this because got an exception.", it)
+                KavaRefRuntime.warn("Failed to get declared methods in $declaringClass because an exception was thrown", it)
             }.getOrNull() ?: emptyList()
 
         /**
@@ -108,7 +108,7 @@ object MemberProcessor {
          */
         open fun <T : Any> getDeclaredConstructors(declaringClass: Class<T>): List<Constructor<T>> =
             runCatching { declaringClass.declaredConstructors.filterIsInstance<Constructor<T>>() }.onFailure {
-                KavaRefRuntime.warn("Failed to get declared constructors in $this because got an exception.", it)
+                KavaRefRuntime.warn("Failed to get declared constructors in $declaringClass because an exception was thrown", it)
             }.getOrNull() ?: emptyList()
     }
 
@@ -123,7 +123,7 @@ object MemberProcessor {
         configuration: MemberCondition.Configuration<T>?
     ): List<R> {
         require(configuration != null) {
-            "You must provide a configuration to resolve the member use build(configuration)."
+            "You must provide a configuration to resolve the member, use build(configuration)."
         }
 
         val context = ResolveContext(configuration)
@@ -394,28 +394,28 @@ object MemberProcessor {
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>
     ): List<R> {
-        val exceptionNote = "If you want to ignore this exception, adding optional() in your condition."
+        val exceptionNote = "If you want to ignore this exception, add optional() to your condition."
         val superclassMode = condition.superclassMode(configuration)
         val superclassNote = when (superclassMode) {
             MemberCondition.Configuration.Superclass.NO -> ""
-            MemberCondition.Configuration.Superclass.NORMAL -> " (Also tried for superclass)"
-            MemberCondition.Configuration.Superclass.INCLUDE_INTERFACES -> " (Also tried for superclass and interfaces)"
+            MemberCondition.Configuration.Superclass.NORMAL -> " (Also tried in superclasses)"
+            MemberCondition.Configuration.Superclass.INCLUDE_INTERFACES -> " (Also tried in superclasses and interfaces)"
         }
 
         val memberSuggestion = if (superclassMode == MemberCondition.Configuration.Superclass.NO)
-            "Members in superclass are not reflected in the current class, you can try adding superclass() in your condition and try again. "
-        else "Check if the conditions are correct and valid, and try again. "
+            "Members in superclasses are not reflected in the current class, you can try adding superclass() to your condition and try again"
+        else "Check if the conditions are correct and valid, and try again"
 
         val conditionTable = buildConditionTable(context, condition, configuration)
         val isOptional = configuration.optional != MemberCondition.Configuration.Optional.NO
         val message = when (condition) {
-            is MethodCondition -> "No method found matching the condition for current class$superclassNote.\n" +
+            is MethodCondition -> "No method found matching the condition for the current class$superclassNote.\n" +
                 conditionTable + "\n" +
                 "Suggestion: $memberSuggestion"
-            is ConstructorCondition -> "No constructor found matching the condition for current class.\n" +
+            is ConstructorCondition -> "No constructor found matching the condition for the current class.\n" +
                 conditionTable + "\n" +
-                "Suggestion: Constructors are not inherited from superclass, check if the conditions are correct and valid, and try again. "
-            is FieldCondition -> "No field found matching the condition for current class$superclassNote.\n" +
+                "Suggestion: Constructors are not inherited from the superclass, check if the conditions are correct and valid, and try again"
+            is FieldCondition -> "No field found matching the condition for the current class$superclassNote.\n" +
                 conditionTable + "\n" +
                 "Suggestion: $memberSuggestion"
             else -> error("Unsupported condition type: $condition")
@@ -661,7 +661,7 @@ object MemberProcessor {
     private fun Any.toTypeClass(context: ResolveContext, noVague: String? = null): Class<*> {
         fun Class<*>.parseVagueType() =
             if (this == classOf<VagueType>())
-                noVague?.let { error("VagueType is not supported for \"$it\".") } ?: this
+                noVague?.let { error("VagueType is not supported for \"$it\"") } ?: this
             else this
 
         return when (this) {
@@ -672,7 +672,7 @@ object MemberProcessor {
             // If enabled optional mode, use a non-match sentinel when not found so unresolved strings fail closed.
             else context.resolve(this).getOrNull() ?: classOf<UnresolvedTypeSentinel>()
             is VagueType -> javaClass
-            else -> error("Unsupported type: $this, supported context are Class, KClass, String and VagueType.")
+            else -> error("Unsupported type: $this, the supported types are Class, KClass, String and VagueType")
         }.parseVagueType()
     }
 
@@ -692,7 +692,7 @@ object MemberProcessor {
     private fun Any.toStringIgnore() = toString().replace(" (Kotlin reflection is not available)", "")
 
     /**
-     * The context of once resolving.
+     * The context of a single resolution.
      *
      * Resolves the class names in conditions once, failures are cached too, so the same exception is thrown again on reuse.
      * Also records which runtime conditions are evaluated and the exceptions thrown by them, grouped by the condition name.

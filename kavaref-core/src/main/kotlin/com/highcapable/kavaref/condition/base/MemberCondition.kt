@@ -49,7 +49,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
      * it will search the [declaringClass]'s superclasses (and interfaces), default is [Superclass.NO].
      * It applies to every condition built with this configuration, use [MemberCondition.superclass] to enable it for a single condition.
      * @param optional the optional mode, which means that when the condition cannot find the corresponding member,
-     * do not throw an exception or do not print any logs, but return an empty list, default is [Optional.NO].
+     * do not throw an exception but return an empty list, whether to print logs depends on [Optional], default is [Optional.NO].
      */
     data class Configuration<T : Any>(
         val declaringClass: Class<T>,
@@ -115,7 +115,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
 
     /**
      * The configuration of this condition,
-     * user can only set by [build] function.
+     * which can only be set by the [build] function.
      */
     @get:JvmSynthetic
     @set:JvmSynthetic
@@ -269,8 +269,8 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Initialize the merged data from this condition to the new condition.
-     * @param other the other condition instance to merge with.
+     * Merge the data set in the [other] condition into this condition.
+     * @param other the other condition instance to merge from.
      */
     @JvmSynthetic
     internal open fun initializeMergedData(other: MemberCondition<M, R, T>) {
@@ -309,13 +309,13 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     /**
      * Build the condition with the given [configuration].
      *
-     * - Note: If you are not a manually created condition instance, then you cannot set [configuration] again.
-     * @param configuration the class that declares the member.
+     * - Note: If this condition is not created manually, then you cannot set [configuration] again.
+     * @param configuration the configuration to build the condition with.
      * @return [List]<[R]>
      */
     @JvmOverloads
     open fun build(configuration: Configuration<T>? = null): List<R> =
-        TODO("Implemented build function in subclass.")
+        TODO("Implement the build function in a subclass.")
 
     /**
      * Get the condition string map.

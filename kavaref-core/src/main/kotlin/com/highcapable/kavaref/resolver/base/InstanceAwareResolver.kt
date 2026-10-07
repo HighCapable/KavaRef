@@ -41,7 +41,7 @@ abstract class InstanceAwareResolver<M : Member, T : Any>(override val self: M) 
      * Set the instance of [self].
      *
      * If you have already set it in [MemberCondition.Configuration.memberInstance],
-     * then there is no need to set it here.
+     * then you cannot set it here again, otherwise an [IllegalStateException] will be thrown.
      * If you want to reuse the resolver, please use [copy] to create a new resolver.
      * @param instance the instance to set.
      */
