@@ -537,7 +537,7 @@ KavaRef prints the complete exception content for debugging, and when using `opt
 > The following example
 
 ``` :no-line-numbers
-No method found matching the condition for current class.
+No method found matching the condition for the current class.
 +------------------------------------------------+
 | class com.demo                                 |
 +------------+-----------------------------------+
@@ -570,7 +570,7 @@ The printed exception content is as follows.
 > The following example
 
 ``` :no-line-numbers
-No method found matching the condition for current class.
+No method found matching the condition for the current class.
 +------------------------------------------------------+
 | class com.demo                                       |
 +----------------------------+-------------------------+

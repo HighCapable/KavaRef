@@ -512,7 +512,7 @@ KavaRef 会打印完整的异常内容以供调试，在使用 `optional()` 时�
 > 示例如下
 
 ``` :no-line-numbers
-No method found matching the condition for current class.
+No method found matching the condition for the current class.
 +------------------------------------------------+
 | class com.demo                                 |
 +------------+-----------------------------------+
@@ -542,7 +542,7 @@ Test::class.resolve()
 > 示例如下
 
 ``` :no-line-numbers
-No method found matching the condition for current class.
+No method found matching the condition for the current class.
 +------------------------------------------------------+
 | class com.demo                                       |
 +----------------------------+-------------------------+
