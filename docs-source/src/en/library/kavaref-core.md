@@ -255,7 +255,7 @@ val test = Test::class.resolve()
 
 ::: tip
 
-The `T` in `get<T>()` and `invoke<T>()` only declares the type of the return value and does not perform any type conversion, if the actual type does not match `T`, a `ClassCastException` will be thrown when the return value is used, and so do `getQuietly<T>()` and `invokeQuietly<T>()`.
+`get<T>()` and `invoke<T>()` check the type of the return value, if the actual type does not match `T`, `null` will be returned, and so do `getQuietly<T>()` and `invokeQuietly<T>()`.
 
 In addition to methods such as `firstMethod`, you can also use methods such as `lastMethod` to get the last matching `MethodResolver` instance, which is equivalent to `method { ... }.last()`.
 

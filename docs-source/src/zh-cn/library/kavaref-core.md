@@ -243,7 +243,7 @@ val test = Test::class.resolve()
 
 ::: tip
 
-`get<T>()`、`invoke<T>()` 中的 `T` 只用于声明返回值的类型，不会进行类型转换，如果实际类型与 `T` 不一致，会在使用返回值时抛出 `ClassCastException`，`getQuietly<T>()`、`invokeQuietly<T>()` 同样如此。
+`get<T>()`、`invoke<T>()` 会检查返回值的类型，如果实际类型与 `T` 不一致，将返回 `null`，`getQuietly<T>()`、`invokeQuietly<T>()` 同样如此。
 
 除了 `firstMethod` 等方法外，你也可以使用 `lastMethod` 等方法来获取最后一个匹配到的 `MethodResolver` 实例，它等价于 `method { ... }.last()`。
 
