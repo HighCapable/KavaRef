@@ -36,41 +36,46 @@ import kotlin.reflect.KClass
  * Type variables and wildcard types cannot be converted.
  * @see Type.toClassOrNull
  * @receiver the [Type] to be converted.
- * @return [Class]<[T]>
+ * @return [Class]
  * @throws TypeCastException if the conversion fails.
  */
-@JvmName("toClassTyped")
-tailrec fun <T : Any> Type.toClass(): Class<T> = when (this) {
-    is Class<*> -> this as Class<T>
-    is ParameterizedType -> rawType.toClass<T>()
-    is GenericArrayType -> ArrayClass(genericComponentType.toClass()) as Class<T>
+fun Type.toClass(): Class<Any> = when (this) {
+    is Class<*> -> this as Class<Any>
+    is ParameterizedType -> rawType.toClass()
+    is GenericArrayType -> ArrayClass(genericComponentType.toClass()) as Class<Any>
     else -> throw TypeCastException("Cannot cast type $this to a java.lang.Class object.")
 }
 
 /**
- * Convert [Type] to [Class].
+ * Convert [Type] to [Class], then cast it to [Class]<[T]>.
  * @see Type.toClass
  * @see Type.toClassOrNull
- * @return [Class]
+ * @return [Class]<[T]>
+ * @throws TypeCastException if the conversion fails.
+ * @throws IllegalStateException if the class is not assignable to [T].
  */
-fun Type.toClass() = toClass<Any>()
+@JvmName("toClassTyped")
+inline fun <reified T : Any> Type.toClass(): Class<T> {
+    val type = classOf<T>(primitiveType = false)
+    return toClass().also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
+}
 
 /**
  * Safely convert [Type] to [Class] or return null if it fails.
  * @see Type.toClass
  * @receiver the [Type] to be converted.
- * @return [Class]<[T]> or null.
- */
-@JvmName("toClassTypedOrNull")
-fun <T : Any> Type.toClassOrNull() = runCatching { toClass<T>() }.getOrNull()
-
-/**
- * Safely convert [Type] to [Class] or return null if it fails.
- * @see Type.toClass
- * @see Type.toClassOrNull
  * @return [Class] or null.
  */
-fun Type.toClassOrNull() = toClassOrNull<Any>()
+fun Type.toClassOrNull() = runCatching { toClass() }.getOrNull()
+
+/**
+ * Safely convert [Type] to [Class] and cast it to [Class]<[T]>, or return null if it fails.
+ * @see Type.toClass
+ * @see Type.toClassOrNull
+ * @return [Class]<[T]> or null if the conversion fails or the class is not assignable to [T].
+ */
+@JvmName("toClassOrNullTyped")
+inline fun <reified T : Any> Type.toClassOrNull() = toClassOrNull()?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
 
 /**
  * Convert [Type] to [ParameterizedType].

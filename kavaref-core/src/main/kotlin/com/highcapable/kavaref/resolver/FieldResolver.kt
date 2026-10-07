@@ -39,25 +39,22 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     override fun copy() = FieldResolver<T>(self)
 
     /**
-     * Get the value of the field.
+     * Get the value of the field and cast it to [T].
      * @see Field.get
      * @see getQuietly
-     * @return [T] or null.
+     * @return [T] or null if the value is null or not an instance of [T].
      */
     @JvmName("getTyped")
-    fun <T> get(): T? {
-        requireAccessible()
-        return self.get(instance) as? T?
-    }
+    inline fun <reified T> get() = get() as? T
 
     /**
-     * Get the value of the field and ignore any exceptions.
+     * Get the value of the field, cast it to [T] and ignore any exceptions.
      * @see Field.get
      * @see get
-     * @return [T] or null.
+     * @return [T] or null if failed or the value is not an instance of [T].
      */
     @JvmName("getQuietlyTyped")
-    fun <T> getQuietly() = runCatching { get<T>() }.getOrNull()
+    inline fun <reified T> getQuietly() = getQuietly() as? T
 
     /**
      * Get the value of the field.

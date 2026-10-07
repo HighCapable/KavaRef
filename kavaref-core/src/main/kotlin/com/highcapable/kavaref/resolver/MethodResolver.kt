@@ -39,25 +39,22 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
     override fun copy() = MethodResolver<T>(self)
 
     /**
-     * Invoke the method with the given arguments.
+     * Invoke the method with the given arguments and cast the result to [T].
      * @see Method.invoke
      * @see invokeQuietly
-     * @return [T] or null.
+     * @return [T] or null if the result is null or not an instance of [T].
      */
     @JvmName("invokeTyped")
-    fun <T> invoke(vararg args: Any?): T? {
-        requireAccessible()
-        return self.invoke(instance, *args) as? T?
-    }
+    inline fun <reified T> invoke(vararg args: Any?) = invoke(*args) as? T
 
     /**
-     * Invoke the method with the given arguments and ignore any exceptions.
+     * Invoke the method with the given arguments, cast the result to [T] and ignore any exceptions.
      * @see Method.invoke
      * @see invokeQuietly
-     * @return [T] or null.
+     * @return [T] or null if failed or the result is not an instance of [T].
      */
     @JvmName("invokeQuietlyTyped")
-    fun <T> invokeQuietly(vararg args: Any?) = runCatching { invoke<T>(*args) }.getOrNull()
+    inline fun <reified T> invokeQuietly(vararg args: Any?) = invokeQuietly(*args) as? T
 
     /**
      * Invoke the method with the given arguments.
