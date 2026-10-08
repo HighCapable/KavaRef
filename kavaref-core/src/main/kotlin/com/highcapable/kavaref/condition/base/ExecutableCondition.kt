@@ -33,7 +33,7 @@ import java.lang.reflect.Member
  * 
  * [T] to specify the declaring class type of the executable.
  */
-abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any> : MemberCondition<E, R, T>() {
+abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T, *>, T : Any> : MemberCondition<E, R, T>() {
 
     /** @see Executable.getParameterTypes */
     val parameters = mutableListOf<Any>()

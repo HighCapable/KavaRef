@@ -118,7 +118,7 @@ object MemberProcessor {
      * @param configuration the configuration to resolve members, must not be null.
      * @return [List]<[R]>
      */
-    internal inline fun <reified M : Member, reified R : MemberResolver<M, T>, T : Any> resolve(
+    internal inline fun <reified M : Member, reified R : MemberResolver<M, T, *>, T : Any> resolve(
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>?
     ): List<R> {
@@ -141,7 +141,7 @@ object MemberProcessor {
         } as List<R>
     }
 
-    private fun <M : Member, R : MemberResolver<M, T>, T : Any> resolveInClass(
+    private fun <M : Member, R : MemberResolver<M, T, *>, T : Any> resolveInClass(
         context: ResolveContext,
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>,
@@ -380,7 +380,7 @@ object MemberProcessor {
             compareAnnotationTypesNot(context, key, annotations, noVague = "Executable: annotatedExceptionTypesNot")
         }
 
-    private inline fun <reified M : Member, reified R : MemberResolver<M, T>, T : Any> Sequence<M>.resolve(
+    private inline fun <reified M : Member, reified R : MemberResolver<M, T, *>, T : Any> Sequence<M>.resolve(
         configuration: MemberCondition.Configuration<T>
     ) = when (M::class) {
         Method::class -> map { MethodResolver<T>(it as Method).apply(configuration) }
@@ -389,7 +389,7 @@ object MemberProcessor {
         else -> error("Unsupported member type: $this")
     }.toList() as List<R>
 
-    private fun <M : Member, R : MemberResolver<M, T>, T : Any> throwIfNotOptional(
+    private fun <M : Member, R : MemberResolver<M, T, *>, T : Any> throwIfNotOptional(
         context: ResolveContext,
         condition: MemberCondition<M, R, T>,
         configuration: MemberCondition.Configuration<T>
@@ -442,7 +442,7 @@ object MemberProcessor {
         }
     }
 
-    private inline fun <reified M : Member, T : Any> MemberResolver<M, T>.apply(configuration: MemberCondition.Configuration<T>) =
+    private inline fun <reified M : Member, T : Any> MemberResolver<M, T, *>.apply(configuration: MemberCondition.Configuration<T>) =
         apply { configuration.memberInstance?.let { if (this is InstanceAwareResolver<M, T, *>) of(it) } }
 
     private fun <T, R> Sequence<T>.filter(

@@ -36,7 +36,7 @@ import java.lang.reflect.Member
  * 
  * [T] to specify the declaring class type of the member.
  */
-abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
+abstract class MemberCondition<M : Member, R : MemberResolver<M, T, *>, T : Any> {
 
     /**
      * Configures initial conditions.
@@ -371,6 +371,8 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
             "Configuration already set for this condition \"$javaClass\" of \"${this.configuration}\". " +
                 "To prevent problems, the configuration can only be set once in a condition, " +
                 "otherwise use copy() to reuse the condition."
-        }; this.configuration = configuration
+        }
+
+        this.configuration = configuration
     }
 }

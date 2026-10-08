@@ -31,9 +31,30 @@ import java.lang.reflect.Constructor
  * Resolving [Constructor].
  * @param self the member to be resolved.
  */
-class ConstructorResolver<T : Any> internal constructor(override val self: Constructor<T>) : MemberResolver<Constructor<T>, T>(self) {
+class ConstructorResolver<T : Any> internal constructor(
+    override val self: Constructor<T>
+) : MemberResolver<Constructor<T>, T, ConstructorResolver.Handler>(self) {
 
-    override fun copy() = ConstructorResolver(self)
+    private var handler = Handler()
+
+    /**
+     * Handler for performing the operations on [Constructor].
+     */
+    open class Handler : MemberResolver.Handler<Constructor<*>>() {
+
+        /**
+         * Creates a new instance with the [constructor] and the given [args].
+         * @see Constructor.newInstance
+         * @param constructor the constructor to invoke.
+         * @param args the arguments to pass to the constructor.
+         * @return [T]
+         */
+        open fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T = constructor.newInstance(*args)
+    }
+
+    override fun withHandler(handler: Handler) = ConstructorResolver(self).also { it.handler = handler }
+
+    override fun copy() = ConstructorResolver(self).also { it.handler = handler }
 
     /**
      * Creates a new instance of the class represented by this constructor.
@@ -44,8 +65,8 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @return [T]
      */
     fun create(vararg args: Any?): T {
-        requireAccessible()
-        return self.newInstance(*args)
+        handler.requireAccessible(self)
+        return handler.newInstance(self, args)
     }
 
     /**
@@ -55,10 +76,8 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
      * @see createQuietly
      * @return [T]
      */
-    inline fun <reified T : Any> createAsType(vararg args: Any?): T {
-        requireAccessible()
-        return self.newInstance(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
-    }
+    inline fun <reified T : Any> createAsType(vararg args: Any?) =
+        create(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
 
     /**
      * Creates a new instance of the class represented by this constructor and ignores any exceptions.

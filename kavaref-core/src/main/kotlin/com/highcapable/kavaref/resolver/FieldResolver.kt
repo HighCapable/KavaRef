@@ -24,20 +24,23 @@
 package com.highcapable.kavaref.resolver
 
 import com.highcapable.kavaref.resolver.base.InstanceAwareResolver
+import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Field
 
 /**
  * Resolving [Field].
  * @param self the member to be resolved.
  */
-class FieldResolver<T : Any> internal constructor(override val self: Field) : InstanceAwareResolver<Field, T, FieldResolver.Handler>(self) {
+class FieldResolver<T : Any> internal constructor(
+    override val self: Field
+) : InstanceAwareResolver<Field, T, FieldResolver.Handler>(self) {
 
     private var handler = Handler()
 
     /**
      * Handler for performing the operations on [Field].
      */
-    open class Handler : InstanceAwareResolver.Handler {
+    open class Handler : MemberResolver.Handler<Field>() {
 
         /**
          * Gets the value of the [field] on the [instance].
@@ -94,7 +97,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      * @return [Any] or null.
      */
     fun get(): Any? {
-        requireAccessible()
+        handler.requireAccessible(self)
         return handler.get(self, instance)
     }
 
@@ -113,7 +116,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      * @param value the value to set.
      */
     fun set(value: Any?) {
-        requireAccessible()
+        handler.requireAccessible(self)
         handler.set(self, instance, value)
     }
 

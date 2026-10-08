@@ -32,4 +32,4 @@ import java.lang.reflect.Member
  * @receiver the condition to merge into.
  * @param other the other condition to merge from.
  */
-infix fun <M : Member, R : MemberResolver<M, T>, T : Any, U : MemberCondition<M, R, T>> U.mergeWith(other: U) = initializeMergedData(other)
+infix fun <M : Member, R : MemberResolver<M, T, *>, T : Any, U : MemberCondition<M, R, T>> U.mergeWith(other: U) = initializeMergedData(other)

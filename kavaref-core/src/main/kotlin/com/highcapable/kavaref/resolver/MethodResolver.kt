@@ -24,20 +24,23 @@
 package com.highcapable.kavaref.resolver
 
 import com.highcapable.kavaref.resolver.base.InstanceAwareResolver
+import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Method
 
 /**
  * Resolving [Method].
  * @param self the member to be resolved.
  */
-class MethodResolver<T : Any> internal constructor(override val self: Method) : InstanceAwareResolver<Method, T, MethodResolver.Handler>(self) {
+class MethodResolver<T : Any> internal constructor(
+    override val self: Method
+) : InstanceAwareResolver<Method, T, MethodResolver.Handler>(self) {
 
     private var handler = Handler()
 
     /**
      * Handler for performing the operations on [Method].
      */
-    open class Handler : InstanceAwareResolver.Handler {
+    open class Handler : MemberResolver.Handler<Method>() {
 
         /**
          * Invokes the [method] on the [instance] with the given [args].
@@ -86,7 +89,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      * @return [Any] or null.
      */
     fun invoke(vararg args: Any?): Any? {
-        requireAccessible()
+        handler.requireAccessible(self)
         return handler.invoke(self, instance, args)
     }
 

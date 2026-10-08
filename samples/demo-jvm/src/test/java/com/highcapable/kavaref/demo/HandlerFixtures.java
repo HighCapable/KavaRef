@@ -40,5 +40,9 @@ public class HandlerFixtures {
         private String greet(String prefix) {
             return prefix + name;
         }
+
+        private String hidden() {
+            return "hidden";
+        }
     }
 }

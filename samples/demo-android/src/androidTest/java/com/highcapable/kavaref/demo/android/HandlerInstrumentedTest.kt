@@ -24,6 +24,7 @@ package com.highcapable.kavaref.demo.android
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.highcapable.kavaref.KavaRef.Companion.resolve
+import com.highcapable.kavaref.resolver.ConstructorResolver
 import com.highcapable.kavaref.resolver.FieldResolver
 import com.highcapable.kavaref.resolver.MethodResolver
 import org.junit.Assert.assertEquals
@@ -33,8 +34,10 @@ import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.lang.reflect.Constructor
 import java.lang.reflect.Field
 import java.lang.reflect.Method
+
 @RunWith(AndroidJUnit4::class)
 class HandlerInstrumentedTest {
 
@@ -77,6 +80,29 @@ class HandlerInstrumentedTest {
             this.instance = instance
             super.set(field, instance, value)
         }
+    }
+
+    private class RecordingConstructorHandler : ConstructorResolver.Handler() {
+
+        var accessibleMember: Constructor<*>? = null
+        var constructor: Constructor<*>? = null
+        var args: List<Any?>? = null
+
+        override fun requireAccessible(member: Constructor<*>) {
+            accessibleMember = member
+            super.requireAccessible(member)
+        }
+
+        override fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T {
+            this.constructor = constructor
+            this.args = args.toList()
+            return super.newInstance(constructor, args)
+        }
+    }
+
+    private class SkippingAccessibleHandler : MethodResolver.Handler() {
+
+        override fun requireAccessible(member: Method) {}
     }
 
     private object FailingMethodHandler : MethodResolver.Handler() {
@@ -166,5 +192,25 @@ class HandlerInstrumentedTest {
         val copied = value().of(target).withHandler(handler).copy()
         assertEquals("value", copied.of(other).get())
         assertSame(other, handler.instance)
+    }
+
+    @Test
+    fun constructorHandlerReceivesConstructorAndArguments() {
+        val handler = RecordingConstructorHandler()
+        val resolver = HandlerFixtures.Target::class.resolve().firstConstructor { parameters(String::class) }.withHandler(handler)
+        val created = resolver.create("created")
+        assertEquals("hi created", greet().of(created).invoke("hi "))
+        assertSame(resolver.self, handler.accessibleMember)
+        assertSame(resolver.self, handler.constructor)
+        assertEquals(listOf("created"), handler.args)
+        resolver.copy().createAsType<HandlerFixtures.Target>("typed")
+        assertEquals(listOf("typed"), handler.args)
+    }
+
+    @Test
+    fun requireAccessibleCanBeSkipped() {
+        val hidden = HandlerFixtures.Target::class.resolve().firstMethod { name = "hidden" }.of(target)
+        assertThrows(IllegalAccessException::class.java) { hidden.withHandler(SkippingAccessibleHandler()).invoke() }
+        assertEquals("hidden", hidden.invoke())
     }
 }

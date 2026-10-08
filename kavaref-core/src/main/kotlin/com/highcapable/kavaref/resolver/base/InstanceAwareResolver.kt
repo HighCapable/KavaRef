@@ -19,6 +19,8 @@
  *
  * This file is created by fankes on 2025/5/16.
  */
+@file:Suppress("FunctionName")
+
 package com.highcapable.kavaref.resolver.base
 
 import com.highcapable.kavaref.condition.base.MemberCondition
@@ -31,15 +33,12 @@ import java.lang.reflect.Member
  * [H] to specify the handler type of the member.
  * @param self the member to be resolved.
  */
-abstract class InstanceAwareResolver<M : Member, T : Any, H : InstanceAwareResolver.Handler>(override val self: M) : MemberResolver<M, T>(self) {
+abstract class InstanceAwareResolver<M : Member, T : Any, H : MemberResolver.Handler<M>>(
+    override val self: M
+) : MemberResolver<M, T, H>(self) {
 
     /** The instance of [self]. */
     protected var instance: T? = null
-
-    /**
-     * Handler for performing the operations on the member.
-     */
-    interface Handler
 
     /**
      * Sets the instance of [self].
@@ -50,13 +49,6 @@ abstract class InstanceAwareResolver<M : Member, T : Any, H : InstanceAwareResol
      * @param instance the instance to set.
      */
     abstract fun of(instance: T?): InstanceAwareResolver<M, T, H>
-
-    /**
-     * Creates a new resolver with the given [handler].
-     * @param handler the handler to set.
-     * @return [InstanceAwareResolver]<[M], [T], [H]>
-     */
-    abstract fun withHandler(handler: H): InstanceAwareResolver<M, T, H>
 
     /**
      * Checks if the [instance] is null and sets it.
@@ -73,4 +65,32 @@ abstract class InstanceAwareResolver<M : Member, T : Any, H : InstanceAwareResol
 
         this.instance = instance
     }
+
+    // region Binary compatibility for the internal accessors called by previous versions
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmSynthetic
+    @JvmName($$"getInstance$com_highcapable_kavaref_kavaref_core")
+    internal fun _getInstance() = instance
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmSynthetic
+    @JvmName($$"setInstance$com_highcapable_kavaref_kavaref_core")
+    internal fun _setInstance(instance: T?) {
+        this.instance = instance
+    }
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmSynthetic
+    @JvmName($$"getInstance$kavaref_core")
+    internal fun __getInstance() = instance
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmSynthetic
+    @JvmName($$"setInstance$kavaref_core")
+    internal fun __setInstance(instance: T?) {
+        this.instance = instance
+    }
+
+    // endregion
 }

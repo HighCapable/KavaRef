@@ -138,14 +138,14 @@ class KavaRef private constructor() {
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
-        fun MemberResolver<*, *>.asResolver(): MemberResolver<*, *> = error(INTERNAL_EXCEPTION_MESSAGE)
+        fun MemberResolver<*, *, *>.asResolver(): MemberResolver<*, *, *> = error(INTERNAL_EXCEPTION_MESSAGE)
 
         /**
          * This is a fake function to prevent KavaRef internal components from calling it.
          */
         @Deprecated(message = INTERNAL_DEPRECATED_MESSAGE, level = DeprecationLevel.ERROR)
         @JvmSynthetic
-        fun List<MemberResolver<*, *>>.asResolver(): List<MemberResolver<*, *>> = error(INTERNAL_EXCEPTION_MESSAGE)
+        fun List<MemberResolver<*, *, *>>.asResolver(): List<MemberResolver<*, *, *>> = error(INTERNAL_EXCEPTION_MESSAGE)
 
         // endregion
     }
