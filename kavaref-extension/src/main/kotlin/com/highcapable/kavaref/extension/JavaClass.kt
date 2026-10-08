@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/5/31.
  */
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST", "PLATFORM_CLASS_MAPPED_TO_KOTLIN")
+@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST", "PLATFORM_CLASS_MAPPED_TO_KOTLIN", "FunctionName")
 @file:JvmName("ClassUtils")
 
 package com.highcapable.kavaref.extension
@@ -220,7 +220,7 @@ class VariousClass(vararg names: String) {
      * @throws NoClassDefFoundError if no class is found.
      * @throws IllegalStateException if the class is not assignable to [T].
      */
-    @JvmName("loadTyped")
+    @JvmName("loadAsTyped")
     inline fun <reified T : Any> load(loader: ClassLoader? = null, initialize: Boolean = false): Class<T> {
         val type = classOf<T>(primitiveType = false)
         return load(loader, initialize).also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
@@ -246,9 +246,23 @@ class VariousClass(vararg names: String) {
      * @see loadOrNull
      * @return [Class]<[T]> or null if no class is found or the class is not assignable to [T].
      */
-    @JvmName("loadOrNullTyped")
+    @JvmName("loadOrNullAsTyped")
     inline fun <reified T : Any> loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false) =
         loadOrNull(loader, initialize)?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
+
+    // region Binary compatibility for the non-inline functions compiled by previous versions
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmOverloads
+    @JvmName("loadTyped")
+    fun <T : Any> _load(loader: ClassLoader? = null, initialize: Boolean = false) = load(loader, initialize) as Class<T>
+
+    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+    @JvmOverloads
+    @JvmName("loadOrNullTyped")
+    fun <T : Any> _loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = loadOrNull(loader, initialize) as Class<T>?
+
+    // endregion
 }
 
 /**
@@ -397,7 +411,7 @@ fun lazyClass(
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
  */
-@JvmName("lazyClassTyped")
+@JvmName("lazyClassAsTyped")
 inline fun <reified T : Any> lazyClass(
     name: String,
     initialize: Boolean = false,
@@ -426,7 +440,7 @@ fun lazyClass(
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
  */
-@JvmName("lazyClassTyped")
+@JvmName("lazyClassAsTyped")
 inline fun <reified T : Any> lazyClass(
     variousClass: VariousClass,
     initialize: Boolean = false,
@@ -455,7 +469,7 @@ fun lazyClassOrNull(
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
  */
-@JvmName("lazyClassOrNullTyped")
+@JvmName("lazyClassOrNullAsTyped")
 inline fun <reified T : Any> lazyClassOrNull(
     name: String,
     initialize: Boolean = false,
@@ -484,7 +498,7 @@ fun lazyClassOrNull(
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
  */
-@JvmName("lazyClassOrNullTyped")
+@JvmName("lazyClassOrNullAsTyped")
 inline fun <reified T : Any> lazyClassOrNull(
     variousClass: VariousClass,
     initialize: Boolean = false,
@@ -515,7 +529,7 @@ fun String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Cl
  * @return [Class]<[T]>
  * @throws IllegalStateException if the class is not assignable to [T].
  */
-@JvmName("createTyped")
+@JvmName("createAsTyped")
 inline fun <reified T : Any> String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Class<T> {
     val type = classOf<T>(primitiveType = false)
     return toClass(loader, initialize).also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
@@ -542,7 +556,7 @@ fun String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = fals
  * @see String.toClassOrNull
  * @return [Class]<[T]> or null if the class is not found or not assignable to [T].
  */
-@JvmName("createOrNullTyped")
+@JvmName("createOrNullAsTyped")
 inline fun <reified T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = false) =
     toClassOrNull(loader, initialize)?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
 
@@ -750,7 +764,45 @@ val <T : Any> Class<T>.hasInterfaces get() = interfaces.isNotEmpty()
 @get:JvmSynthetic
 val <T : Any> KClass<T>.hasInterfaces get() = java.hasInterfaces
 
-// Class extension properties for checking modifiers.
+// region Binary compatibility for the non-inline functions compiled by previous versions
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmSynthetic
+@JvmName("lazyClassTyped")
+fun <T : Any> _lazyClass(name: String, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
+    LazyClass.NonNull.from(name, classOf<Any>() as Class<T>, initialize, loader)
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmSynthetic
+@JvmName("lazyClassTyped")
+fun <T : Any> _lazyClass(variousClass: VariousClass, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
+    LazyClass.NonNull.from(variousClass, classOf<Any>() as Class<T>, initialize, loader)
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmSynthetic
+@JvmName("lazyClassOrNullTyped")
+fun <T : Any> _lazyClassOrNull(name: String, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
+    LazyClass.Nullable.from(name, classOf<Any>() as Class<T>, initialize, loader)
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmSynthetic
+@JvmName("lazyClassOrNullTyped")
+fun <T : Any> _lazyClassOrNull(variousClass: VariousClass, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
+    LazyClass.Nullable.from(variousClass, classOf<Any>() as Class<T>, initialize, loader)
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmOverloads
+@JvmName("createTyped")
+fun <T : Any> String._toClass(loader: ClassLoader? = null, initialize: Boolean = false) = toClass(loader, initialize) as Class<T>
+
+@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
+@JvmOverloads
+@JvmName("createOrNullTyped")
+fun <T : Any> String._toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = toClassOrNull(loader, initialize) as Class<T>?
+
+// endregion
+
+// region Class extension properties for checking modifiers
 
 /**
  * Checks if the [Class] is public.
@@ -839,3 +891,5 @@ val <T : Any> Class<T>.isAbstract get() = Modifier.isAbstract(modifiers)
  * @return `true` if the [Class] is strict, `false` otherwise.
  */
 val <T : Any> Class<T>.isStrict get() = Modifier.isStrict(modifiers)
+
+// endregion

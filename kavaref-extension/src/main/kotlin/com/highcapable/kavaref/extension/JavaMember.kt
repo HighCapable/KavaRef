@@ -63,7 +63,7 @@ fun Member.makeAccessible() = (this as? AccessibleObject?)?.let {
     }
 } == true
 
-// Member extension properties for checking modifiers.
+// region Member extension properties for checking modifiers
 
 /**
  * Checks if the [Member] is public.
@@ -160,6 +160,8 @@ val Member.isAbstract get() = Modifier.isAbstract(sourceModifiers)
  * @return `true` if the [Member] is strict, `false` otherwise.
  */
 val Member.isStrict get() = Modifier.isStrict(sourceModifiers)
+
+// endregion
 
 /**
  * Gets the source-level modifiers of [Member].
