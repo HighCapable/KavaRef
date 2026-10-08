@@ -28,7 +28,7 @@ import java.lang.reflect.Array
 import kotlin.reflect.KClass
 
 /**
- * Create a [Class] for an array of the specified [type].
+ * Creates a [Class] for an array of the specified [type].
  *
  * For example:
  * `ArrayClass(String::class.java)` will
@@ -40,7 +40,7 @@ import kotlin.reflect.KClass
 fun ArrayClass(type: Class<*>) = Array.newInstance(type, 0).javaClass as Class<Array>
 
 /**
- * Create a [KClass.java] for an array of the specified [type].
+ * Creates a [KClass.java] for an array of the specified [type].
  *
  * For example:
  * `ArrayClass(String::class)` will
@@ -52,7 +52,7 @@ fun ArrayClass(type: Class<*>) = Array.newInstance(type, 0).javaClass as Class<A
 fun ArrayClass(type: KClass<*>) = ArrayClass(type.java)
 
 /**
- * Create a [Class] for an array of the specified [type].
+ * Creates a [Class] for an array of the specified [type].
  *
  * For example:
  * `ArrayClass("java.lang.String")` will

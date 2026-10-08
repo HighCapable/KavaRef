@@ -51,7 +51,7 @@ object KavaRefRuntime {
         /** ERROR */
         ERROR("error"),
 
-        /** OFF (Turn off logging) */
+        /** OFF (Turns off logging) */
         OFF("off")
     }
 
@@ -66,28 +66,28 @@ object KavaRefRuntime {
         val tag: String
 
         /**
-         * Log a debug message.
+         * Logs a debug message.
          * @param msg the message to log.
          * @param throwable an optional throwable to log.
          */
         fun debug(msg: Any?, throwable: Throwable? = null)
 
         /**
-         * Log an info message.
+         * Logs an info message.
          * @param msg the message to log.
          * @param throwable an optional throwable to log.
          */
         fun info(msg: Any?, throwable: Throwable? = null)
 
         /**
-         * Log a warning message.
+         * Logs a warning message.
          * @param msg the message to log.
          * @param throwable an optional throwable to log.
          */
         fun warn(msg: Any?, throwable: Throwable? = null)
 
         /**
-         * Log an error message.
+         * Logs an error message.
          * @param msg the message to log.
          * @param throwable an optional throwable to log.
          */
@@ -95,7 +95,7 @@ object KavaRefRuntime {
     }
 
     /**
-     * Get or set the log level for `KavaRef`.
+     * Gets or sets the log level for `KavaRef`.
      *
      * Use `KavaRef` to control it.
      * @return [LogLevel]
@@ -105,7 +105,7 @@ object KavaRefRuntime {
     internal var logLevel = LogLevel.WARN
 
     /**
-     * Set the logger for `KavaRef`.
+     * Sets the logger for `KavaRef`.
      *
      * Use `KavaRef` to control it.
      * @param logger the logger to be set.

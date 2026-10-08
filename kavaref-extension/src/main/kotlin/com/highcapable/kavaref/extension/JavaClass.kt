@@ -177,7 +177,7 @@ private object InstanceCreator {
 }
 
 /**
- * Provide a [ClassLoader] for reflection operations.
+ * Provides a [ClassLoader] for reflection operations.
  */
 object ClassLoaderProvider {
 
@@ -198,7 +198,7 @@ class VariousClass(vararg names: String) {
     private val classNames = names.toList()
 
     /**
-     * Load the first class that matches the given names using the specified [ClassLoader].
+     * Loads the first class that matches the given names using the specified [ClassLoader].
      *
      * If no class is found, it throws a [NoClassDefFoundError].
      * @see loadOrNull
@@ -213,7 +213,7 @@ class VariousClass(vararg names: String) {
         ?: throw NoClassDefFoundError("Failed to match any class of VariousClass $classNames")
 
     /**
-     * Load the first class that matches the given names using the specified [ClassLoader] and cast it to [Class]<[T]>.
+     * Loads the first class that matches the given names using the specified [ClassLoader] and casts it to [Class]<[T]>.
      * @see load
      * @see loadOrNull
      * @return [Class]<[T]>
@@ -227,7 +227,7 @@ class VariousClass(vararg names: String) {
     }
 
     /**
-     * Load the first class that matches the given names using the specified [ClassLoader].
+     * Loads the first class that matches the given names using the specified [ClassLoader].
      *
      * If no class is found, it returns null.
      * @see load
@@ -241,7 +241,7 @@ class VariousClass(vararg names: String) {
         classNames.firstOrNull { it.toClassOrNull(loader) != null }?.toClass(loader, initialize)
 
     /**
-     * Load the first class that matches the given names using the specified [ClassLoader] and cast it to [Class]<[T]>.
+     * Loads the first class that matches the given names using the specified [ClassLoader] and casts it to [Class]<[T]>.
      * @see load
      * @see loadOrNull
      * @return [Class]<[T]> or null if no class is found or the class is not assignable to [T].
@@ -273,7 +273,7 @@ abstract class LazyClass<T : Any> private constructor(
     private var isMissing = false
 
     /**
-     * Get non-null instance of [Class].
+     * Gets non-null instance of [Class].
      * @return [Class]<[T]>
      */
     @get:JvmSynthetic
@@ -292,7 +292,7 @@ abstract class LazyClass<T : Any> private constructor(
     }
 
     /**
-     * Get nullable instance of [Class].
+     * Gets nullable instance of [Class].
      * @return [Class]<[T]> or null.
      */
     @get:JvmSynthetic
@@ -309,7 +309,7 @@ abstract class LazyClass<T : Any> private constructor(
     } else null
 
     /**
-     * Create a non-null instance of [Class].
+     * Creates a non-null instance of [Class].
      * @param classDefinition the class definition, can be a [String] class name or a [VariousClass].
      * @param type the type that the class must be assignable to.
      * @param initialize whether to initialize the class with [loader].
@@ -326,7 +326,7 @@ abstract class LazyClass<T : Any> private constructor(
         internal companion object {
 
             /**
-             * Create a non-null instance of [Class].
+             * Creates a non-null instance of [Class].
              * @see NonNull
              */
             @JvmSynthetic
@@ -342,7 +342,7 @@ abstract class LazyClass<T : Any> private constructor(
     }
 
     /**
-     * Create a nullable instance of [Class].
+     * Creates a nullable instance of [Class].
      * @param classDefinition the class definition, can be a [String] class name or a [VariousClass].
      * @param type the type that the class must be assignable to.
      * @param initialize whether to initialize the class with [loader].
@@ -359,7 +359,7 @@ abstract class LazyClass<T : Any> private constructor(
         internal companion object {
 
             /**
-             * Create a nullable instance of [Class].
+             * Creates a nullable instance of [Class].
              * @see Nullable
              */
             @JvmSynthetic
@@ -376,7 +376,7 @@ abstract class LazyClass<T : Any> private constructor(
 }
 
 /**
- * Create a non-null instance of [Class].
+ * Creates a non-null instance of [Class].
  * @see lazyClassOrNull
  * @param name the fully qualified class name.
  * @param initialize whether to initialize the class with [loader], default is false.
@@ -392,7 +392,7 @@ fun lazyClass(
 ) = LazyClass.NonNull.from(name, classOf<Any>(), initialize, loader)
 
 /**
- * Create a non-null instance of [Class].
+ * Creates a non-null instance of [Class].
  * @see lazyClass
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
@@ -405,7 +405,7 @@ inline fun <reified T : Any> lazyClass(
 ) = LazyClass.NonNull.from(name, classOf<T>(primitiveType = false), initialize, loader)
 
 /**
- * Create a non-null instance of [VariousClass].
+ * Creates a non-null instance of [VariousClass].
  * @see lazyClassOrNull
  * @param variousClass the [VariousClass] to be loaded.
  * @param initialize whether to initialize the class with [loader], default is false.
@@ -421,7 +421,7 @@ fun lazyClass(
 ) = LazyClass.NonNull.from(variousClass, classOf<Any>(), initialize, loader)
 
 /**
- * Create a non-null instance of [VariousClass].
+ * Creates a non-null instance of [VariousClass].
  * @see lazyClass
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
@@ -434,7 +434,7 @@ inline fun <reified T : Any> lazyClass(
 ) = LazyClass.NonNull.from(variousClass, classOf<T>(primitiveType = false), initialize, loader)
 
 /**
- * Create a nullable instance of [Class].
+ * Creates a nullable instance of [Class].
  * @see lazyClass
  * @param name the fully qualified class name.
  * @param initialize whether to initialize the class with [loader], default is false.
@@ -450,7 +450,7 @@ fun lazyClassOrNull(
 ) = LazyClass.Nullable.from(name, classOf<Any>(), initialize, loader)
 
 /**
- * Create a nullable instance of [Class].
+ * Creates a nullable instance of [Class].
  * @see lazyClass
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
@@ -463,7 +463,7 @@ inline fun <reified T : Any> lazyClassOrNull(
 ) = LazyClass.Nullable.from(name, classOf<T>(primitiveType = false), initialize, loader)
 
 /**
- * Create a nullable instance of [VariousClass].
+ * Creates a nullable instance of [VariousClass].
  * @see lazyClass
  * @param variousClass the [VariousClass] to be loaded.
  * @param initialize whether to initialize the class with [loader], default is false.
@@ -479,7 +479,7 @@ fun lazyClassOrNull(
 ) = LazyClass.Nullable.from(variousClass, classOf<Any>(), initialize, loader)
 
 /**
- * Create a nullable instance of [VariousClass].
+ * Creates a nullable instance of [VariousClass].
  * @see lazyClass
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
@@ -492,7 +492,7 @@ inline fun <reified T : Any> lazyClassOrNull(
 ) = LazyClass.Nullable.from(variousClass, classOf<T>(primitiveType = false), initialize, loader)
 
 /**
- * Convert [String] class name to [Class] with [ClassLoader] and initialize.
+ * Converts [String] class name to [Class] with [ClassLoader].
  * @see String.toClassOrNull
  * @receiver the class name to be converted.
  * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
@@ -509,7 +509,7 @@ fun String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Cl
 }
 
 /**
- * Convert [String] class name to [Class] with [ClassLoader] and initialize, then cast it to [Class]<[T]>.
+ * Converts [String] class name to [Class] with [ClassLoader], then casts it to [Class]<[T]>.
  * @see Class.toClass
  * @see String.toClassOrNull
  * @return [Class]<[T]>
@@ -522,7 +522,7 @@ inline fun <reified T : Any> String.toClass(loader: ClassLoader? = null, initial
 }
 
 /**
- * Convert [String] class name to [Class] with [ClassLoader] and initialize.
+ * Converts [String] class name to [Class] with [ClassLoader].
  * @see String.toClassOrNull
  * @receiver the class name to be converted.
  * @param loader [ClassLoader] to load the class, default is [ClassLoaderProvider.classLoader],
@@ -537,7 +537,7 @@ fun String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = fals
 }.getOrNull()
 
 /**
- * Convert [String] class name to [Class] with [ClassLoader] and initialize, then cast it to [Class]<[T]>.
+ * Converts [String] class name to [Class] with [ClassLoader], then casts it to [Class]<[T]>.
  * @see Class.toClass
  * @see String.toClassOrNull
  * @return [Class]<[T]> or null if the class is not found or not assignable to [T].
@@ -547,7 +547,7 @@ inline fun <reified T : Any> String.toClassOrNull(loader: ClassLoader? = null, i
     toClassOrNull(loader, initialize)?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
 
 /**
- * Create an instance of [Class] with the given arguments.
+ * Creates an instance of [Class] with the given arguments.
  *
  * The constructor is selected like Java overload resolution, constructors that accept the arguments
  * without unboxing are preferred, otherwise unboxing and primitive widening are allowed,
@@ -571,7 +571,7 @@ fun <T : Any> Class<T>.createInstance(vararg args: Any?, isPublic: Boolean = tru
     InstanceCreator.create(this, args, isPublic)
 
 /**
- * Create an instance of [KClass.java] with the given arguments.
+ * Creates an instance of [KClass.java] with the given arguments.
  * @see Class.createInstance
  */
 @JvmSynthetic
@@ -579,7 +579,7 @@ fun <T : Any> KClass<T>.createInstance(vararg args: Any?, isPublic: Boolean = tr
     java.createInstance(*args, isPublic = isPublic)
 
 /**
- * Create an instance of [Class] with the given arguments or return null if failed.
+ * Creates an instance of [Class] with the given arguments or returns null if failed.
  * @see Class.createInstance
  * @see Class.createInstanceAsType
  * @see Class.createInstanceAsTypeOrNull
@@ -593,7 +593,7 @@ fun <T : Any> Class<T>.createInstanceOrNull(vararg args: Any?, isPublic: Boolean
     runCatching { createInstance(*args, isPublic = isPublic) }.getOrNull()
 
 /**
- * Create an instance of [KClass.java] with the given arguments or return null if failed.
+ * Creates an instance of [KClass.java] with the given arguments or returns null if failed.
  * @see Class.createInstanceOrNull
  */
 @JvmSynthetic
@@ -601,7 +601,7 @@ fun <T : Any> KClass<T>.createInstanceOrNull(vararg args: Any?, isPublic: Boolea
     java.createInstanceOrNull(*args, isPublic = isPublic)
 
 /**
- * Create an instance of [Class] with the given arguments and cast it to the specified type [T].
+ * Creates an instance of [Class] with the given arguments and casts it to the specified type [T].
  * @see Class.createInstance
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsTypeOrNull
@@ -613,14 +613,14 @@ inline fun <reified T : Any> Class<*>.createInstanceAsType(vararg args: Any?, is
     createInstance(*args, isPublic = isPublic) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
 
 /**
- * Create an instance of [KClass.java] with the given arguments and cast it to the specified type [T].
+ * Creates an instance of [KClass.java] with the given arguments and casts it to the specified type [T].
  * @see Class.createInstanceAsType
  */
 inline fun <reified T : Any> KClass<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
     java.createInstanceAsType<T>(*args, isPublic = isPublic)
 
 /**
- * Create an instance of [Class] with the given arguments and cast it to the specified type [T] or return null if failed.
+ * Creates an instance of [Class] with the given arguments and casts it to the specified type [T] or returns null if failed.
  * @see Class.createInstance
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsType
@@ -630,14 +630,14 @@ inline fun <reified T : Any> Class<*>.createInstanceAsTypeOrNull(vararg args: An
     runCatching { createInstanceAsType<T>(*args, isPublic = isPublic) }.getOrNull()
 
 /**
- * Create an instance of [KClass.java] with the given arguments and cast it to the specified type [T] or return null if failed.
+ * Creates an instance of [KClass.java] with the given arguments and casts it to the specified type [T] or returns null if failed.
  * @see Class.createInstanceAsTypeOrNull
  */
 inline fun <reified T : Any> KClass<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
     java.createInstanceAsTypeOrNull<T>(*args, isPublic = isPublic)
 
 /**
- * Load the class with the given name using [ClassLoader] or return null if not found.
+ * Loads the class with the given name using [ClassLoader] or returns null if not found.
  * @receiver the [ClassLoader] to be used.
  * @param name the class name to be loaded.
  * @return [Class] or null.
@@ -645,7 +645,7 @@ inline fun <reified T : Any> KClass<*>.createInstanceAsTypeOrNull(vararg args: A
 fun ClassLoader.loadClassOrNull(name: String) = runCatching { loadClass(name) as Class<Any> }.getOrNull()
 
 /**
- * Check if the [ClassLoader] can load the class with the given name.
+ * Checks if the [ClassLoader] can load the class with the given name.
  * @receiver the [ClassLoader] to be checked.
  * @param name the class name to be checked.
  * @return [Boolean] true if the class can be loaded, false otherwise.
@@ -653,7 +653,7 @@ fun ClassLoader.loadClassOrNull(name: String) = runCatching { loadClass(name) as
 fun ClassLoader.hasClass(name: String) = loadClassOrNull(name) != null
 
 /**
- * Get the [Class] of [T].
+ * Gets the [Class] of [T].
  * @param primitiveType whether to return the primitive type of [T] if it is a primitive type, default is true.
  * @return [Class]<[T]>
  */
@@ -661,7 +661,7 @@ inline fun <reified T : Any> classOf(primitiveType: Boolean = true) =
     if (primitiveType) T::class.javaPrimitiveType ?: T::class.java else T::class.javaObjectType
 
 /**
- * Use [Class.isAssignableFrom] to check if [Class] is a subclass of [superclass].
+ * Uses [Class.isAssignableFrom] to check if [Class] is a subclass of [superclass].
  * @see Class.isNotSubclassOf
  * @receiver the class to be checked.
  * @param superclass the superclass to be checked.
@@ -670,28 +670,28 @@ inline fun <reified T : Any> classOf(primitiveType: Boolean = true) =
 infix fun <T : Any> Class<T>.isSubclassOf(superclass: Class<*>) = superclass.isAssignableFrom(this)
 
 /**
- * Use [Class.isAssignableFrom] to check if [KClass.java] is a subclass of [superclass] ([KClass.java]).
+ * Uses [Class.isAssignableFrom] to check if [KClass.java] is a subclass of [superclass] ([KClass.java]).
  * @see Class.isSubclassOf
  */
 @JvmSynthetic
 infix fun <T : Any> KClass<T>.isSubclassOf(superclass: KClass<*>) = java isSubclassOf superclass.java
 
 /**
- * Use [Class.isAssignableFrom] to check if [KClass.java] is a subclass of [superclass].
+ * Uses [Class.isAssignableFrom] to check if [KClass.java] is a subclass of [superclass].
  * @see Class.isSubclassOf
  */
 @JvmSynthetic
 infix fun <T : Any> KClass<T>.isSubclassOf(superclass: Class<*>) = java isSubclassOf superclass
 
 /**
- * Use [Class.isAssignableFrom] to check if [Class] is a subclass of [superclass] ([KClass.java]).
+ * Uses [Class.isAssignableFrom] to check if [Class] is a subclass of [superclass] ([KClass.java]).
  * @see Class.isSubclassOf
  */
 @JvmSynthetic
 infix fun <T : Any> Class<T>.isSubclassOf(superclass: KClass<*>) = this isSubclassOf superclass.java
 
 /**
- * Use [Class.isAssignableFrom] to check if [Class] is not a subclass of [superclass].
+ * Uses [Class.isAssignableFrom] to check if [Class] is not a subclass of [superclass].
  * @see Class.isSubclassOf
  * @receiver the class to be checked.
  * @param superclass the superclass to be checked.
@@ -700,21 +700,21 @@ infix fun <T : Any> Class<T>.isSubclassOf(superclass: KClass<*>) = this isSubcla
 infix fun <T : Any> Class<T>.isNotSubclassOf(superclass: Class<*>) = !isSubclassOf(superclass)
 
 /**
- * Use [Class.isAssignableFrom] to check if [KClass.java] is not a subclass of [superclass] ([KClass.java]).
+ * Uses [Class.isAssignableFrom] to check if [KClass.java] is not a subclass of [superclass] ([KClass.java]).
  * @see Class.isNotSubclassOf
  */
 @JvmSynthetic
 infix fun <T : Any> KClass<T>.isNotSubclassOf(superclass: KClass<*>) = java isNotSubclassOf superclass.java
 
 /**
- * Use [Class.isAssignableFrom] to check if [KClass.java] is not a subclass of [superclass].
+ * Uses [Class.isAssignableFrom] to check if [KClass.java] is not a subclass of [superclass].
  * @see Class.isNotSubclassOf
  */
 @JvmSynthetic
 infix fun <T : Any> KClass<T>.isNotSubclassOf(superclass: Class<*>) = java isNotSubclassOf superclass
 
 /**
- * Use [Class.isAssignableFrom] to check if [Class] is not a subclass of [superclass] ([KClass.java]).
+ * Uses [Class.isAssignableFrom] to check if [Class] is not a subclass of [superclass] ([KClass.java]).
  * @see Class.isNotSubclassOf
  */
 @JvmSynthetic
@@ -753,7 +753,7 @@ val <T : Any> KClass<T>.hasInterfaces get() = java.hasInterfaces
 // Class extension properties for checking modifiers.
 
 /**
- * Check if the [Class] is public.
+ * Checks if the [Class] is public.
  * @see Modifier.isPublic
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is public, `false` otherwise.
@@ -761,7 +761,7 @@ val <T : Any> KClass<T>.hasInterfaces get() = java.hasInterfaces
 val <T : Any> Class<T>.isPublic get() = Modifier.isPublic(modifiers)
 
 /**
- * Check if the [Class] is private.
+ * Checks if the [Class] is private.
  * @see Modifier.isPrivate
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is private, `false` otherwise.
@@ -769,7 +769,7 @@ val <T : Any> Class<T>.isPublic get() = Modifier.isPublic(modifiers)
 val <T : Any> Class<T>.isPrivate get() = Modifier.isPrivate(modifiers)
 
 /**
- * Check if the [Class] is protected.
+ * Checks if the [Class] is protected.
  * @see Modifier.isProtected
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is protected, `false` otherwise.
@@ -777,7 +777,7 @@ val <T : Any> Class<T>.isPrivate get() = Modifier.isPrivate(modifiers)
 val <T : Any> Class<T>.isProtected get() = Modifier.isProtected(modifiers)
 
 /**
- * Check if the [Class] is static.
+ * Checks if the [Class] is static.
  * @see Modifier.isStatic
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is static, `false` otherwise.
@@ -785,7 +785,7 @@ val <T : Any> Class<T>.isProtected get() = Modifier.isProtected(modifiers)
 val <T : Any> Class<T>.isStatic get() = Modifier.isStatic(modifiers)
 
 /**
- * Check if the [Class] is final.
+ * Checks if the [Class] is final.
  * @see Modifier.isFinal
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is final, `false` otherwise.
@@ -793,7 +793,7 @@ val <T : Any> Class<T>.isStatic get() = Modifier.isStatic(modifiers)
 val <T : Any> Class<T>.isFinal get() = Modifier.isFinal(modifiers)
 
 /**
- * Check if the [Class] is synchronized.
+ * Checks if the [Class] is synchronized.
  * @see Modifier.isSynchronized
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is synchronized, `false` otherwise.
@@ -801,7 +801,7 @@ val <T : Any> Class<T>.isFinal get() = Modifier.isFinal(modifiers)
 val <T : Any> Class<T>.isSynchronized get() = Modifier.isSynchronized(modifiers)
 
 /**
- * Check if the [Class] is volatile.
+ * Checks if the [Class] is volatile.
  * @see Modifier.isVolatile
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is volatile, `false` otherwise.
@@ -809,7 +809,7 @@ val <T : Any> Class<T>.isSynchronized get() = Modifier.isSynchronized(modifiers)
 val <T : Any> Class<T>.isVolatile get() = Modifier.isVolatile(modifiers)
 
 /**
- * Check if the [Class] is transient.
+ * Checks if the [Class] is transient.
  * @see Modifier.isTransient
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is transient, `false` otherwise.
@@ -817,7 +817,7 @@ val <T : Any> Class<T>.isVolatile get() = Modifier.isVolatile(modifiers)
 val <T : Any> Class<T>.isTransient get() = Modifier.isTransient(modifiers)
 
 /**
- * Check if the [Class] is native.
+ * Checks if the [Class] is native.
  * @see Modifier.isNative
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is native, `false` otherwise.
@@ -825,7 +825,7 @@ val <T : Any> Class<T>.isTransient get() = Modifier.isTransient(modifiers)
 val <T : Any> Class<T>.isNative get() = Modifier.isNative(modifiers)
 
 /**
- * Check if the [Class] is abstract.
+ * Checks if the [Class] is abstract.
  * @see Modifier.isAbstract
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is abstract, `false` otherwise.
@@ -833,7 +833,7 @@ val <T : Any> Class<T>.isNative get() = Modifier.isNative(modifiers)
 val <T : Any> Class<T>.isAbstract get() = Modifier.isAbstract(modifiers)
 
 /**
- * Check if the [Class] is strict.
+ * Checks if the [Class] is strict.
  * @see Modifier.isStrict
  * @receiver the [Class] to be checked.
  * @return `true` if the [Class] is strict, `false` otherwise.

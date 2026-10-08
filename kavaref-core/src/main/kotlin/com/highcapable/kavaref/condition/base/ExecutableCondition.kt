@@ -126,7 +126,7 @@ abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any
     }
 
     /**
-     * Set [parameterCount] to `0` to match methods with no parameters.
+     * Sets [parameterCount] to `0` to match methods with no parameters.
      * @see Executable.getParameterCount
      */
     open fun emptyParameters() = apply {
@@ -134,7 +134,7 @@ abstract class ExecutableCondition<E : Member, R : MemberResolver<E, T>, T : Any
     }
 
     /**
-     * Set [parameterCountCondition] to check if the method has parameters.
+     * Sets [parameterCountCondition] to check if the method has parameters.
      * @see Executable.getParameterCount
      */
     open fun emptyParametersNot() = apply {

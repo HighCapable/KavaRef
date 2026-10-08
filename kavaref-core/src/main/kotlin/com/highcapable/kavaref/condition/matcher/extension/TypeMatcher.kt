@@ -77,7 +77,7 @@ fun KClass<*>.parameterizedBy(vararg arguments: TypeMatcher) = java.parameterize
 fun TypeMatcher.asGenericArray() = GenericArrayTypeMatcher(componentMatcher = this)
 
 /**
- * Check if the list of [Type] matches all the given [TypeMatcher].
+ * Checks if the list of [Type] matches all the given [TypeMatcher].
  * @receiver the list of [Type] to be checked.
  * @param matchers the list of [TypeMatcher] to be checked.
  * @return [Boolean]

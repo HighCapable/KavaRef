@@ -39,7 +39,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     override fun copy() = FieldResolver<T>(self)
 
     /**
-     * Get the value of the field and cast it to [T].
+     * Gets the value of the field and casts it to [T].
      * @see Field.get
      * @see getQuietly
      * @return [T] or null if the value is null or not an instance of [T].
@@ -48,7 +48,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     inline fun <reified T> get() = get() as? T
 
     /**
-     * Get the value of the field, cast it to [T] and ignore any exceptions.
+     * Gets the value of the field, casts it to [T] and ignores any exceptions.
      * @see Field.get
      * @see get
      * @return [T] or null if failed or the value is not an instance of [T].
@@ -57,7 +57,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     inline fun <reified T> getQuietly() = getQuietly() as? T
 
     /**
-     * Get the value of the field.
+     * Gets the value of the field.
      * @see Field.get
      * @see getQuietly
      * @return [Any] or null.
@@ -68,7 +68,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     }
 
     /**
-     * Get the value of the field and ignore any exceptions.
+     * Gets the value of the field and ignores any exceptions.
      * @see Field.get
      * @see get
      * @return [Any] or null.
@@ -76,7 +76,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     fun getQuietly() = runCatching { get() }.getOrNull()
 
     /**
-     * Set the value of the field.
+     * Sets the value of the field.
      * @see Field.set
      * @see setQuietly
      * @param value the value to set.
@@ -87,7 +87,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
     }
 
     /**
-     * Set the value of the field and ignore any exceptions.
+     * Sets the value of the field and ignores any exceptions.
      * @see Field.set
      * @see set
      * @param value the value to set.

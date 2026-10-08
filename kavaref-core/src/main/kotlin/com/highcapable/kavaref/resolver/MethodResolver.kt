@@ -39,7 +39,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
     override fun copy() = MethodResolver<T>(self)
 
     /**
-     * Invoke the method with the given arguments and cast the result to [T].
+     * Invokes the method with the given arguments and casts the result to [T].
      * @see Method.invoke
      * @see invokeQuietly
      * @return [T] or null if the result is null or not an instance of [T].
@@ -48,7 +48,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
     inline fun <reified T> invoke(vararg args: Any?) = invoke(*args) as? T
 
     /**
-     * Invoke the method with the given arguments, cast the result to [T] and ignore any exceptions.
+     * Invokes the method with the given arguments, casts the result to [T] and ignores any exceptions.
      * @see Method.invoke
      * @see invokeQuietly
      * @return [T] or null if failed or the result is not an instance of [T].
@@ -57,7 +57,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
     inline fun <reified T> invokeQuietly(vararg args: Any?) = invokeQuietly(*args) as? T
 
     /**
-     * Invoke the method with the given arguments.
+     * Invokes the method with the given arguments.
      * @see Method.invoke
      * @see invoke
      * @return [Any] or null.
@@ -68,7 +68,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
     }
 
     /**
-     * Invoke the method with the given arguments and ignore any exceptions.
+     * Invokes the method with the given arguments and ignores any exceptions.
      * @see Method.invoke
      * @see invoke
      * @return [Any] or null.

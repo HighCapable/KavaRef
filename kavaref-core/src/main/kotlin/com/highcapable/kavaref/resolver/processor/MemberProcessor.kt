@@ -82,7 +82,7 @@ object MemberProcessor {
     open class Resolver {
 
         /**
-         * Resolve fields of the specified class [T].
+         * Resolves fields of the specified class [T].
          * @param declaringClass the class to resolve fields from.
          * @return [List]<[Field]>
          */
@@ -92,7 +92,7 @@ object MemberProcessor {
             }.getOrNull() ?: emptyList()
 
         /**
-         * Resolve methods of the specified class [T].
+         * Resolves methods of the specified class [T].
          * @param declaringClass the class to resolve methods from.
          * @return [List]<[Method]>
          */
@@ -102,7 +102,7 @@ object MemberProcessor {
             }.getOrNull() ?: emptyList()
 
         /**
-         * Resolve constructors of the specified class [T].
+         * Resolves constructors of the specified class [T].
          * @param declaringClass the class to resolve constructors from.
          * @return [List]<[Constructor]<[T]>>
          */
@@ -113,7 +113,7 @@ object MemberProcessor {
     }
 
     /**
-     * Resolve members with current [condition] and [configuration].
+     * Resolves members with current [condition] and [configuration].
      * @param condition the condition to resolve members.
      * @param configuration the configuration to resolve members, must not be null.
      * @return [List]<[R]>
@@ -155,7 +155,7 @@ object MemberProcessor {
     }
 
     /**
-     * Get the classes to be searched in order by the superclass [mode].
+     * Gets the classes to be searched in order by the superclass [mode].
      *
      * The superclasses are searched until `java.lang.Object` (including `java.lang.Object` itself),
      * then all the interfaces, a sub-interface is always searched before its super-interfaces.
@@ -172,7 +172,7 @@ object MemberProcessor {
         }
     }
 
-    /** Get all the interfaces of these classes, a sub-interface is always before its super-interfaces. */
+    /** Gets all the interfaces of these classes, a sub-interface is always before its super-interfaces. */
     private fun Sequence<Class<*>>.interfaces(): List<Class<*>> {
         val collected = linkedSetOf<Class<*>>()
         val queue = ArrayDeque(flatMap { it.interfaces.asSequence() }.toList())
@@ -469,7 +469,7 @@ object MemberProcessor {
     }
 
     /**
-     * Filter by a runtime condition, an exception thrown by it is treated as not matched
+     * Filters by a runtime condition, an exception thrown by it is treated as not matched
      * and recorded in [context] to be reported if no member is found.
      */
     private fun <T : MemberAccessor, R> Sequence<T>.filterCondition(
@@ -633,7 +633,7 @@ object MemberProcessor {
     }.getOrDefault("${configuration.declaringClass.toStringIgnore()}\nFailed to build condition table.")
 
     /**
-     * Get the source-level modifiers of the member.
+     * Gets the source-level modifiers of the member.
      *
      * The JVM reuses some modifier bits for bridge and varargs methods,
      * so they are masked out by the member type to avoid false matches.

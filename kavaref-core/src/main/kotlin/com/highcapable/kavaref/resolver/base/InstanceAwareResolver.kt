@@ -38,7 +38,7 @@ abstract class InstanceAwareResolver<M : Member, T : Any>(override val self: M) 
     internal var instance: T? = null
 
     /**
-     * Set the instance of [self].
+     * Sets the instance of [self].
      *
      * If you have already set it in [MemberCondition.Configuration.memberInstance],
      * then you cannot set it here again, otherwise an [IllegalStateException] will be thrown.
@@ -48,7 +48,7 @@ abstract class InstanceAwareResolver<M : Member, T : Any>(override val self: M) 
     abstract fun of(instance: T?): InstanceAwareResolver<M, T>
 
     /**
-     * Check if the [instance] is null and set it.
+     * Checks if the [instance] is null and sets it.
      * If the [instance] is not null, throw an exception.
      * @param instance the instance to set.
      * @throws IllegalStateException if the [instance] is not null.

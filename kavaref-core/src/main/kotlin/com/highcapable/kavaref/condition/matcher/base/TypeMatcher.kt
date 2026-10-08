@@ -29,7 +29,7 @@ import java.lang.reflect.Type
 interface TypeMatcher {
 
     /**
-     * Check if the type matches the given [type].
+     * Checks if the type matches the given [type].
      * @param type the type to check.
      * @return [Boolean]
      */

@@ -28,7 +28,7 @@ import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Member
 
 /**
- * Merge the data set in the [other] condition into this condition.
+ * Merges the data set in the [other] condition into this condition.
  * @receiver the condition to merge into.
  * @param other the other condition to merge from.
  */

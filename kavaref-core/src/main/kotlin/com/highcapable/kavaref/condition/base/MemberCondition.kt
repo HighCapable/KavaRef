@@ -39,7 +39,7 @@ import java.lang.reflect.Member
 abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
 
     /**
-     * Configure initial conditions.
+     * Configures initial conditions.
      * @param declaringClass the class that declares the member.
      * @param memberInstance the instance of the resolved member, default is null.
      * @param processorResolver the resolver for processing members, if set,
@@ -63,18 +63,18 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
          * Optional mode for handling member resolution.
          */
         enum class Optional {
-            /** Do not use optional mode. */
+            /** Does not use optional mode. */
             NO,
 
             /**
-             * Enable optional mode to minimize exception prompts (do not throw
+             * Enables optional mode to minimize exception prompts (does not throw
              * exceptions), but the warning log will still be printed.
              */
             NOTICE,
 
             /**
-             * Enable optional mode to minimize exception prompts (do not throw
-             * exceptions) and do not print any logs.
+             * Enables optional mode to minimize exception prompts (does not throw
+             * exceptions) and does not print any logs.
              */
             SILENT
         }
@@ -83,14 +83,14 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
          * Superclass mode for searching members in the inheritance hierarchy.
          */
         enum class Superclass {
-            /** Do not use superclass mode. */
+            /** Does not use superclass mode. */
             NO,
 
-            /** Search the superclasses until `java.lang.Object` (including `java.lang.Object` itself). */
+            /** Searches the superclasses until `java.lang.Object` (including `java.lang.Object` itself). */
             NORMAL,
 
             /**
-             * Search the superclasses like [NORMAL], then search all the interfaces,
+             * Searches the superclasses like [NORMAL], then searches all the interfaces,
              * a sub-interface is always searched before its super-interfaces.
              */
             INCLUDE_INTERFACES
@@ -99,7 +99,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         companion object {
 
             /**
-             * Create a new instance of [Configuration].
+             * Creates a new instance of [Configuration].
              * @return [Configuration]
              */
             @JvmStatic
@@ -227,7 +227,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Enable superclass mode for this condition only.
+     * Enables superclass mode for this condition only.
      *
      * It does not affect other conditions created from the same scope.
      * @see Configuration.Superclass.NORMAL
@@ -237,7 +237,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Enable superclass mode for this condition only.
+     * Enables superclass mode for this condition only.
      *
      * It does not affect other conditions created from the same scope.
      * @param interfaces whether to search all the interfaces after the superclasses.
@@ -250,7 +250,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Initialize the copied data from this condition to the new condition.
+     * Initializes the copied data from this condition to the new condition.
      * @param newSelf the new condition instance.
      */
     protected open fun initializeCopiedData(newSelf: MemberCondition<M, R, T>) {
@@ -269,7 +269,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Merge the data set in the [other] condition into this condition.
+     * Merges the data set in the [other] condition into this condition.
      * @param other the other condition instance to merge from.
      */
     @JvmSynthetic
@@ -301,13 +301,13 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Create a copy of this condition.
+     * Creates a copy of this condition.
      * @return [MemberCondition]<[M], [R], [T]>
      */
     abstract fun copy(): MemberCondition<M, R, T>
 
     /**
-     * Build the condition with the given [configuration].
+     * Builds the condition with the given [configuration].
      *
      * - Note: If this condition is not created manually, then you cannot set [configuration] again.
      * @param configuration the configuration to build the condition with.
@@ -318,7 +318,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
         TODO("Implement the build function in a subclass.")
 
     /**
-     * Get the condition string map.
+     * Gets the condition string map.
      * @return [Map]<[String], [Any] or null>
      */
     @get:JvmSynthetic
@@ -338,7 +338,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     )
 
     /**
-     * Get the display value of the empty condition [name].
+     * Gets the display value of the empty condition [name].
      * @param name the name of the empty condition.
      * @return [Boolean] or null.
      */
@@ -361,7 +361,7 @@ abstract class MemberCondition<M : Member, R : MemberResolver<M, T>, T : Any> {
     }
 
     /**
-     * Check if the [configuration] is null and set it.
+     * Checks if the [configuration] is null and sets it.
      * If the [configuration] is not null, throw an exception.
      * @param configuration the configuration to set.
      * @throws IllegalStateException if the [configuration] is not null.

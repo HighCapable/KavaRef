@@ -36,7 +36,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
     override fun copy() = ConstructorResolver(self)
 
     /**
-     * Create a new instance of the class represented by this constructor.
+     * Creates a new instance of the class represented by this constructor.
      * @see Constructor.newInstance
      * @see createQuietly
      * @see createAsType
@@ -49,7 +49,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
     }
 
     /**
-     * Create a new instance of the class represented by this constructor and cast it to the specified type [T].
+     * Creates a new instance of the class represented by this constructor and casts it to the specified type [T].
      * @see Constructor.newInstance
      * @see createAsTypeQuietly
      * @see createQuietly
@@ -61,7 +61,7 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
     }
 
     /**
-     * Create a new instance of the class represented by this constructor and ignore any exceptions.
+     * Creates a new instance of the class represented by this constructor and ignores any exceptions.
      * @see Constructor.newInstance
      * @see create
      * @see createAsType
@@ -71,8 +71,8 @@ class ConstructorResolver<T : Any> internal constructor(override val self: Const
     fun createQuietly(vararg args: Any?) = runCatching { create(*args) }.getOrNull()
 
     /**
-     * Create a new instance of the class represented by this constructor and cast it to the
-     * specified type [T] and ignore any exceptions.
+     * Creates a new instance of the class represented by this constructor and casts it to the
+     * specified type [T] and ignores any exceptions.
      * @see Constructor.newInstance
      * @see create
      * @see createAsType

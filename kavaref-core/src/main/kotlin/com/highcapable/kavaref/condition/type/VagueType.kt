@@ -47,7 +47,7 @@ object VagueType {
     private const val TAG = "VagueType"
 
     /**
-     * Format the placeholder to a string.
+     * Formats the placeholder to a string.
      * @param placeholder the placeholder to be formatted.
      * @return [String]
      */

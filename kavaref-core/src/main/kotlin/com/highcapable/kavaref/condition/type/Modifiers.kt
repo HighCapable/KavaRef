@@ -44,7 +44,7 @@ enum class Modifiers(private val mod: Int) {
     STRICT(Modifier.STRICT);
 
     /**
-     * Check if the modifier matches the given modifier.
+     * Checks if the modifier matches the given modifier.
      * @param modifier the modifier bitmask to check against.
      * @return [Boolean]
      */
@@ -53,7 +53,7 @@ enum class Modifiers(private val mod: Int) {
     companion object {
 
         /**
-         * Get the set of modifiers that match the given modifier bitmask.
+         * Gets the set of modifiers that match the given modifier bitmask.
          * @param modifier the modifier bitmask to check against.
          * @return [Set]<[Modifiers]>
          */

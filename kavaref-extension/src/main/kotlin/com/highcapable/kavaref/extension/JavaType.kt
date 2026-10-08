@@ -30,7 +30,7 @@ import java.lang.reflect.Type
 import kotlin.reflect.KClass
 
 /**
- * Convert [Type] to [Class].
+ * Converts [Type] to [Class].
  *
  * Generic arrays use the raw class of their component type, preserving array dimensions.
  * Type variables and wildcard types cannot be converted.
@@ -47,7 +47,7 @@ fun Type.toClass(): Class<Any> = when (this) {
 }
 
 /**
- * Convert [Type] to [Class], then cast it to [Class]<[T]>.
+ * Converts [Type] to [Class], then casts it to [Class]<[T]>.
  * @see Type.toClass
  * @see Type.toClassOrNull
  * @return [Class]<[T]>
@@ -61,7 +61,7 @@ inline fun <reified T : Any> Type.toClass(): Class<T> {
 }
 
 /**
- * Safely convert [Type] to [Class] or return null if it fails.
+ * Safely converts [Type] to [Class] or returns null if it fails.
  * @see Type.toClass
  * @receiver the [Type] to be converted.
  * @return [Class] or null.
@@ -69,7 +69,7 @@ inline fun <reified T : Any> Type.toClass(): Class<T> {
 fun Type.toClassOrNull() = runCatching { toClass() }.getOrNull()
 
 /**
- * Safely convert [Type] to [Class] and cast it to [Class]<[T]>, or return null if it fails.
+ * Safely converts [Type] to [Class] and casts it to [Class]<[T]>, or returns null if it fails.
  * @see Type.toClass
  * @see Type.toClassOrNull
  * @return [Class]<[T]> or null if the conversion fails or the class is not assignable to [T].
@@ -78,7 +78,7 @@ fun Type.toClassOrNull() = runCatching { toClass() }.getOrNull()
 inline fun <reified T : Any> Type.toClassOrNull() = toClassOrNull()?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
 
 /**
- * Convert [Type] to [ParameterizedType].
+ * Converts [Type] to [ParameterizedType].
  * @see Type.asParameterizedTypeOrNull
  * @receiver the [Type] to be converted.
  * @return [ParameterizedType]
@@ -86,7 +86,7 @@ inline fun <reified T : Any> Type.toClassOrNull() = toClassOrNull()?.takeIf { it
 inline fun <reified T : Type> T.asParameterizedType() = this as ParameterizedType
 
 /**
- * Safely convert [Type] to [ParameterizedType] or return null if it fails.
+ * Safely converts [Type] to [ParameterizedType] or returns null if it fails.
  * @see Type.asParameterizedType
  * @receiver the [Type] to be converted.
  * @return [ParameterizedType] or null.
@@ -94,7 +94,7 @@ inline fun <reified T : Type> T.asParameterizedType() = this as ParameterizedTyp
 inline fun <reified T : Type> T.asParameterizedTypeOrNull() = this as? ParameterizedType?
 
 /**
- * Get the type arguments of the superclass of this [Class] or return an empty array if it fails.
+ * Gets the type arguments of the superclass of this [Class] or returns an empty array if it fails.
  *
  * This function is equivalent to the following code:
  *
@@ -109,7 +109,7 @@ fun <T : Any> Class<T>.genericSuperclassTypeArguments(): Array<Type> = runCatchi
 }.getOrDefault(emptyArray())
 
 /**
- * Get the type arguments of the superclass of this [KClass.java] or return an empty array if it fails.
+ * Gets the type arguments of the superclass of this [KClass.java] or returns an empty array if it fails.
  * @see Class.genericSuperclassTypeArguments
  */
 @JvmSynthetic

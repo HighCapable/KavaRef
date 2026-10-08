@@ -47,19 +47,19 @@ class KavaRef private constructor() {
 
     companion object {
 
-        /** Get or set the log level for KavaRef. */
+        /** Gets or sets the log level for KavaRef. */
         @JvmStatic
         var logLevel by KavaRefRuntime::logLevel
 
         /**
-         * Set the logger for KavaRef.
+         * Sets the logger for KavaRef.
          * @param logger the logger to be set.
          */
         @JvmStatic
         fun setLogger(logger: Logger) = KavaRefRuntime.setLogger(logger)
 
         /**
-         * Create a [MemberScope] instance to start a new reflection.
+         * Creates a [MemberScope] instance to start a new reflection.
          * @receiver the [KClass.java] to be reflected.
          * @return [MemberScope]<[T]>
          */
@@ -67,7 +67,7 @@ class KavaRef private constructor() {
         fun <T : Any> KClass<T>.resolve() = MemberScope(java.createConfiguration())
 
         /**
-         * Create a [MemberScope] instance to start a new reflection.
+         * Creates a [MemberScope] instance to start a new reflection.
          * @receiver the [Class] to be reflected.
          * @return [MemberScope]<[T]>
          */
@@ -76,7 +76,7 @@ class KavaRef private constructor() {
         fun <T : Any> Class<T>.resolve() = MemberScope(createConfiguration())
 
         /**
-         * Create a [MemberScope] instance to start a new reflection with the receiver as the instance.
+         * Creates a [MemberScope] instance to start a new reflection with the receiver as the instance.
          *
          * The receiver is always treated as an instance, even if it is a [KClass] or [Class] object,
          * then the members of [KClass] or [Class] itself will be reflected.
@@ -159,7 +159,7 @@ class KavaRef private constructor() {
     class MemberScope<T : Any> internal constructor(private val configuration: MemberCondition.Configuration<T>) {
 
         /**
-         * Set the [MemberProcessor.Resolver] to be used for this reflection.
+         * Sets the [MemberProcessor.Resolver] to be used for this reflection.
          * @see MemberCondition.Configuration.processorResolver
          * @see MemberProcessor.Resolver
          * @param resolver the resolver to be used.
@@ -169,7 +169,7 @@ class KavaRef private constructor() {
         }
 
         /**
-         * Enable optional mode.
+         * Enables optional mode.
          * @see MemberCondition.Configuration.optional
          * @param silent see [MemberCondition.Configuration.Optional.SILENT]
          */
@@ -180,7 +180,7 @@ class KavaRef private constructor() {
         }
 
         /**
-         * Start a new method reflection.
+         * Starts a new method reflection.
          * @return [MethodCondition]
          */
         fun method() = MethodCondition<T>().also {
@@ -188,7 +188,7 @@ class KavaRef private constructor() {
         }
 
         /**
-         * Start a new method reflection.
+         * Starts a new method reflection.
          * @see firstMethod
          * @see firstMethodOrNull
          * @param condition the condition.
@@ -197,7 +197,7 @@ class KavaRef private constructor() {
         fun method(condition: MethodCondition<T>) = condition.build(configuration)
 
         /**
-         * Start a new method reflection and return the first matching method.
+         * Starts a new method reflection and returns the first matching method.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver]
@@ -205,7 +205,7 @@ class KavaRef private constructor() {
         fun firstMethod(condition: MethodCondition<T>) = method(condition).first()
 
         /**
-         * Start a new method reflection and return the first matching method or null.
+         * Starts a new method reflection and returns the first matching method or null.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver] or null.
@@ -213,7 +213,7 @@ class KavaRef private constructor() {
         fun firstMethodOrNull(condition: MethodCondition<T>) = method(condition).firstOrNull()
 
         /**
-         * Start a new method reflection and return the last matching method.
+         * Starts a new method reflection and returns the last matching method.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver]
@@ -221,7 +221,7 @@ class KavaRef private constructor() {
         fun lastMethod(condition: MethodCondition<T>) = method(condition).last()
 
         /**
-         * Start a new method reflection and return the last matching method or null.
+         * Starts a new method reflection and returns the last matching method or null.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver] or null.
@@ -229,7 +229,7 @@ class KavaRef private constructor() {
         fun lastMethodOrNull(condition: MethodCondition<T>) = method(condition).lastOrNull()
 
         /**
-         * Start a new method reflection.
+         * Starts a new method reflection.
          * @see firstMethod
          * @see firstMethodOrNull
          * @param condition the condition body.
@@ -238,7 +238,7 @@ class KavaRef private constructor() {
         inline fun method(condition: MethodCondition<T>.() -> Unit) = method().apply(condition).build()
 
         /**
-         * Start a new method reflection and return the first matching method.
+         * Starts a new method reflection and returns the first matching method.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver]
@@ -246,7 +246,7 @@ class KavaRef private constructor() {
         inline fun firstMethod(condition: MethodCondition<T>.() -> Unit = {}) = method(condition).first()
 
         /**
-         * Start a new method reflection and return the first matching method or null.
+         * Starts a new method reflection and returns the first matching method or null.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver] or null.
@@ -254,7 +254,7 @@ class KavaRef private constructor() {
         inline fun firstMethodOrNull(condition: MethodCondition<T>.() -> Unit = {}) = method(condition).firstOrNull()
 
         /**
-         * Start a new method reflection and return the last matching method.
+         * Starts a new method reflection and returns the last matching method.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver]
@@ -262,7 +262,7 @@ class KavaRef private constructor() {
         inline fun lastMethod(condition: MethodCondition<T>.() -> Unit = {}) = method(condition).last()
 
         /**
-         * Start a new method reflection and return the last matching method or null.
+         * Starts a new method reflection and returns the last matching method or null.
          * @see method
          * @param condition the condition body.
          * @return [MethodResolver] or null.
@@ -270,7 +270,7 @@ class KavaRef private constructor() {
         inline fun lastMethodOrNull(condition: MethodCondition<T>.() -> Unit = {}) = method(condition).lastOrNull()
 
         /**
-         * Start a new constructor reflection.
+         * Starts a new constructor reflection.
          * @return [ConstructorCondition]
          */
         fun constructor() = ConstructorCondition<T>().also {
@@ -278,7 +278,7 @@ class KavaRef private constructor() {
         }
 
         /**
-         * Start a new constructor reflection.
+         * Starts a new constructor reflection.
          * @see firstConstructor
          * @see firstConstructorOrNull
          * @param condition the condition.
@@ -287,7 +287,7 @@ class KavaRef private constructor() {
         fun constructor(condition: ConstructorCondition<T>) = condition.build(configuration)
 
         /**
-         * Start a new constructor reflection and return the first matching constructor.
+         * Starts a new constructor reflection and returns the first matching constructor.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver]
@@ -295,7 +295,7 @@ class KavaRef private constructor() {
         fun firstConstructor(condition: ConstructorCondition<T>) = constructor(condition).first()
 
         /**
-         * Start a new constructor reflection and return the first matching constructor or null.
+         * Starts a new constructor reflection and returns the first matching constructor or null.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
@@ -303,7 +303,7 @@ class KavaRef private constructor() {
         fun firstConstructorOrNull(condition: ConstructorCondition<T>) = constructor(condition).firstOrNull()
 
         /**
-         * Start a new constructor reflection and return the last matching constructor.
+         * Starts a new constructor reflection and returns the last matching constructor.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver]
@@ -311,7 +311,7 @@ class KavaRef private constructor() {
         fun lastConstructor(condition: ConstructorCondition<T>) = constructor(condition).last()
 
         /**
-         * Start a new constructor reflection and return the last matching constructor or null.
+         * Starts a new constructor reflection and returns the last matching constructor or null.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
@@ -319,7 +319,7 @@ class KavaRef private constructor() {
         fun lastConstructorOrNull(condition: ConstructorCondition<T>) = constructor(condition).lastOrNull()
 
         /**
-         * Start a new constructor reflection.
+         * Starts a new constructor reflection.
          * @see firstConstructor
          * @see firstConstructorOrNull
          * @param condition the condition body.
@@ -328,7 +328,7 @@ class KavaRef private constructor() {
         inline fun constructor(condition: ConstructorCondition<T>.() -> Unit) = constructor().apply(condition).build()
 
         /**
-         * Start a new constructor reflection and return the first matching constructor.
+         * Starts a new constructor reflection and returns the first matching constructor.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver]
@@ -336,7 +336,7 @@ class KavaRef private constructor() {
         inline fun firstConstructor(condition: ConstructorCondition<T>.() -> Unit = {}) = constructor(condition).first()
 
         /**
-         * Start a new constructor reflection and return the first matching constructor or null.
+         * Starts a new constructor reflection and returns the first matching constructor or null.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
@@ -344,7 +344,7 @@ class KavaRef private constructor() {
         inline fun firstConstructorOrNull(condition: ConstructorCondition<T>.() -> Unit = {}) = constructor(condition).firstOrNull()
 
         /**
-         * Start a new constructor reflection and return the last matching constructor.
+         * Starts a new constructor reflection and returns the last matching constructor.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver]
@@ -352,7 +352,7 @@ class KavaRef private constructor() {
         inline fun lastConstructor(condition: ConstructorCondition<T>.() -> Unit = {}) = constructor(condition).last()
 
         /**
-         * Start a new constructor reflection and return the last matching constructor or null.
+         * Starts a new constructor reflection and returns the last matching constructor or null.
          * @see constructor
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
@@ -360,7 +360,7 @@ class KavaRef private constructor() {
         inline fun lastConstructorOrNull(condition: ConstructorCondition<T>.() -> Unit = {}) = constructor(condition).lastOrNull()
 
         /**
-         * Start a new field reflection.
+         * Starts a new field reflection.
          * @return [FieldCondition]
          */
         fun field() = FieldCondition<T>().also {
@@ -368,7 +368,7 @@ class KavaRef private constructor() {
         }
 
         /**
-         * Start a new field reflection.
+         * Starts a new field reflection.
          * @see firstField
          * @see firstFieldOrNull
          * @param condition the condition.
@@ -377,7 +377,7 @@ class KavaRef private constructor() {
         fun field(condition: FieldCondition<T>) = condition.build(configuration)
 
         /**
-         * Start a new field reflection and return the first matching field.
+         * Starts a new field reflection and returns the first matching field.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver]
@@ -385,7 +385,7 @@ class KavaRef private constructor() {
         fun firstField(condition: FieldCondition<T>) = field(condition).first()
 
         /**
-         * Start a new field reflection and return the first matching field or null.
+         * Starts a new field reflection and returns the first matching field or null.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver] or null.
@@ -393,7 +393,7 @@ class KavaRef private constructor() {
         fun firstFieldOrNull(condition: FieldCondition<T>) = field(condition).firstOrNull()
 
         /**
-         * Start a new field reflection and return the last matching field.
+         * Starts a new field reflection and returns the last matching field.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver]
@@ -401,7 +401,7 @@ class KavaRef private constructor() {
         fun lastField(condition: FieldCondition<T>) = field(condition).last()
 
         /**
-         * Start a new field reflection and return the last matching field or null.
+         * Starts a new field reflection and returns the last matching field or null.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver] or null.
@@ -409,7 +409,7 @@ class KavaRef private constructor() {
         fun lastFieldOrNull(condition: FieldCondition<T>) = field(condition).lastOrNull()
 
         /**
-         * Start a new field reflection.
+         * Starts a new field reflection.
          * @see firstField
          * @see firstFieldOrNull
          * @param condition the condition body.
@@ -418,7 +418,7 @@ class KavaRef private constructor() {
         inline fun field(condition: FieldCondition<T>.() -> Unit) = field().apply(condition).build()
 
         /**
-         * Start a new field reflection and return the first matching field.
+         * Starts a new field reflection and returns the first matching field.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver]
@@ -426,7 +426,7 @@ class KavaRef private constructor() {
         inline fun firstField(condition: FieldCondition<T>.() -> Unit = {}) = field(condition).first()
 
         /**
-         * Start a new field reflection and return the first matching field or null.
+         * Starts a new field reflection and returns the first matching field or null.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver] or null.
@@ -434,7 +434,7 @@ class KavaRef private constructor() {
         inline fun firstFieldOrNull(condition: FieldCondition<T>.() -> Unit = {}) = field(condition).firstOrNull()
 
         /**
-         * Start a new field reflection and return the last matching field.
+         * Starts a new field reflection and returns the last matching field.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver]
@@ -442,7 +442,7 @@ class KavaRef private constructor() {
         inline fun lastField(condition: FieldCondition<T>.() -> Unit = {}) = field(condition).last()
 
         /**
-         * Start a new field reflection and return the last matching field or null.
+         * Starts a new field reflection and returns the last matching field or null.
          * @see field
          * @param condition the condition body.
          * @return [FieldResolver] or null.

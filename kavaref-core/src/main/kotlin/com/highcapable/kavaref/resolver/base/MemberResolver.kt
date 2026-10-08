@@ -32,7 +32,7 @@ import java.lang.reflect.Member
  */
 abstract class MemberResolver<M : Member, T : Any>(open val self: M) {
 
-    /** Make the member accessible and check if it is successful. */
+    /** Makes the member accessible and checks if it is successful. */
     @PublishedApi
     @JvmSynthetic
     internal fun requireAccessible() {
@@ -43,7 +43,7 @@ abstract class MemberResolver<M : Member, T : Any>(open val self: M) {
     }
 
     /**
-     * Create a copy of this resolver.
+     * Creates a copy of this resolver.
      * @return [MemberResolver]<[M]>
      */
     abstract fun copy(): MemberResolver<M, T>

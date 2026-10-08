@@ -39,7 +39,7 @@ import java.lang.reflect.Modifier
 private var isTrySetAccessibleSupported = true
 
 /**
- * Make the [Member] that extends [AccessibleObject] accessible.
+ * Makes the [Member] that extends [AccessibleObject] accessible.
  *
  * If it is already accessible, it returns directly without checking again.
  * @receiver the [Member] to be made accessible.
@@ -66,7 +66,7 @@ fun Member.makeAccessible() = (this as? AccessibleObject?)?.let {
 // Member extension properties for checking modifiers.
 
 /**
- * Check if the [Member] is public.
+ * Checks if the [Member] is public.
  * @see Modifier.isPublic
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is public, `false` otherwise.
@@ -74,7 +74,7 @@ fun Member.makeAccessible() = (this as? AccessibleObject?)?.let {
 val Member.isPublic get() = Modifier.isPublic(sourceModifiers)
 
 /**
- * Check if the [Member] is private.
+ * Checks if the [Member] is private.
  * @see Modifier.isPrivate
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is private, `false` otherwise.
@@ -82,7 +82,7 @@ val Member.isPublic get() = Modifier.isPublic(sourceModifiers)
 val Member.isPrivate get() = Modifier.isPrivate(sourceModifiers)
 
 /**
- * Check if the [Member] is protected.
+ * Checks if the [Member] is protected.
  * @see Modifier.isProtected
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is protected, `false` otherwise.
@@ -90,7 +90,7 @@ val Member.isPrivate get() = Modifier.isPrivate(sourceModifiers)
 val Member.isProtected get() = Modifier.isProtected(sourceModifiers)
 
 /**
- * Check if the [Member] is static.
+ * Checks if the [Member] is static.
  * @see Modifier.isStatic
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is static, `false` otherwise.
@@ -98,7 +98,7 @@ val Member.isProtected get() = Modifier.isProtected(sourceModifiers)
 val Member.isStatic get() = Modifier.isStatic(sourceModifiers)
 
 /**
- * Check if the [Member] is final.
+ * Checks if the [Member] is final.
  * @see Modifier.isFinal
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is final, `false` otherwise.
@@ -106,7 +106,7 @@ val Member.isStatic get() = Modifier.isStatic(sourceModifiers)
 val Member.isFinal get() = Modifier.isFinal(sourceModifiers)
 
 /**
- * Check if the [Member] is synchronized.
+ * Checks if the [Member] is synchronized.
  * @see Modifier.isSynchronized
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is synchronized, `false` otherwise.
@@ -114,7 +114,7 @@ val Member.isFinal get() = Modifier.isFinal(sourceModifiers)
 val Member.isSynchronized get() = Modifier.isSynchronized(sourceModifiers)
 
 /**
- * Check if the [Member] is volatile.
+ * Checks if the [Member] is volatile.
  * @see Modifier.isVolatile
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is volatile, `false` otherwise.
@@ -122,7 +122,7 @@ val Member.isSynchronized get() = Modifier.isSynchronized(sourceModifiers)
 val Member.isVolatile get() = Modifier.isVolatile(sourceModifiers)
 
 /**
- * Check if the [Member] is transient.
+ * Checks if the [Member] is transient.
  * @see Modifier.isTransient
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is transient, `false` otherwise.
@@ -130,7 +130,7 @@ val Member.isVolatile get() = Modifier.isVolatile(sourceModifiers)
 val Member.isTransient get() = Modifier.isTransient(sourceModifiers)
 
 /**
- * Check if the [Member] is native.
+ * Checks if the [Member] is native.
  * @see Modifier.isNative
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is native, `false` otherwise.
@@ -138,7 +138,7 @@ val Member.isTransient get() = Modifier.isTransient(sourceModifiers)
 val Member.isNative get() = Modifier.isNative(sourceModifiers)
 
 /**
- * Check if the [Member] is an interface.
+ * Checks if the [Member] is an interface.
  * @see Modifier.isInterface
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is an interface, `false` otherwise.
@@ -146,7 +146,7 @@ val Member.isNative get() = Modifier.isNative(sourceModifiers)
 val Member.isInterface get() = Modifier.isInterface(sourceModifiers)
 
 /**
- * Check if the [Member] is abstract.
+ * Checks if the [Member] is abstract.
  * @see Modifier.isAbstract
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is abstract, `false` otherwise.
@@ -154,7 +154,7 @@ val Member.isInterface get() = Modifier.isInterface(sourceModifiers)
 val Member.isAbstract get() = Modifier.isAbstract(sourceModifiers)
 
 /**
- * Check if the [Member] is strict.
+ * Checks if the [Member] is strict.
  * @see Modifier.isStrict
  * @receiver the [Member] to be checked.
  * @return `true` if the [Member] is strict, `false` otherwise.
@@ -162,7 +162,7 @@ val Member.isAbstract get() = Modifier.isAbstract(sourceModifiers)
 val Member.isStrict get() = Modifier.isStrict(sourceModifiers)
 
 /**
- * Get the source-level modifiers of [Member].
+ * Gets the source-level modifiers of [Member].
  *
  * The JVM reuses some modifier bits for bridge and varargs methods,
  * so they are masked out by the member type to avoid false matches.

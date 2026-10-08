@@ -41,7 +41,7 @@ import java.lang.reflect.Type
 abstract class TypeRef<T> {
 
     /**
-     * Get the generic parameter [T] type.
+     * Gets the generic parameter [T] type.
      *
      * Unresolved type variables are returned as-is.
      * @return [Type]
@@ -59,7 +59,7 @@ abstract class TypeRef<T> {
     }
 
     /**
-     * Get the raw class type of the generic parameter [T], preserving array dimensions.
+     * Gets the raw class type of the generic parameter [T], preserving array dimensions.
      * @return [Class] with erased type arguments.
      * @throws TypeCastException if the type or its array component has no concrete raw class.
      */
@@ -71,7 +71,7 @@ abstract class TypeRef<T> {
 }
 
 /**
- * Create a [TypeRef] instance with the reified type parameter [T].
+ * Creates a [TypeRef] instance with the reified type parameter [T].
  *
  * Nullable types are supported, but Kotlin nullability is not retained in the captured Java type.
  *
