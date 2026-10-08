@@ -723,6 +723,8 @@ object MemberProcessor {
         }
     }
 
-    /** Internal sentinel type used when optional string type resolution fails. */
+    /**
+     * Internal sentinel type used when optional string type resolution fails.
+     */
     private class UnresolvedTypeSentinel
 }
