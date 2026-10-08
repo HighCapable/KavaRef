@@ -41,7 +41,8 @@ Test::class.resolve()
 
 > libxposed API
 
-Use `XposedInterface.getInvoker` to invoke the method, you can specify the hook chain by `type` and invoke non-virtually by `special`.
+Use `XposedInterface.getInvoker` to invoke methods and constructors, you can specify the hook chain by `type`,
+invoke methods non-virtually by `special`, and create a subclass instance initialized only by the current constructor by `subclass`.
 
 ```kotlin
 class LibXposedMethodHandler(
@@ -49,6 +50,9 @@ class LibXposedMethodHandler(
     private val type: XposedInterface.Invoker.Type = XposedInterface.Invoker.Type.ORIGIN,
     private val special: Boolean = false
 ) : MethodResolver.Handler() {
+
+    // The invoker of libxposed bypasses access checks, no need to make the member accessible.
+    override fun requireAccessible(member: Method) = Unit
 
     override fun invoke(method: Method, instance: Any?, args: Array<out Any?>): Any? {
         val invoker = xposed.getInvoker(method).setType(type)
@@ -60,6 +64,25 @@ class LibXposedMethodHandler(
                 }, *args
             )
         else invoker.invoke(instance, *args)
+    }
+}
+
+class LibXposedConstructorHandler(
+    private val xposed: XposedInterface,
+    private val type: XposedInterface.Invoker.Type = XposedInterface.Invoker.Type.ORIGIN,
+    private val subclass: Class<*>? = null
+) : ConstructorResolver.Handler() {
+
+    // The invoker of libxposed bypasses access checks, no need to make the member accessible.
+    override fun requireAccessible(member: Constructor<*>) = Unit
+
+    override fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T {
+        val invoker = xposed.getInvoker(constructor).setType(type)
+
+        @Suppress("UNCHECKED_CAST")
+        return if (subclass != null)
+            invoker.newInstanceSpecial(subclass, *args) as T
+        else invoker.newInstance(*args)
     }
 }
 ```
@@ -83,7 +106,22 @@ doTask.withHandler(LibXposedMethodHandler(module))
 // Invoke the original method non-virtually, equivalent to super.doTask("task_name").
 doTask.withHandler(LibXposedMethodHandler(module, special = true))
     .invoke("task_name")
+// Get the constructor.
+val constructor = Test::class.resolve()
+    .firstConstructor { parameters(String::class) }
+// Create an instance with the original constructor.
+val newTest = constructor.withHandler(LibXposedConstructorHandler(module))
+    .create("task_name")
+// Create a SubTest instance, but only initialize it with the original constructor of Test.
+val subTest = constructor.withHandler(LibXposedConstructorHandler(module, subclass = SubTest::class.java))
+    .create("task_name")
 ```
+
+::: warning
+
+An instance created by `subclass` does not call the constructor of the subclass, and the fields in the subclass may remain uninitialized.
+
+:::
 
 ## Pine
 

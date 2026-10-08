@@ -41,7 +41,8 @@ Test::class.resolve()
 
 > libxposed API
 
-使用 `XposedInterface.getInvoker` 调用方法，可通过 `type` 指定调用的 Hook 链，通过 `special` 进行非虚调用。
+使用 `XposedInterface.getInvoker` 调用方法与构造方法，可通过 `type` 指定调用的 Hook 链，
+通过 `special` 对方法进行非虚调用，通过 `subclass` 创建子类实例并仅使用当前构造方法进行初始化。
 
 ```kotlin
 class LibXposedMethodHandler(
@@ -49,6 +50,9 @@ class LibXposedMethodHandler(
     private val type: XposedInterface.Invoker.Type = XposedInterface.Invoker.Type.ORIGIN,
     private val special: Boolean = false
 ) : MethodResolver.Handler() {
+
+    // libxposed 的 Invoker 会绕过访问检查，无需设置可访问
+    override fun requireAccessible(member: Method) = Unit
 
     override fun invoke(method: Method, instance: Any?, args: Array<out Any?>): Any? {
         val invoker = xposed.getInvoker(method).setType(type)
@@ -60,6 +64,25 @@ class LibXposedMethodHandler(
                 }, *args
             )
         else invoker.invoke(instance, *args)
+    }
+}
+
+class LibXposedConstructorHandler(
+    private val xposed: XposedInterface,
+    private val type: XposedInterface.Invoker.Type = XposedInterface.Invoker.Type.ORIGIN,
+    private val subclass: Class<*>? = null
+) : ConstructorResolver.Handler() {
+
+    // libxposed 的 Invoker 会绕过访问检查，无需设置可访问
+    override fun requireAccessible(member: Constructor<*>) = Unit
+
+    override fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T {
+        val invoker = xposed.getInvoker(constructor).setType(type)
+
+        @Suppress("UNCHECKED_CAST")
+        return if (subclass != null)
+            invoker.newInstanceSpecial(subclass, *args) as T
+        else invoker.newInstance(*args)
     }
 }
 ```
@@ -83,7 +106,22 @@ doTask.withHandler(LibXposedMethodHandler(module))
 // 非虚调用原始方法，相当于 super.doTask("task_name")
 doTask.withHandler(LibXposedMethodHandler(module, special = true))
     .invoke("task_name")
+// 得到构造方法
+val constructor = Test::class.resolve()
+    .firstConstructor { parameters(String::class) }
+// 调用原始构造方法创建实例
+val newTest = constructor.withHandler(LibXposedConstructorHandler(module))
+    .create("task_name")
+// 创建 SubTest 实例，但仅调用 Test 的原始构造方法进行初始化
+val subTest = constructor.withHandler(LibXposedConstructorHandler(module, subclass = SubTest::class.java))
+    .create("task_name")
 ```
+
+::: warning
+
+使用 `subclass` 创建的实例不会调用子类的构造方法，子类中的字段可能处于未初始化的状态。
+
+:::
 
 ## Pine
 

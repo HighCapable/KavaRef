@@ -808,7 +808,9 @@ Test::class.resolve()
 
 ### 自定义处理器
 
-如果你想改变 `MethodResolver` 的调用行为或 `FieldResolver` 的读写行为，可以继承于 `MethodResolver.Handler` 或 `FieldResolver.Handler` 来实现自己的处理器。
+KavaRef 使用默认的 `Member` 处理器进行调用与读写操作，如果你想实现自己的处理器，你可以自定义每一个 `MemberResolver` 使用的处理器。
+
+你可以继承于 `MethodResolver.Handler`、`ConstructorResolver.Handler` 或 `FieldResolver.Handler` 来实现自己的处理器。
 
 > 示例如下
 
@@ -831,6 +833,27 @@ class MyFieldHandler : FieldResolver.Handler() {
     override fun set(field: Field, instance: Any?, value: Any?) {
         // 在这里拦截并实现你的字段写入逻辑
         super.set(field, instance, value)
+    }
+}
+
+class MyConstructorHandler : ConstructorResolver.Handler() {
+
+    override fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T {
+        // 在这里拦截并实现你的实例创建逻辑
+        return super.newInstance(constructor, args)
+    }
+}
+```
+
+处理器在执行操作前会调用 `requireAccessible(member)` 将成员设置为可访问，如果你不需要这一步，可以重写它并且不调用 `super`。
+
+> 示例如下
+
+```kotlin
+class MyMethodHandler : MethodResolver.Handler() {
+
+    override fun requireAccessible(member: Method) {
+        // 不调用 super 以跳过设置可访问
     }
 }
 ```

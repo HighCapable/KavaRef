@@ -845,8 +845,10 @@ You can find some publicly maintained custom solvers in [here](../config/process
 
 ### Custom Handler
 
-If you want to change the invocation behavior of `MethodResolver` or the read/write behavior of `FieldResolver`,
-you can inherit from `MethodResolver.Handler` or `FieldResolver.Handler` to implement your own handler.
+KavaRef uses the default `Member` handler for invocation and read/write operations.
+If you want to implement your own handler, you can customize the handler used by each `MemberResolver`.
+
+You can inherit from `MethodResolver.Handler`, `ConstructorResolver.Handler` or `FieldResolver.Handler` to implement your own handler.
 
 > The following example
 
@@ -869,6 +871,28 @@ class MyFieldHandler : FieldResolver.Handler() {
     override fun set(field: Field, instance: Any?, value: Any?) {
         // Intercept and implement your field writing logic here.
         super.set(field, instance, value)
+    }
+}
+
+class MyConstructorHandler : ConstructorResolver.Handler() {
+
+    override fun <T> newInstance(constructor: Constructor<T>, args: Array<out Any?>): T {
+        // Intercept and implement your instance creation logic here.
+        return super.newInstance(constructor, args)
+    }
+}
+```
+
+The handler calls `requireAccessible(member)` to make the member accessible before performing the operation,
+if you don't need this step, you can override it without calling `super`.
+
+> The following example
+
+```kotlin
+class MyMethodHandler : MethodResolver.Handler() {
+
+    override fun requireAccessible(member: Method) {
+        // Skip making the member accessible by not calling super.
     }
 }
 ```
