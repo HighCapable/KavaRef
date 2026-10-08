@@ -9,4 +9,6 @@ dependencies {
     implementation(projects.kavarefCore)
     implementation(projects.kavarefJvm)
     implementation(projects.kavarefExtension)
+
+    testImplementation(libs.junit)
 }
