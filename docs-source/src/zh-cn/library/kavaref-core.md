@@ -806,6 +806,65 @@ Test::class.resolve()
 
 :::
 
+### 自定义处理器
+
+如果你想改变 `MethodResolver` 的调用行为或 `FieldResolver` 的读写行为，可以继承于 `MethodResolver.Handler` 或 `FieldResolver.Handler` 来实现自己的处理器。
+
+> 示例如下
+
+```kotlin
+class MyMethodHandler : MethodResolver.Handler() {
+
+    override fun invoke(method: Method, instance: Any?, args: Array<out Any?>): Any? {
+        // 在这里拦截并实现你的方法调用逻辑
+        return super.invoke(method, instance, args)
+    }
+}
+
+class MyFieldHandler : FieldResolver.Handler() {
+
+    override fun get(field: Field, instance: Any?): Any? {
+        // 在这里拦截并实现你的字段读取逻辑
+        return super.get(field, instance)
+    }
+
+    override fun set(field: Field, instance: Any?, value: Any?) {
+        // 在这里拦截并实现你的字段写入逻辑
+        super.set(field, instance, value)
+    }
+}
+```
+
+然后你可以使用 `withHandler(handler)` 来设置处理器。
+
+> 示例如下
+
+```kotlin
+// 假设这就是这个 Class 的实例
+val test: Test
+// 使用 KavaRef 调用并执行
+Test::class.resolve()
+    .firstMethod {
+        name = "doTask"
+        parameters(String::class)
+    }.of(test)
+    // 设置自定义处理器
+    .withHandler(MyMethodHandler())
+    .invoke("task_name")
+```
+
+::: warning
+
+`withHandler(handler)` 不会修改当前的 `MemberResolver`，请使用它返回的 `MemberResolver` 进行后续操作。
+
+:::
+
+::: tip
+
+你可以在 [这里](../config/resolver-handlers.md) 找到一些公开维护的自定义处理器，定义在你的项目中即可使用。
+
+:::
+
 ### 关于缓存
 
 由于过滤条件的多样性，KavaRef 不直接提供缓存功能，根据每个开发者的实现方式不同，缓存的实现方式也会有所不同。

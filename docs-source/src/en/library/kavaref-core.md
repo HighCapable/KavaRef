@@ -843,6 +843,66 @@ You can find some publicly maintained custom solvers in [here](../config/process
 
 :::
 
+### Custom Handler
+
+If you want to change the invocation behavior of `MethodResolver` or the read/write behavior of `FieldResolver`,
+you can inherit from `MethodResolver.Handler` or `FieldResolver.Handler` to implement your own handler.
+
+> The following example
+
+```kotlin
+class MyMethodHandler : MethodResolver.Handler() {
+
+    override fun invoke(method: Method, instance: Any?, args: Array<out Any?>): Any? {
+        // Intercept and implement your method invocation logic here.
+        return super.invoke(method, instance, args)
+    }
+}
+
+class MyFieldHandler : FieldResolver.Handler() {
+
+    override fun get(field: Field, instance: Any?): Any? {
+        // Intercept and implement your field reading logic here.
+        return super.get(field, instance)
+    }
+
+    override fun set(field: Field, instance: Any?, value: Any?) {
+        // Intercept and implement your field writing logic here.
+        super.set(field, instance, value)
+    }
+}
+```
+
+You can then use `withHandler(handler)` to set the handler.
+
+> The following example
+
+```kotlin
+// Suppose this is an instance of this Class.
+val test: Test
+// Call and execute using KavaRef.
+Test::class.resolve()
+    .firstMethod {
+        name = "doTask"
+        parameters(String::class)
+    }.of(test)
+    // Set custom handler.
+    .withHandler(MyMethodHandler())
+    .invoke("task_name")
+```
+
+::: warning
+
+`withHandler(handler)` does not modify the current `MemberResolver`, please use the `MemberResolver` it returns for subsequent operations.
+
+:::
+
+::: tip
+
+You can find some publicly maintained custom handlers in [here](../config/resolver-handlers.md) and define them in your project to use.
+
+:::
+
 ### About Cache
 
 Due to the diversity of filtering conditions, KavaRef does not directly provide caching function,
