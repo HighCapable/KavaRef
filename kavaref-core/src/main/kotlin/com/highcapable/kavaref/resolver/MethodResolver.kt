@@ -30,13 +30,36 @@ import java.lang.reflect.Method
  * Resolving [Method].
  * @param self the member to be resolved.
  */
-class MethodResolver<T : Any> internal constructor(override val self: Method) : InstanceAwareResolver<Method, T>(self) {
+class MethodResolver<T : Any> internal constructor(override val self: Method) : InstanceAwareResolver<Method, T, MethodResolver.Handler>(self) {
+
+    private var handler = Handler()
+
+    /**
+     * Handler for performing the operations on [Method].
+     */
+    open class Handler : InstanceAwareResolver.Handler {
+
+        /**
+         * Invokes the [method] on the [instance] with the given [args].
+         * @see Method.invoke
+         * @param method the method to invoke.
+         * @param instance the instance to invoke the method on, or null for a static method.
+         * @param args the arguments to pass to the method.
+         * @return [Any] or null.
+         */
+        open fun invoke(method: Method, instance: Any?, args: Array<out Any?>): Any? = method.invoke(instance, *args)
+    }
 
     override fun of(instance: T?) = apply {
         checkAndSetInstance(instance)
     }
 
-    override fun copy() = MethodResolver<T>(self)
+    override fun withHandler(handler: Handler) = MethodResolver<T>(self).also {
+        it.instance = instance
+        it.handler = handler
+    }
+
+    override fun copy() = MethodResolver<T>(self).also { it.handler = handler }
 
     /**
      * Invokes the method with the given arguments and casts the result to [T].
@@ -64,7 +87,7 @@ class MethodResolver<T : Any> internal constructor(override val self: Method) : 
      */
     fun invoke(vararg args: Any?): Any? {
         requireAccessible()
-        return self.invoke(instance, *args)
+        return handler.invoke(self, instance, args)
     }
 
     /**

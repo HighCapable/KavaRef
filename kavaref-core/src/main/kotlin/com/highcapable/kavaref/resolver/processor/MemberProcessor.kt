@@ -443,7 +443,7 @@ object MemberProcessor {
     }
 
     private inline fun <reified M : Member, T : Any> MemberResolver<M, T>.apply(configuration: MemberCondition.Configuration<T>) =
-        apply { configuration.memberInstance?.let { if (this is InstanceAwareResolver) of(it) } }
+        apply { configuration.memberInstance?.let { if (this is InstanceAwareResolver<M, T, *>) of(it) } }
 
     private fun <T, R> Sequence<T>.filter(
         configuration: MemberCondition.Configuration<*>,

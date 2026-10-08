@@ -28,14 +28,18 @@ import java.lang.reflect.Member
  * Base [instance] aware class for resolving member [M].
  * 
  * [T] to specify the declaring class type of the member.
+ * [H] to specify the handler type of the member.
  * @param self the member to be resolved.
  */
-abstract class InstanceAwareResolver<M : Member, T : Any>(override val self: M) : MemberResolver<M, T>(self) {
+abstract class InstanceAwareResolver<M : Member, T : Any, H : InstanceAwareResolver.Handler>(override val self: M) : MemberResolver<M, T>(self) {
 
     /** The instance of [self]. */
-    @get:JvmSynthetic
-    @set:JvmSynthetic
-    internal var instance: T? = null
+    protected var instance: T? = null
+
+    /**
+     * Handler for performing the operations on the member.
+     */
+    interface Handler
 
     /**
      * Sets the instance of [self].
@@ -45,7 +49,14 @@ abstract class InstanceAwareResolver<M : Member, T : Any>(override val self: M) 
      * If you want to reuse the resolver, please use [copy] to create a new resolver.
      * @param instance the instance to set.
      */
-    abstract fun of(instance: T?): InstanceAwareResolver<M, T>
+    abstract fun of(instance: T?): InstanceAwareResolver<M, T, H>
+
+    /**
+     * Creates a new resolver with the given [handler].
+     * @param handler the handler to set.
+     * @return [InstanceAwareResolver]<[M], [T], [H]>
+     */
+    abstract fun withHandler(handler: H): InstanceAwareResolver<M, T, H>
 
     /**
      * Checks if the [instance] is null and sets it.

@@ -30,13 +30,44 @@ import java.lang.reflect.Field
  * Resolving [Field].
  * @param self the member to be resolved.
  */
-class FieldResolver<T : Any> internal constructor(override val self: Field) : InstanceAwareResolver<Field, T>(self) {
+class FieldResolver<T : Any> internal constructor(override val self: Field) : InstanceAwareResolver<Field, T, FieldResolver.Handler>(self) {
+
+    private var handler = Handler()
+
+    /**
+     * Handler for performing the operations on [Field].
+     */
+    open class Handler : InstanceAwareResolver.Handler {
+
+        /**
+         * Gets the value of the [field] on the [instance].
+         * @see Field.get
+         * @param field the field to get.
+         * @param instance the instance to get the value from, or null for a static field.
+         * @return [Any] or null.
+         */
+        open fun get(field: Field, instance: Any?): Any? = field.get(instance)
+
+        /**
+         * Sets the [value] of the [field] on the [instance].
+         * @see Field.set
+         * @param field the field to set.
+         * @param instance the instance to set the value to, or null for a static field.
+         * @param value the value to set.
+         */
+        open fun set(field: Field, instance: Any?, value: Any?) = field.set(instance, value)
+    }
 
     override fun of(instance: T?) = apply {
         checkAndSetInstance(instance)
     }
 
-    override fun copy() = FieldResolver<T>(self)
+    override fun withHandler(handler: Handler) = FieldResolver<T>(self).also {
+        it.instance = instance
+        it.handler = handler
+    }
+
+    override fun copy() = FieldResolver<T>(self).also { it.handler = handler }
 
     /**
      * Gets the value of the field and casts it to [T].
@@ -64,7 +95,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      */
     fun get(): Any? {
         requireAccessible()
-        return self.get(instance)
+        return handler.get(self, instance)
     }
 
     /**
@@ -83,7 +114,7 @@ class FieldResolver<T : Any> internal constructor(override val self: Field) : In
      */
     fun set(value: Any?) {
         requireAccessible()
-        self.set(instance, value)
+        handler.set(self, instance, value)
     }
 
     /**
