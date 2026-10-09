@@ -33,13 +33,19 @@ import com.android.tools.lint.detector.api.Scope
 import com.android.tools.lint.detector.api.Severity
 import com.highcapable.kavaref.android.lint.DeclaredSymbol
 import com.highcapable.kavaref.android.lint.detector.extension.buildReplaceFix
+import com.intellij.psi.PsiClassType
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
 import org.jetbrains.uast.UBinaryExpression
+import org.jetbrains.uast.UBlockExpression
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UElement
+import org.jetbrains.uast.UExpression
+import org.jetbrains.uast.ULambdaExpression
 import org.jetbrains.uast.UQualifiedReferenceExpression
+import org.jetbrains.uast.UReturnExpression
 import org.jetbrains.uast.USimpleNameReferenceExpression
+import org.jetbrains.uast.UThisExpression
 
 class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
@@ -144,14 +150,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
             val callLocation = context.getCallLocation(node, includeReceiver = false, includeArguments = true)
             val location = callLocation.toReportCallExpressionLocation(context)
-            val fixLocation = callLocation.toDeleteCallExpressionLocation(context)
-            val lintFix = LintFix.create()
-                .name("Delete Call Expression")
-                .replace()
-                .range(fixLocation)
-                .with("")
-                .reformat(true)
-                .build()
+            val lintFix = node.deleteCallLocation(callLocation)?.let { buildDeleteFix(it) }
 
             context.report(
                 UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE, node, location,
@@ -189,13 +188,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
             val reportNode = node.reportNode()
             val location = context.getLocation(reportNode)
-            val lintFix = LintFix.create()
-                .name("Delete Call Expression")
-                .replace()
-                .range(location)
-                .with("")
-                .reformat(true)
-                .build()
+            val lintFix = reportNode.takeIf { it.isStatement() }?.statementLocation()?.let { buildDeleteFix(it) }
 
             context.report(
                 UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE, reportNode, location,
@@ -273,27 +266,68 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
             return this
         }
 
-        private fun Location.toDeleteCallExpressionLocation(context: JavaContext): Location {
-            val startOffset = start?.offset ?: return this
-            val endOffset = end?.offset ?: return this
-            val contents = context.getContents() ?: return this
-            val dotOffset = startOffset - 1
-            if (dotOffset < 0 || contents[dotOffset] != '.') return this
+        private fun buildDeleteFix(location: Location) = LintFix.create()
+            .name("Delete Call Expression")
+            .replace()
+            .range(location)
+            .with("")
+            .reformat(true)
+            .build()
 
-            val lineStart = contents.lineStartOf(dotOffset)
-            val lineEnd = contents.lineEndOf(endOffset)
-            val firstCodeOffset = contents.firstCodeOffset(lineStart, dotOffset)
+        private fun UCallExpression.deleteCallLocation(callLocation: Location): Location? {
+            val contents = context.getContents() ?: return null
+            val callStart = callLocation.start?.offset ?: return null
+            val callEnd = callLocation.end?.offset ?: return null
+            // The implicit receiver of a lambda has no source, the call has no explicit receiver.
+            val receiver = receiver?.takeIf { it.sourcePsi != null }
+            if (receiver != null) {
+                val expression = (uastParent as? UQualifiedReferenceExpression)?.takeIf { it.selector == this } ?: this
+                if (expression.isStatement() && receiver.isPureReference()) return expression.statementLocation()
+                // Deletes the dot and the call after the receiver, such as ".call()" in "a.call().b()".
+                val receiverEnd = receiver.sourcePsi?.textRange?.endOffset ?: return null
+                return Location.create(context.file, contents, receiverEnd, callEnd)
+            }
 
-            val dotStartsChainLine = (lineStart until dotOffset).all { contents[it].isWhitespace() }
-            val endOffsetWithSemicolon = contents.endOffsetWithSemicolon(endOffset, lineEnd)
-            if (dotStartsChainLine) return Location.create(context.file, contents, dotOffset, endOffsetWithSemicolon)
+            val parent = uastParent as? UQualifiedReferenceExpression
+            if (parent != null && parent.receiver == this) {
+                // Deletes the call and the dot before the next selector, such as "call()." in "call().b()".
+                val selectorStart = parent.selector.sourcePsi?.textRange?.startOffset ?: return null
+                return Location.create(context.file, contents, callStart, selectorStart)
+            }
 
-            val receiverText = contents.subSequence(firstCodeOffset, dotOffset)
-            val trailingIsStatementEnd = (endOffsetWithSemicolon until lineEnd).all { contents[it].isWhitespace() }
-            if (receiverText.isStandaloneReceiver() && trailingIsStatementEnd)
-                return Location.create(context.file, contents, firstCodeOffset, endOffsetWithSemicolon)
+            return if (isStatement()) statementLocation() else null
+        }
 
-            return this
+        private fun UElement.statementLocation(): Location? {
+            val contents = context.getContents() ?: return null
+            val range = sourcePsi?.textRange ?: return null
+            val lineStart = contents.lineStartOf(range.startOffset)
+            val lineEnd = contents.lineEndOf(range.endOffset)
+            val endOffset = contents.endOffsetWithSemicolon(range.endOffset, lineEnd)
+            val isAloneOnLine = (lineStart until range.startOffset).all { contents[it].isWhitespace() } &&
+                (endOffset until lineEnd).all { contents[it].isWhitespace() }
+
+            return if (isAloneOnLine)
+                Location.create(context.file, contents, lineStart, if (lineEnd < contents.length) lineEnd + 1 else lineEnd)
+            else Location.create(context.file, contents, range.startOffset, endOffset)
+        }
+
+        private fun UElement.isStatement(): Boolean {
+            val parent = uastParent
+            // The last expression of a lambda is wrapped in an implicit return, it is only a statement if the lambda returns Unit.
+            if (parent is UReturnExpression && parent.sourcePsi == null) {
+                val lambda = parent.uastParent?.uastParent as? ULambdaExpression ?: return false
+                val functionType = lambda.getExpressionType() as? PsiClassType ?: return false
+                return functionType.parameters.lastOrNull()?.canonicalText?.removePrefix("? extends ") == "kotlin.Unit"
+            }
+
+            return parent is UBlockExpression
+        }
+
+        private fun UExpression.isPureReference(): Boolean = when (this) {
+            is USimpleNameReferenceExpression, is UThisExpression -> true
+            is UQualifiedReferenceExpression -> receiver.isPureReference() && selector is USimpleNameReferenceExpression
+            else -> false
         }
 
         private fun CharSequence.lineStartOf(offset: Int): Int {

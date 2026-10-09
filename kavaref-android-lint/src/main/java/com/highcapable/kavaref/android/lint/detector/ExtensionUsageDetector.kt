@@ -37,17 +37,22 @@ import com.highcapable.kavaref.android.lint.detector.extension.findClassForNameC
 import com.highcapable.kavaref.android.lint.detector.extension.findParentCastExpression
 import com.highcapable.kavaref.android.lint.detector.extension.isMethodOf
 import com.highcapable.kavaref.android.lint.detector.extension.isNullableType
+import com.highcapable.kavaref.android.lint.detector.extension.isPassedAsUnitFunction
 import com.highcapable.kavaref.android.lint.detector.extension.operandText
 import com.highcapable.kavaref.android.lint.detector.extension.parentLogicalNot
+import com.highcapable.kavaref.android.lint.detector.extension.resultOfLambda
 import com.highcapable.kavaref.android.lint.detector.extension.singleExpression
 import com.highcapable.kavaref.android.lint.detector.extension.unwrapParentheses
 import com.highcapable.kavaref.android.lint.detector.extension.wrapForParent
+import com.highcapable.kavaref.android.lint.detector.extension.wrapInfixForParent
 import com.intellij.psi.PsiClass
 import com.intellij.psi.PsiClassType
 import com.intellij.psi.PsiField
 import com.intellij.psi.PsiMethod
+import com.intellij.psi.PsiType
 import com.intellij.psi.PsiVariable
 import org.jetbrains.kotlin.psi.KtCallExpression
+import org.jetbrains.kotlin.psi.KtCallableDeclaration
 import org.jetbrains.kotlin.psi.KtClassLiteralExpression
 import org.jetbrains.kotlin.psi.KtDotQualifiedExpression
 import org.jetbrains.kotlin.psi.KtNameReferenceExpression
@@ -55,6 +60,7 @@ import org.jetbrains.kotlin.psi.KtPsiUtil
 import org.jetbrains.kotlin.psi.KtTypeAlias
 import org.jetbrains.uast.UBinaryExpression
 import org.jetbrains.uast.UBinaryExpressionWithType
+import org.jetbrains.uast.UBlockExpression
 import org.jetbrains.uast.UCallExpression
 import org.jetbrains.uast.UClassLiteralExpression
 import org.jetbrains.uast.UElement
@@ -68,6 +74,7 @@ import org.jetbrains.uast.UResolvable
 import org.jetbrains.uast.USimpleNameReferenceExpression
 import org.jetbrains.uast.USuperExpression
 import org.jetbrains.uast.UThisExpression
+import org.jetbrains.uast.UVariable
 import org.jetbrains.uast.UastBinaryExpressionWithTypeKind
 import org.jetbrains.uast.UastBinaryOperator
 import org.jetbrains.uast.UastPrefixOperator
@@ -80,6 +87,8 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         private const val EXTENSION_MARKER_CLASS = "$EXTENSION_PACKAGE_NAME.TypeRef"
 
         private const val JAVA_CLASS = "java.lang.Class"
+        private const val JAVA_OBJECT_CLASS = "java.lang.Object"
+        private const val JAVA_CLASS_ANY_TYPE = "Class<Any>"
         private const val JAVA_REFLECT_ARRAY_CLASS = "java.lang.reflect.Array"
         private const val JAVA_REFLECT_MODIFIER_CLASS = "java.lang.reflect.Modifier"
         private const val JAVA_REFLECT_ACCESSIBLE_OBJECT_CLASS = "java.lang.reflect.AccessibleObject"
@@ -102,6 +111,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         private const val JAVA_COLLECTION_IS_EMPTY = "isEmpty"
         private const val JAVA_COLLECTION_SIZE = "size"
         private const val JAVA_ACCESSIBLE_PROPERTY = "isAccessible"
+        private const val JAVA_MODIFIERS_PROPERTY = "modifiers"
 
         private val JAVA_WRAPPER_CLASSES = setOf(
             "java.lang.Boolean", "java.lang.Character", "java.lang.Byte", "java.lang.Short",
@@ -286,7 +296,9 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         if (parent.receiver != callExpression) return
         if (parent.selector.asSourceString() != JAVA_CLASS_PROPERTY) return
 
-        val replacement = "$ARRAY_CLASS(${valueArguments[0].asSourceString()})"
+        val arrayClass = "$ARRAY_CLASS(${valueArguments[0].asSourceString()})"
+        // "ArrayClass" returns a different generic type, keep the original type where it can be affected.
+        val replacement = if (parent.isTypeIndependent(context)) arrayClass else "$arrayClass as $JAVA_CLASS_ANY_TYPE"
         context.report(
             issue = ISSUE,
             scope = parent,
@@ -294,6 +306,23 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
             message = "Can be replaced with `$replacement`",
             quickfixData = buildReplaceFix("Replace with 'ArrayClass'", replacement, ARRAY_CLASS_IMPORT)
         )
+    }
+
+    private fun UExpression.isTypeIndependent(context: JavaContext): Boolean {
+        fun PsiType.acceptsAnyClass() = canonicalText == "$JAVA_CLASS<?>" || canonicalText == JAVA_OBJECT_CLASS
+
+        resultOfLambda()?.let { return it.isPassedAsUnitFunction(context) }
+        return when (val parent = uastParent) {
+            is UQualifiedReferenceExpression -> parent.receiver == this
+            is UBlockExpression -> true
+            is UCallExpression -> {
+                val method = parent.resolve() ?: return false
+                context.evaluator.computeArgumentMapping(parent, method)[this]?.type?.acceptsAnyClass() == true
+            }
+            is UVariable -> parent.uastInitializer == this &&
+                (parent.sourcePsi as? KtCallableDeclaration)?.typeReference != null && parent.type.acceptsAnyClass()
+            else -> false
+        }
     }
 
     private fun UCallExpression.reportClassForName(context: JavaContext) {
@@ -431,7 +460,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         val (target, receiverText, argumentText) = assignableFromTarget(context) ?: return
         // The negated form is reported by reportNotAssignableFrom.
         if (target.parentLogicalNot() != null) return
-        val replacement = target.wrapForParent("$argumentText $IS_SUBCLASS_OF $receiverText")
+        val replacement = target.wrapInfixForParent("$argumentText $IS_SUBCLASS_OF $receiverText")
 
         context.report(
             issue = ISSUE,
@@ -446,7 +475,7 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         if (operator != UastPrefixOperator.LOGICAL_NOT) return
         val call = (operand.unwrapParentheses() as? UQualifiedReferenceExpression)?.selector as? UCallExpression ?: return
         val (_, receiverText, argumentText) = call.assignableFromTarget(context) ?: return
-        val replacement = wrapForParent("$argumentText $IS_NOT_SUBCLASS_OF $receiverText")
+        val replacement = wrapInfixForParent("$argumentText $IS_NOT_SUBCLASS_OF $receiverText")
 
         context.report(
             issue = ISSUE,
@@ -524,9 +553,15 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
         val propertyName = methodName?.takeIf { it in MODIFIER_PROPERTIES } ?: return
         val method = resolve() ?: return
         if (!context.evaluator.isMemberInClass(method, JAVA_REFLECT_MODIFIER_CLASS)) return
-        val argumentText = valueArguments.singleOrNull()?.asSourceString() ?: return
-        val receiverText = argumentText.removeSuffix(".modifiers").takeIf { it != argumentText } ?: return
-        val replacement = "$receiverText.$propertyName"
+        val argument = valueArguments.singleOrNull()?.unwrapParentheses() as? UQualifiedReferenceExpression ?: return
+        if (argument.accessType.name == "?.") return
+        if (argument.selector.asSourceString() != JAVA_MODIFIERS_PROPERTY) return
+        // Only Class and Member have the modifier extensions.
+        val receiverClass = (argument.receiver.getExpressionType() as? PsiClassType)?.resolve() ?: return
+        if (receiverClass.qualifiedName != JAVA_CLASS &&
+            !context.evaluator.implementsInterface(receiverClass, JAVA_REFLECT_MEMBER_CLASS, false)
+        ) return
+        val replacement = "${argument.receiver.operandText()}.$propertyName"
 
         context.report(
             issue = ISSUE,
@@ -540,7 +575,10 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
     private fun UBinaryExpression.reportIsAccessible(context: JavaContext) {
         if (operator != UastBinaryOperator.ASSIGN) return
         if ((rightOperand as? ULiteralExpression)?.value != true) return
-        val replacement = leftOperand.makeAccessibleReplacement(context) ?: return
+        val makeAccessible = leftOperand.makeAccessibleReplacement(context) ?: return
+        // An assignment has no value, keep the result of the lambda as Unit if it may be used.
+        val isUsedResult = resultOfLambda()?.isPassedAsUnitFunction(context) == false
+        val replacement = if (isUsedResult) "$makeAccessible.let {}" else makeAccessible
 
         context.report(
             issue = ISSUE,
