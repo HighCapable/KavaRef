@@ -255,8 +255,6 @@ val test = Test::class.resolve()
 
 ::: tip
 
-`get<T>()` and `invoke<T>()` check the type of the return value, if the actual type does not match `T`, `null` will be returned, and so do `getQuietly<T>()` and `invokeQuietly<T>()`.
-
 In addition to methods such as `firstMethod`, you can also use methods such as `lastMethod` to get the last matching `MethodResolver` instance, which is equivalent to `method { ... }.last()`.
 
 After you get the `MemberResolver` instance, you can use `self` to get the `Member` original instance of the current `MemberResolver` to do some of your own operations.
@@ -267,6 +265,8 @@ to set the current instance. If the reflection is a static member, you do not ne
 :::
 
 ::: warning
+
+Typed functions such as `get<T>()` and `invoke<T>()` do not check the actual type, a `ClassCastException` will be thrown when using the result if the type does not match.
 
 The `Any.resolve()` function has been deprecated in version `1.0.1` and removed in version `1.0.2`,
 because it pollutes the namespace (for example `File.resolve("/path/to/file")`), and now use `Any.asResolver()` instead.

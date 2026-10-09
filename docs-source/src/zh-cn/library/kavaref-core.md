@@ -243,8 +243,6 @@ val test = Test::class.resolve()
 
 ::: tip
 
-`get<T>()`、`invoke<T>()` 会检查返回值的类型，如果实际类型与 `T` 不一致，将返回 `null`，`getQuietly<T>()`、`invokeQuietly<T>()` 同样如此。
-
 除了 `firstMethod` 等方法外，你也可以使用 `lastMethod` 等方法来获取最后一个匹配到的 `MethodResolver` 实例，它等价于 `method { ... }.last()`。
 
 在得到 `MemberResolver` 实例后，你可以使用 `self` 来获取当前 `MemberResolver` 的 `Member` 原始实例来对其进行一些你自己的操作。
@@ -255,6 +253,8 @@ val test = Test::class.resolve()
 :::
 
 ::: warning
+
+`get<T>()`、`invoke<T>()` 等带类型的方法不会检查实际类型，类型不一致时将在使用结果时抛出 `ClassCastException`。
 
 `Any.resolve()` 方法已在 `1.0.1` 版本被弃用，在 `1.0.2` 版本被移除，因为它会污染命名空间 (例如 `File.resolve("/path/to/file")`)，现在请使用 `Any.asResolver()` 来代替。
 
@@ -479,7 +479,7 @@ Test::class.resolve()
     }.of(test).invoke("task_name")
 ```
 
-如果要过滤结果为空的情况，例如不声明任何异常的方法，请使用 `emptyExceptionTypes()` 这类以 `empty` 开头的函数，不传入参数的 `exceptionTypes()` 不会添加任何条件。
+如果要过滤结果为空的情况，例如不声明任何异常的方法，请使用 `emptyExceptionTypes()` 这类以 `empty` 开头的方法，不传入参数的 `exceptionTypes()` 不会添加任何条件。
 
 ### 异常处理
 
