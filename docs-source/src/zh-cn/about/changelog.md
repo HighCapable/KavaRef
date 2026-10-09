@@ -8,7 +8,48 @@
 
 :::
 
-### 1.1.0 | 2026.06.06 &ensp;<Badge type="latest" text="最新" vertical="middle" />
+### 1.1.1 | 2026.10.09 &ensp;<Badge type="latest" text="最新" vertical="middle" />
+
+#### kavaref-core
+
+- <u>**⚠️ 破坏性更新：**</u>调整 `Configuration.superclass` 为 `Superclass` 枚举类型
+- <u>**⚠️ 破坏性更新：**</u>调整 `exceptionTypes`、`genericParameters` 等需要按位置匹配的条件属性为 `List`
+- <u>**⚠️ 破坏性更新：**</u>调整 `annotatedParameterTypes`、`annotatedExceptionTypes` 为按位置传入注解集合
+- 新增 `superclass(interfaces = true)` 用于在接口中过滤成员
+- 新增 `emptyExceptionTypes()` 等过滤空结果的条件
+- 新增 `withHandler()` 用于自定义 `MethodResolver`、`ConstructorResolver`、`FieldResolver` 的调用与读写行为
+- 调整 `MemberResolver`、`InstanceAwareResolver` 的泛型参数，新增处理器类型 `H`
+- 调整注解相关条件与 `WildcardTypeMatcher` 的匹配逻辑，与 Java 反射保持一致
+- 调整 `asResolver()` 的行为，现在总是将调用者作为实例，在 `KClass`、`Class` 上请使用 `resolve()`
+- 调整 `createAsType<T>()` 为非 reified 方法，现在可以传入类上的泛型
+- 统一自由条件抛出异常时的处理逻辑，并在异常信息中列出
+- 修复 `superclass()` 会影响同一作用域中后续过滤的问题以及若干条件匹配错误的问题
+- 修复 `copy()` 与 `mergeWith` 会丢失修饰符条件的问题
+- 优化字符串类型条件的解析性能
+
+#### kavaref-android
+
+- 新增 Lint 规则 `EmptyConditionArguments`
+- 新增 `ReplaceWithKavaRefExtension` 规则对 `isNotSubclassOf`、`toClassOrNull`、`genericSuperclassTypeArguments` 等扩展的替换建议
+- 修复 `ReplaceWithKavaRefExtension` 规则对类字面量以及非 `Member`、`Class` 类型 `modifiers` 的误报问题
+- 修复 `UnsupportedExecutableCondition`、`ReplaceWithKavaRefExtension` 规则的快速修复在链式调用等上下文中会生成错误代码的问题
+
+#### kavaref-jvm
+
+- 移除 SLF4J 依赖以避免修改全局日志配置，默认日志改为输出到控制台
+
+#### kavaref-extension
+
+- 调整 `createInstance()` 的构造方法选择逻辑，与 Java 的重载规则保持一致
+- 调整 `createInstanceAsType<T>()` 为非 reified 方法，现在可以传入类上的泛型
+- 新增 `TypeRef` 对可空类型与泛型数组的支持，并内置 R8/ProGuard 规则
+- 优化 `LazyClass` 的加载逻辑，保证线程安全并缓存加载失败的结果
+- 优化 `makeAccessible()`，成员已可访问时不再重复设置
+- 修复未传入 `ClassLoader` 时 `toClass()` 会初始化类以及 `VariousClass` 无法加载类的问题
+- 修复 `createInstance()` 的缓存导致 `ClassLoader` 无法回收的问题
+- 修复 `isTransient`、`isVolatile` 等修饰符扩展对可变参数方法与桥接方法的误判问题
+
+### 1.1.0 | 2026.06.06 &ensp;<Badge type="warning" text="过旧" vertical="middle" />
 
 #### kavaref-core
 

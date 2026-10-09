@@ -14,7 +14,48 @@ Time zone of version release date: **UTC+8**
 
 :::
 
-### 1.1.0 | 2026.06.06 &ensp;<Badge type="latest" text="latest" vertical="middle" />
+### 1.1.1 | 2026.10.09 &ensp;<Badge type="latest" text="latest" vertical="middle" />
+
+#### kavaref-core
+
+- <u>**⚠️ Breaking Change:**</u> Changed `Configuration.superclass` to the `Superclass` enum
+- <u>**⚠️ Breaking Change:**</u> Changed position-sensitive condition properties such as `exceptionTypes` and `genericParameters` to `List`
+- <u>**⚠️ Breaking Change:**</u> Changed `annotatedParameterTypes` and `annotatedExceptionTypes` to take annotation sets by position
+- Added `superclass(interfaces = true)` to filter members in interfaces
+- Added conditions such as `emptyExceptionTypes()` to match empty results
+- Added `withHandler()` to customize the invocation and read/write behavior of `MethodResolver`, `ConstructorResolver` and `FieldResolver`
+- Changed the type parameters of `MemberResolver` and `InstanceAwareResolver` to include the handler type `H`
+- Aligned annotation related conditions and `WildcardTypeMatcher` with Java reflection
+- Changed `asResolver()` to always treat the receiver as an instance, use `resolve()` on `KClass` and `Class`
+- Changed `createAsType<T>()` to a non-reified function, type parameters of classes can now be passed
+- Unified the handling of exceptions thrown by freedom conditions and listed them in the exception message
+- Fixed `superclass()` affecting subsequent filters in the same scope and several incorrect condition matches
+- Fixed `copy()` and `mergeWith` losing the modifiers condition
+- Improved the resolution performance of string type conditions
+
+#### kavaref-android
+
+- Added Lint rule `EmptyConditionArguments`
+- Added replacement suggestions for extensions such as `isNotSubclassOf`, `toClassOrNull` and `genericSuperclassTypeArguments` to `ReplaceWithKavaRefExtension`
+- Fixed false positives of `ReplaceWithKavaRefExtension` on class literals and `modifiers` of types other than `Member` and `Class`
+- Fixed quick fixes of `UnsupportedExecutableCondition` and `ReplaceWithKavaRefExtension` generating invalid code in contexts such as chained calls
+
+#### kavaref-jvm
+
+- Removed the SLF4J dependency to avoid modifying the global logging configuration, logs are now printed to the console by default
+
+#### kavaref-extension
+
+- Changed `createInstance()` to select constructors following Java overload resolution
+- Changed `createInstanceAsType<T>()` to a non-reified function, type parameters of classes can now be passed
+- Added nullable type and generic array support to `TypeRef`, with built-in R8/ProGuard rules
+- Made `LazyClass` thread-safe and cache failed loads
+- Improved `makeAccessible()` to skip members that are already accessible
+- Fixed `toClass()` initializing classes and `VariousClass` failing to load classes when no `ClassLoader` is passed
+- Fixed the `createInstance()` cache preventing `ClassLoader` from being collected
+- Fixed modifier extensions such as `isTransient` and `isVolatile` misjudging varargs and bridge methods
+
+### 1.1.0 | 2026.06.06 &ensp;<Badge type="warning" text="stale" vertical="middle" />
 
 #### kavaref-core
 
