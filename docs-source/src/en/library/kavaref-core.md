@@ -933,7 +933,7 @@ Due to the diversity of filtering conditions, KavaRef does not directly provide 
 and the implementation method of caching will also vary depending on the implementation method of each developer.
 
 We recommend manually implementing caches of `MemberResolver` created with filter results for improved performance
-and refer to [Create Manually](#create-manually) to split filter conditions to optimize code reuse.
+and refer to [Advanced Usage](#advanced-usage) to split filter conditions to optimize code reuse.
 
 ::: danger
 
@@ -963,7 +963,7 @@ myResolver.of(test).invoke("task_name")
 ```
 
 Please note that since `MemberResolver` is cached, the same instance is called every time you reference it,
-and the instance object of `MemberResolver` is not allowed to be set duplicately (see the "Pay Attention" below [Create Manually](#create-manually)).
+and the instance object of `MemberResolver` is not allowed to be set duplicately (see the "Pay Attention" below [Advanced Usage](#advanced-usage)).
 
 So calling this directly will throw an exception, you need to change it to the following form.
 
