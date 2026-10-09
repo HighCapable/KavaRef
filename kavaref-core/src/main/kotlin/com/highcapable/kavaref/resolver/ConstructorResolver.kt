@@ -19,11 +19,10 @@
  *
  * This file is created by fankes on 2025/5/16.
  */
-@file:Suppress("MemberVisibilityCanBePrivate")
+@file:Suppress("UNCHECKED_CAST")
 
 package com.highcapable.kavaref.resolver
 
-import com.highcapable.kavaref.extension.classOf
 import com.highcapable.kavaref.resolver.base.MemberResolver
 import java.lang.reflect.Constructor
 
@@ -76,8 +75,7 @@ class ConstructorResolver<T : Any> internal constructor(
      * @see createQuietly
      * @return [T]
      */
-    inline fun <reified T : Any> createAsType(vararg args: Any?) =
-        create(*args) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
+    fun <T> createAsType(vararg args: Any?) = create(*args) as T
 
     /**
      * Creates a new instance of the class represented by this constructor and ignores any exceptions.
@@ -98,5 +96,5 @@ class ConstructorResolver<T : Any> internal constructor(
      * @see createQuietly
      * @return [T] or null.
      */
-    inline fun <reified T : Any> createAsTypeQuietly(vararg args: Any?) = runCatching { createAsType<T>(*args) }.getOrNull()
+    fun <T> createAsTypeQuietly(vararg args: Any?) = createQuietly(*args) as T?
 }

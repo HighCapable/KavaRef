@@ -25,8 +25,10 @@ package com.highcapable.kavaref.demo
 import com.highcapable.kavaref.KavaRef.Companion.asResolver
 import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.kavaref.extension.makeAccessible
+import com.highcapable.kavaref.resolver.ConstructorResolver
+import com.highcapable.kavaref.resolver.FieldResolver
+import com.highcapable.kavaref.resolver.MethodResolver
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.io.File
@@ -51,14 +53,35 @@ class ResolverTest {
     }
 
     @Test
-    fun typedInvokeAndGetCheckTheResultType() {
+    fun typedInvokeAndGetWorkWithClassTypeParameters() {
         val method = resolver.firstMethod { name = "staticValue" }
         val field = resolver.firstField { name = "number" }.of(ResolverFixtures())
-        assertEquals("static", method.invoke<String>())
-        assertNull(method.invoke<Int>())
-        assertNull(method.invokeQuietly<Int>())
-        assertEquals(1, field.get<Int>())
-        assertNull(field.get<String>())
-        assertNull(field.getQuietly<String>())
+        assertEquals("static", TypedAccessor<String>().invoke(method))
+        assertEquals("static", TypedAccessor<String>().invokeQuietly(method))
+        assertEquals(1, TypedAccessor<Int>().get(field))
+        assertEquals(1, TypedAccessor<Int>().getQuietly(field))
+        val constructor = resolver.firstConstructor { emptyParameters() }
+        assertEquals(ResolverFixtures::class.java, TypedCreator<Any>().createAsType(constructor).javaClass)
+        assertEquals(ResolverFixtures::class.java, TypedCreator<Any>().createAsTypeQuietly(constructor)?.javaClass)
+    }
+
+    /** Calls the typed functions with a type parameter of the class, which cannot be reified. */
+    private class TypedAccessor<T> {
+
+        fun invoke(method: MethodResolver<*>) = method.invoke<T>()
+
+        fun invokeQuietly(method: MethodResolver<*>) = method.invokeQuietly<T>()
+
+        fun get(field: FieldResolver<*>) = field.get<T>()
+
+        fun getQuietly(field: FieldResolver<*>) = field.getQuietly<T>()
+    }
+
+    /** Calls the typed functions of [ConstructorResolver] with a type parameter of the class, which cannot be reified. */
+    private class TypedCreator<T> {
+
+        fun createAsType(constructor: ConstructorResolver<*>) = constructor.createAsType<T>()
+
+        fun createAsTypeQuietly(constructor: ConstructorResolver<*>) = constructor.createAsTypeQuietly<T>()
     }
 }

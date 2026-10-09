@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/6/7.
  */
-@file:Suppress("unused", "UNCHECKED_CAST", "RemoveExplicitTypeArguments", "FunctionName")
+@file:Suppress("unused", "UNCHECKED_CAST", "RemoveExplicitTypeArguments")
 @file:JvmName("TypeUtils")
 
 package com.highcapable.kavaref.extension
@@ -52,13 +52,9 @@ fun Type.toClass(): Class<Any> = when (this) {
  * @see Type.toClassOrNull
  * @return [Class]<[T]>
  * @throws TypeCastException if the conversion fails.
- * @throws IllegalStateException if the class is not assignable to [T].
  */
-@JvmName("toClassAsTyped")
-inline fun <reified T : Any> Type.toClass(): Class<T> {
-    val type = classOf<T>(primitiveType = false)
-    return toClass().also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
-}
+@JvmName("toClassTyped")
+fun <T : Any> Type.toClass() = toClass() as Class<T>
 
 /**
  * Safely converts [Type] to [Class] or returns null if it fails.
@@ -72,10 +68,10 @@ fun Type.toClassOrNull() = runCatching { toClass() }.getOrNull()
  * Safely converts [Type] to [Class] and casts it to [Class]<[T]>, or returns null if it fails.
  * @see Type.toClass
  * @see Type.toClassOrNull
- * @return [Class]<[T]> or null if the conversion fails or the class is not assignable to [T].
+ * @return [Class]<[T]> or null if the conversion fails.
  */
-@JvmName("toClassOrNullAsTyped")
-inline fun <reified T : Any> Type.toClassOrNull() = toClassOrNull()?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
+@JvmName("toClassTypedOrNull")
+fun <T : Any> Type.toClassOrNull() = toClassOrNull() as Class<T>?
 
 /**
  * Converts [Type] to [ParameterizedType].
@@ -114,15 +110,3 @@ fun <T : Any> Class<T>.genericSuperclassTypeArguments(): Array<Type> = runCatchi
  */
 @JvmSynthetic
 fun <T : Any> KClass<T>.genericSuperclassTypeArguments() = java.genericSuperclassTypeArguments()
-
-// region Binary compatibility for the non-inline functions compiled by previous versions
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmName("toClassTyped")
-fun <T : Any> Type._toClass() = toClass() as Class<T>
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmName("toClassTypedOrNull")
-fun <T : Any> Type._toClassOrNull() = toClassOrNull() as Class<T>?
-
-// endregion

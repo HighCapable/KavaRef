@@ -31,7 +31,6 @@ import com.highcapable.kavaref.extension.toClassOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
-import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -68,28 +67,25 @@ class ClassLoadingInstrumentedTest {
     }
 
     @Test
-    fun typedClassLoadingChecksTheAssignableType() {
+    fun typedClassLoadingWorksWithClassTypeParameters() {
         val name = String::class.java.name
-        assertEquals(String::class.java, name.toClass<CharSequence>())
-        assertThrows(IllegalStateException::class.java) { name.toClass<Number>() }
-        assertNull(name.toClassOrNull<Number>())
-        assertEquals(String::class.java, VariousClass(name).load<CharSequence>())
-        assertThrows(IllegalStateException::class.java) { VariousClass(name).load<Number>() }
-        assertNull(VariousClass(name).loadOrNull<Number>())
-        assertEquals(String::class.java, (String::class.java as Type).toClass<CharSequence>())
-        assertThrows(IllegalStateException::class.java) { (String::class.java as Type).toClass<Number>() }
-        assertNull((String::class.java as Type).toClassOrNull<Number>())
+        val loader = TypedLoader<CharSequence>()
+        assertEquals(String::class.java, loader.toClass(name))
+        assertEquals(String::class.java, loader.toClassOrNull(name))
+        assertNull(loader.toClassOrNull("com.example.Missing"))
+        assertEquals(String::class.java, loader.load(name))
+        assertEquals(String::class.java, loader.loadOrNull(name))
+        assertEquals(String::class.java, loader.typeToClass(String::class.java))
+        assertEquals(String::class.java, loader.typeToClassOrNull(String::class.java))
     }
 
     @Test
-    fun typedLazyClassChecksTheAssignableType() {
-        val name = String::class.java.name
-        val matched by lazyClass<CharSequence>(name)
-        val mismatched by lazyClass<Number>(name)
-        val mismatchedOrNull by lazyClassOrNull<Number>(name)
+    fun typedLazyClassWorksWithClassTypeParameters() {
+        val loader = TypedLoader<CharSequence>()
+        val matched by loader.lazy(String::class.java.name)
+        val missing by loader.lazyOrNull("com.example.Missing")
         assertEquals(String::class.java, matched)
-        assertThrows(IllegalStateException::class.java) { mismatched }
-        assertNull(mismatchedOrNull)
+        assertNull(missing)
     }
 
     @Test
@@ -125,5 +121,25 @@ class ClassLoadingInstrumentedTest {
             Thread.sleep(10)
             return super.loadClass(name, resolve)
         }
+    }
+
+    /** Calls the typed functions with a type parameter of the class, which cannot be reified. */
+    private class TypedLoader<T : Any> {
+
+        fun toClass(name: String) = name.toClass<T>()
+
+        fun toClassOrNull(name: String) = name.toClassOrNull<T>()
+
+        fun load(name: String) = VariousClass(name).load<T>()
+
+        fun loadOrNull(name: String) = VariousClass(name).loadOrNull<T>()
+
+        fun typeToClass(type: Type) = type.toClass<T>()
+
+        fun typeToClassOrNull(type: Type) = type.toClassOrNull<T>()
+
+        fun lazy(name: String) = lazyClass<T>(name)
+
+        fun lazyOrNull(name: String) = lazyClassOrNull<T>(name)
     }
 }

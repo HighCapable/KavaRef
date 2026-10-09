@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/5/16.
  */
-@file:Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "FunctionName")
+@file:Suppress("UNCHECKED_CAST")
 
 package com.highcapable.kavaref.resolver
 
@@ -76,19 +76,19 @@ class FieldResolver<T : Any> internal constructor(
      * Gets the value of the field and casts it to [T].
      * @see Field.get
      * @see getQuietly
-     * @return [T] or null if the value is null or not an instance of [T].
+     * @return [T] or null.
      */
-    @JvmName("getAsTyped")
-    inline fun <reified T> get() = get() as? T
+    @JvmName("getTyped")
+    fun <T> get() = get() as T?
 
     /**
      * Gets the value of the field, casts it to [T] and ignores any exceptions.
      * @see Field.get
      * @see get
-     * @return [T] or null if failed or the value is not an instance of [T].
+     * @return [T] or null.
      */
-    @JvmName("getQuietlyAsTyped")
-    inline fun <reified T> getQuietly() = getQuietly() as? T
+    @JvmName("getQuietlyTyped")
+    fun <T> getQuietly() = getQuietly() as T?
 
     /**
      * Gets the value of the field.
@@ -127,16 +127,4 @@ class FieldResolver<T : Any> internal constructor(
      * @param value the value to set.
      */
     fun setQuietly(value: Any?) = runCatching { set(value) }.getOrNull() ?: Unit
-
-    // region Binary compatibility for the non-inline functions compiled by previous versions
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-    @JvmName("getTyped")
-    fun <T> _get() = get() as T?
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-    @JvmName("getQuietlyTyped")
-    fun <T> _getQuietly() = getQuietly() as T?
-
-    // endregion
 }

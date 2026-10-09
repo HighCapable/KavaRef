@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/5/16.
  */
-@file:Suppress("UNCHECKED_CAST", "MemberVisibilityCanBePrivate", "FunctionName")
+@file:Suppress("UNCHECKED_CAST")
 
 package com.highcapable.kavaref.resolver
 
@@ -68,19 +68,19 @@ class MethodResolver<T : Any> internal constructor(
      * Invokes the method with the given arguments and casts the result to [T].
      * @see Method.invoke
      * @see invokeQuietly
-     * @return [T] or null if the result is null or not an instance of [T].
+     * @return [T] or null.
      */
-    @JvmName("invokeAsTyped")
-    inline fun <reified T> invoke(vararg args: Any?) = invoke(*args) as? T
+    @JvmName("invokeTyped")
+    fun <T> invoke(vararg args: Any?) = invoke(*args) as T?
 
     /**
      * Invokes the method with the given arguments, casts the result to [T] and ignores any exceptions.
      * @see Method.invoke
      * @see invokeQuietly
-     * @return [T] or null if failed or the result is not an instance of [T].
+     * @return [T] or null.
      */
-    @JvmName("invokeQuietlyAsTyped")
-    inline fun <reified T> invokeQuietly(vararg args: Any?) = invokeQuietly(*args) as? T
+    @JvmName("invokeQuietlyTyped")
+    fun <T> invokeQuietly(vararg args: Any?) = invokeQuietly(*args) as T?
 
     /**
      * Invokes the method with the given arguments.
@@ -100,16 +100,4 @@ class MethodResolver<T : Any> internal constructor(
      * @return [Any] or null.
      */
     fun invokeQuietly(vararg args: Any?) = runCatching { invoke(*args) }.getOrNull()
-
-    // region Binary compatibility for the non-inline functions compiled by previous versions
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-    @JvmName("invokeTyped")
-    fun <T> _invoke(vararg args: Any?) = invoke(*args) as T?
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-    @JvmName("invokeQuietlyTyped")
-    fun <T> _invokeQuietly(vararg args: Any?) = invokeQuietly(*args) as T?
-
-    // endregion
 }

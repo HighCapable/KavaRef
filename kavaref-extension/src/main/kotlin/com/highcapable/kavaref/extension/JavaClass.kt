@@ -19,7 +19,7 @@
  *
  * This file is created by fankes on 2025/5/31.
  */
-@file:Suppress("unused", "MemberVisibilityCanBePrivate", "UNCHECKED_CAST", "PLATFORM_CLASS_MAPPED_TO_KOTLIN", "FunctionName")
+@file:Suppress("unused", "UNCHECKED_CAST")
 @file:JvmName("ClassUtils")
 
 package com.highcapable.kavaref.extension
@@ -218,13 +218,10 @@ class VariousClass(vararg names: String) {
      * @see loadOrNull
      * @return [Class]<[T]>
      * @throws NoClassDefFoundError if no class is found.
-     * @throws IllegalStateException if the class is not assignable to [T].
      */
-    @JvmName("loadAsTyped")
-    inline fun <reified T : Any> load(loader: ClassLoader? = null, initialize: Boolean = false): Class<T> {
-        val type = classOf<T>(primitiveType = false)
-        return load(loader, initialize).also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
-    }
+    @JvmOverloads
+    @JvmName("loadTyped")
+    fun <T : Any> load(loader: ClassLoader? = null, initialize: Boolean = false) = load(loader, initialize) as Class<T>
 
     /**
      * Loads the first class that matches the given names using the specified [ClassLoader].
@@ -244,37 +241,21 @@ class VariousClass(vararg names: String) {
      * Loads the first class that matches the given names using the specified [ClassLoader] and casts it to [Class]<[T]>.
      * @see load
      * @see loadOrNull
-     * @return [Class]<[T]> or null if no class is found or the class is not assignable to [T].
+     * @return [Class]<[T]> or null if no class is found.
      */
-    @JvmName("loadOrNullAsTyped")
-    inline fun <reified T : Any> loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false) =
-        loadOrNull(loader, initialize)?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
-
-    // region Binary compatibility for the non-inline functions compiled by previous versions
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-    @JvmOverloads
-    @JvmName("loadTyped")
-    fun <T : Any> _load(loader: ClassLoader? = null, initialize: Boolean = false) = load(loader, initialize) as Class<T>
-
-    @Deprecated(message = "", level = DeprecationLevel.HIDDEN)
     @JvmOverloads
     @JvmName("loadOrNullTyped")
-    fun <T : Any> _loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = loadOrNull(loader, initialize) as Class<T>?
-
-    // endregion
+    fun <T : Any> loadOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = loadOrNull(loader, initialize) as Class<T>?
 }
 
 /**
  * Lazy loading [Class] instance.
  * @param classDefinition the class definition.
- * @param type the type that the class must be assignable to.
  * @param initialize whether to initialize the class with [loader].
  * @param loader the [ClassLoader] to load the class.
  */
 abstract class LazyClass<T : Any> private constructor(
     private val classDefinition: Any,
-    private val type: Class<T>,
     private val initialize: Boolean,
     private val loader: ClassLoaderInitializer?
 ) {
@@ -299,9 +280,6 @@ abstract class LazyClass<T : Any> private constructor(
             else -> error("Unknown lazy class type \"$classDefinition\"")
         }
 
-        check(clazz isSubclassOf type) {
-            "$clazz is not a subclass of $type"
-        }
         (clazz as Class<T>).also { baseDefinition = it }
     }
 
@@ -318,39 +296,21 @@ abstract class LazyClass<T : Any> private constructor(
             is String -> classDefinition.toClassOrNull(loader?.invoke(), initialize)
             is VariousClass -> classDefinition.loadOrNull(loader?.invoke(), initialize)
             else -> error("Unknown lazy class type \"$classDefinition\"")
-        }?.takeIf { it isSubclassOf type }
+        }
         (clazz as Class<T>?).also { if (it != null) baseDefinition = it else isMissing = true }
     } else null
 
     /**
      * Creates a non-null instance of [Class].
      * @param classDefinition the class definition, can be a [String] class name or a [VariousClass].
-     * @param type the type that the class must be assignable to.
      * @param initialize whether to initialize the class with [loader].
      * @param loader the [ClassLoader] to load the class.
      */
-    class NonNull<T : Any> private constructor(
+    class NonNull<T : Any> internal constructor(
         classDefinition: Any,
-        type: Class<T>,
         initialize: Boolean,
         loader: ClassLoaderInitializer?
-    ) : LazyClass<T>(classDefinition, type, initialize, loader) {
-
-        @PublishedApi
-        internal companion object {
-
-            /**
-             * Creates a non-null instance of [Class].
-             * @see NonNull
-             */
-            @JvmSynthetic
-            fun <T : Any> from(
-                classDefinition: Any,
-                type: Class<T>,
-                initialize: Boolean,
-                loader: ClassLoaderInitializer?
-            ) = NonNull(classDefinition, type, initialize, loader)
-        }
+    ) : LazyClass<T>(classDefinition, initialize, loader) {
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>) = nonNull
     }
@@ -358,32 +318,14 @@ abstract class LazyClass<T : Any> private constructor(
     /**
      * Creates a nullable instance of [Class].
      * @param classDefinition the class definition, can be a [String] class name or a [VariousClass].
-     * @param type the type that the class must be assignable to.
      * @param initialize whether to initialize the class with [loader].
      * @param loader the [ClassLoader] to load the class.
      */
-    class Nullable<T : Any> private constructor(
+    class Nullable<T : Any> internal constructor(
         classDefinition: Any,
-        type: Class<T>,
         initialize: Boolean,
         loader: ClassLoaderInitializer?
-    ) : LazyClass<T>(classDefinition, type, initialize, loader) {
-
-        @PublishedApi
-        internal companion object {
-
-            /**
-             * Creates a nullable instance of [Class].
-             * @see Nullable
-             */
-            @JvmSynthetic
-            fun <T : Any> from(
-                classDefinition: Any,
-                type: Class<T>,
-                initialize: Boolean,
-                loader: ClassLoaderInitializer?
-            ) = Nullable(classDefinition, type, initialize, loader)
-        }
+    ) : LazyClass<T>(classDefinition, initialize, loader) {
 
         operator fun getValue(thisRef: Any?, property: KProperty<*>) = nullable
     }
@@ -403,7 +345,7 @@ fun lazyClass(
     name: String,
     initialize: Boolean = false,
     loader: ClassLoaderInitializer? = null
-) = LazyClass.NonNull.from(name, classOf<Any>(), initialize, loader)
+) = LazyClass.NonNull<Any>(name, initialize, loader)
 
 /**
  * Creates a non-null instance of [Class].
@@ -411,12 +353,13 @@ fun lazyClass(
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
  */
-@JvmName("lazyClassAsTyped")
-inline fun <reified T : Any> lazyClass(
+@JvmSynthetic
+@JvmName("lazyClassTyped")
+fun <T : Any> lazyClass(
     name: String,
     initialize: Boolean = false,
-    noinline loader: ClassLoaderInitializer? = null
-) = LazyClass.NonNull.from(name, classOf<T>(primitiveType = false), initialize, loader)
+    loader: ClassLoaderInitializer? = null
+) = LazyClass.NonNull<T>(name, initialize, loader)
 
 /**
  * Creates a non-null instance of [VariousClass].
@@ -432,7 +375,7 @@ fun lazyClass(
     variousClass: VariousClass,
     initialize: Boolean = false,
     loader: ClassLoaderInitializer? = null
-) = LazyClass.NonNull.from(variousClass, classOf<Any>(), initialize, loader)
+) = LazyClass.NonNull<Any>(variousClass, initialize, loader)
 
 /**
  * Creates a non-null instance of [VariousClass].
@@ -440,12 +383,13 @@ fun lazyClass(
  * @see lazyClassOrNull
  * @return [LazyClass.NonNull]<[T]>
  */
-@JvmName("lazyClassAsTyped")
-inline fun <reified T : Any> lazyClass(
+@JvmSynthetic
+@JvmName("lazyClassTyped")
+fun <T : Any> lazyClass(
     variousClass: VariousClass,
     initialize: Boolean = false,
-    noinline loader: ClassLoaderInitializer? = null
-) = LazyClass.NonNull.from(variousClass, classOf<T>(primitiveType = false), initialize, loader)
+    loader: ClassLoaderInitializer? = null
+) = LazyClass.NonNull<T>(variousClass, initialize, loader)
 
 /**
  * Creates a nullable instance of [Class].
@@ -461,7 +405,7 @@ fun lazyClassOrNull(
     name: String,
     initialize: Boolean = false,
     loader: ClassLoaderInitializer? = null
-) = LazyClass.Nullable.from(name, classOf<Any>(), initialize, loader)
+) = LazyClass.Nullable<Any>(name, initialize, loader)
 
 /**
  * Creates a nullable instance of [Class].
@@ -469,12 +413,13 @@ fun lazyClassOrNull(
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
  */
-@JvmName("lazyClassOrNullAsTyped")
-inline fun <reified T : Any> lazyClassOrNull(
+@JvmSynthetic
+@JvmName("lazyClassOrNullTyped")
+fun <T : Any> lazyClassOrNull(
     name: String,
     initialize: Boolean = false,
-    noinline loader: ClassLoaderInitializer? = null
-) = LazyClass.Nullable.from(name, classOf<T>(primitiveType = false), initialize, loader)
+    loader: ClassLoaderInitializer? = null
+) = LazyClass.Nullable<T>(name, initialize, loader)
 
 /**
  * Creates a nullable instance of [VariousClass].
@@ -490,7 +435,7 @@ fun lazyClassOrNull(
     variousClass: VariousClass,
     initialize: Boolean = false,
     loader: ClassLoaderInitializer? = null
-) = LazyClass.Nullable.from(variousClass, classOf<Any>(), initialize, loader)
+) = LazyClass.Nullable<Any>(variousClass, initialize, loader)
 
 /**
  * Creates a nullable instance of [VariousClass].
@@ -498,12 +443,13 @@ fun lazyClassOrNull(
  * @see lazyClassOrNull
  * @return [LazyClass.Nullable]<[T]>
  */
-@JvmName("lazyClassOrNullAsTyped")
-inline fun <reified T : Any> lazyClassOrNull(
+@JvmSynthetic
+@JvmName("lazyClassOrNullTyped")
+fun <T : Any> lazyClassOrNull(
     variousClass: VariousClass,
     initialize: Boolean = false,
-    noinline loader: ClassLoaderInitializer? = null
-) = LazyClass.Nullable.from(variousClass, classOf<T>(primitiveType = false), initialize, loader)
+    loader: ClassLoaderInitializer? = null
+) = LazyClass.Nullable<T>(variousClass, initialize, loader)
 
 /**
  * Converts [String] class name to [Class] with [ClassLoader].
@@ -527,13 +473,10 @@ fun String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Cl
  * @see Class.toClass
  * @see String.toClassOrNull
  * @return [Class]<[T]>
- * @throws IllegalStateException if the class is not assignable to [T].
  */
-@JvmName("createAsTyped")
-inline fun <reified T : Any> String.toClass(loader: ClassLoader? = null, initialize: Boolean = false): Class<T> {
-    val type = classOf<T>(primitiveType = false)
-    return toClass(loader, initialize).also { check(it isSubclassOf type) { "$it is not a subclass of $type" } } as Class<T>
-}
+@JvmOverloads
+@JvmName("createTyped")
+fun <T : Any> String.toClass(loader: ClassLoader? = null, initialize: Boolean = false) = toClass(loader, initialize) as Class<T>
 
 /**
  * Converts [String] class name to [Class] with [ClassLoader].
@@ -554,11 +497,11 @@ fun String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = fals
  * Converts [String] class name to [Class] with [ClassLoader], then casts it to [Class]<[T]>.
  * @see Class.toClass
  * @see String.toClassOrNull
- * @return [Class]<[T]> or null if the class is not found or not assignable to [T].
+ * @return [Class]<[T]> or null if the class is not found.
  */
-@JvmName("createOrNullAsTyped")
-inline fun <reified T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = false) =
-    toClassOrNull(loader, initialize)?.takeIf { it isSubclassOf classOf<T>(primitiveType = false) } as Class<T>?
+@JvmOverloads
+@JvmName("createOrNullTyped")
+fun <T : Any> String.toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = toClassOrNull(loader, initialize) as Class<T>?
 
 /**
  * Creates an instance of [Class] with the given arguments.
@@ -621,16 +564,18 @@ fun <T : Any> KClass<T>.createInstanceOrNull(vararg args: Any?, isPublic: Boolea
  * @see Class.createInstanceAsTypeOrNull
  * @return [T]
  * @throws NoSuchMethodError if no suitable constructor is found.
- * @throws IllegalStateException if the instance cannot be cast to type [T] or if all arguments are null.
+ * @throws IllegalStateException if all arguments are null.
  */
-inline fun <reified T : Any> Class<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
-    createInstance(*args, isPublic = isPublic) as? T ?: error("$this's instance cannot be cast to type ${classOf<T>()}")
+@JvmOverloads
+fun <T> Class<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
+    createInstance(*args, isPublic = isPublic) as T
 
 /**
  * Creates an instance of [KClass.java] with the given arguments and casts it to the specified type [T].
  * @see Class.createInstanceAsType
  */
-inline fun <reified T : Any> KClass<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
+@JvmSynthetic
+fun <T> KClass<*>.createInstanceAsType(vararg args: Any?, isPublic: Boolean = true) =
     java.createInstanceAsType<T>(*args, isPublic = isPublic)
 
 /**
@@ -638,16 +583,18 @@ inline fun <reified T : Any> KClass<*>.createInstanceAsType(vararg args: Any?, i
  * @see Class.createInstance
  * @see Class.createInstanceOrNull
  * @see Class.createInstanceAsType
- * @return [T] or null if the instance cannot be created or cannot be cast to type [T].
+ * @return [T] or null if the instance cannot be created.
  */
-inline fun <reified T : Any> Class<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
-    runCatching { createInstanceAsType<T>(*args, isPublic = isPublic) }.getOrNull()
+@JvmOverloads
+fun <T> Class<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
+    createInstanceOrNull(*args, isPublic = isPublic) as T?
 
 /**
  * Creates an instance of [KClass.java] with the given arguments and casts it to the specified type [T] or returns null if failed.
  * @see Class.createInstanceAsTypeOrNull
  */
-inline fun <reified T : Any> KClass<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
+@JvmSynthetic
+fun <T> KClass<*>.createInstanceAsTypeOrNull(vararg args: Any?, isPublic: Boolean = true) =
     java.createInstanceAsTypeOrNull<T>(*args, isPublic = isPublic)
 
 /**
@@ -763,44 +710,6 @@ val <T : Any> Class<T>.hasInterfaces get() = interfaces.isNotEmpty()
  */
 @get:JvmSynthetic
 val <T : Any> KClass<T>.hasInterfaces get() = java.hasInterfaces
-
-// region Binary compatibility for the non-inline functions compiled by previous versions
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmSynthetic
-@JvmName("lazyClassTyped")
-fun <T : Any> _lazyClass(name: String, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
-    LazyClass.NonNull.from(name, classOf<Any>() as Class<T>, initialize, loader)
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmSynthetic
-@JvmName("lazyClassTyped")
-fun <T : Any> _lazyClass(variousClass: VariousClass, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
-    LazyClass.NonNull.from(variousClass, classOf<Any>() as Class<T>, initialize, loader)
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmSynthetic
-@JvmName("lazyClassOrNullTyped")
-fun <T : Any> _lazyClassOrNull(name: String, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
-    LazyClass.Nullable.from(name, classOf<Any>() as Class<T>, initialize, loader)
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmSynthetic
-@JvmName("lazyClassOrNullTyped")
-fun <T : Any> _lazyClassOrNull(variousClass: VariousClass, initialize: Boolean = false, loader: ClassLoaderInitializer? = null) =
-    LazyClass.Nullable.from(variousClass, classOf<Any>() as Class<T>, initialize, loader)
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmOverloads
-@JvmName("createTyped")
-fun <T : Any> String._toClass(loader: ClassLoader? = null, initialize: Boolean = false) = toClass(loader, initialize) as Class<T>
-
-@Deprecated(message = "", level = DeprecationLevel.HIDDEN)
-@JvmOverloads
-@JvmName("createOrNullTyped")
-fun <T : Any> String._toClassOrNull(loader: ClassLoader? = null, initialize: Boolean = false) = toClassOrNull(loader, initialize) as Class<T>?
-
-// endregion
 
 // region Class extension properties for checking modifiers
 

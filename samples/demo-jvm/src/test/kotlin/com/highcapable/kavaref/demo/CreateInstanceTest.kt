@@ -23,6 +23,8 @@
 package com.highcapable.kavaref.demo
 
 import com.highcapable.kavaref.extension.createInstance
+import com.highcapable.kavaref.extension.createInstanceAsType
+import com.highcapable.kavaref.extension.createInstanceAsTypeOrNull
 import com.highcapable.kavaref.extension.createInstanceOrNull
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
@@ -52,6 +54,14 @@ class CreateInstanceTest {
     fun createInstanceThrowsOnAmbiguity() {
         assertThrows(IllegalArgumentException::class.java) { CreateInstanceFixtures.Ambiguous::class.createInstance("a", "b") }
         assertNull(CreateInstanceFixtures.Ambiguous::class.createInstanceOrNull("a", "b"))
+    }
+
+    @Test
+    fun createInstanceAsTypeWorksWithClassTypeParameters() {
+        val creator = TypedCreator<Any>()
+        assertEquals("String", (creator.createInstanceAsType(CreateInstanceFixtures.Overloads::class.java, "x") as CreateInstanceFixtures.Overloads).picked)
+        assertEquals("String", (creator.createInstanceAsTypeOrNull(CreateInstanceFixtures.Overloads::class.java, "x") as CreateInstanceFixtures.Overloads).picked)
+        assertNull(creator.createInstanceAsTypeOrNull(CreateInstanceFixtures.Ambiguous::class.java, "a", "b"))
     }
 
     @Test
@@ -101,4 +111,12 @@ class CreateInstanceTest {
 
     /** Read the referent in its own frame, otherwise ART may keep it alive in a stale register during GC. */
     private fun WeakReference<*>.isCleared() = get() == null
+
+    /** Calls the typed functions with a type parameter of the class, which cannot be reified. */
+    private class TypedCreator<T> {
+
+        fun createInstanceAsType(clazz: Class<*>, vararg args: Any?) = clazz.createInstanceAsType<T>(*args)
+
+        fun createInstanceAsTypeOrNull(clazz: Class<*>, vararg args: Any?) = clazz.createInstanceAsTypeOrNull<T>(*args)
+    }
 }
