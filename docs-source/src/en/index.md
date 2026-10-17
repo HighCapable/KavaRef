@@ -3,7 +3,7 @@ layout: home
 title: Home
 hero:
   name: KavaRef
-  tagline: A modernizing Java Reflection with Kotlin
+  tagline: A modernizing Java reflection with Kotlin
   image:
     src: /images/logo.svg
     alt: KavaRef

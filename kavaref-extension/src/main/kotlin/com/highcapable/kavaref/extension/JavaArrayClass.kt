@@ -1,5 +1,5 @@
 /*
- * KavaRef - A modernizing Java Reflection with Kotlin.
+ * KavaRef - A modernizing Java reflection with Kotlin.
  * Copyright (C) 2019 HighCapable
  * https://github.com/HighCapable/KavaRef
  *

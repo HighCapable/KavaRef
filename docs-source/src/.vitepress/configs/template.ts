@@ -94,7 +94,7 @@ export const configs = {
         locales: {
             en: {
                 lang: 'en-US',
-                description: 'A modernizing Java Reflection with Kotlin'
+                description: 'A modernizing Java reflection with Kotlin'
             },
             'zh-cn': {
                 lang: 'zh-CN',

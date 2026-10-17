@@ -7,7 +7,7 @@
 
 <img src="img-src/icon.svg" width = "100" height = "100" alt="LOGO"/>
 
-A modernizing Java Reflection with Kotlin.
+A modernizing Java reflection with Kotlin.
 
 English | [简体中文](README-zh-CN.md)
 
