@@ -51,36 +51,6 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
 
     companion object {
 
-        val UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE = Issue.create(
-            id = "UnsupportedExecutableCondition",
-            briefDescription = "Unsupported executable condition on Android",
-            explanation = "Annotated executable type conditions are not supported on Android.",
-            category = Category.CORRECTNESS,
-            priority = 10,
-            severity = Severity.ERROR,
-            implementation = Implementation(
-                ExecutableConditionDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
-
-        val EMPTY_CONDITION_ARGUMENTS_ISSUE = Issue.create(
-            id = "EmptyConditionArguments",
-            briefDescription = "Condition function without arguments",
-            explanation = """
-              A condition function without any arguments adds no condition, it matches members with anything. \
-              To match members whose result is empty, use the corresponding empty condition function instead, \
-              such as `emptyParameters()` for `parameters()`.
-            """,
-            category = Category.CORRECTNESS,
-            priority = 5,
-            severity = Severity.INFORMATIONAL,
-            implementation = Implementation(
-                ExecutableConditionDetector::class.java,
-                Scope.JAVA_FILE_SCOPE
-            )
-        )
-
         private const val EXECUTABLE_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.base.ExecutableCondition"
         private const val CONSTRUCTOR_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.ConstructorCondition"
         private const val METHOD_CONDITION_CLASS = "${DeclaredSymbol.KAVAREF_PACKAGE_NAME}.condition.MethodCondition"
@@ -128,6 +98,36 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
             "annotatedExceptionTypesNot" to "emptyExceptionTypesNot",
             "genericExceptionTypes" to "emptyGenericExceptionTypes",
             "genericExceptionTypesNot" to "emptyGenericExceptionTypesNot"
+        )
+
+        val UNSUPPORTED_EXECUTABLE_CONDITION_ISSUE = Issue.create(
+            id = "UnsupportedExecutableCondition",
+            briefDescription = "Unsupported executable condition on Android",
+            explanation = "Annotated executable type conditions are not supported on Android.",
+            category = Category.CORRECTNESS,
+            priority = 10,
+            severity = Severity.ERROR,
+            implementation = Implementation(
+                ExecutableConditionDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
+        )
+
+        val EMPTY_CONDITION_ARGUMENTS_ISSUE = Issue.create(
+            id = "EmptyConditionArguments",
+            briefDescription = "Condition function without arguments",
+            explanation = """
+              A condition function without any arguments adds no condition, it matches members with anything. \
+              To match members whose result is empty, use the corresponding empty condition function instead, \
+              such as `emptyParameters()` for `parameters()`.
+            """,
+            category = Category.CORRECTNESS,
+            priority = 5,
+            severity = Severity.INFORMATIONAL,
+            implementation = Implementation(
+                ExecutableConditionDetector::class.java,
+                Scope.JAVA_FILE_SCOPE
+            )
         )
     }
 
