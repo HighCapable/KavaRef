@@ -123,7 +123,7 @@ class ExecutableConditionDetector : Detector(), Detector.UastScanner {
             """,
             category = Category.CORRECTNESS,
             priority = 5,
-            severity = Severity.INFORMATIONAL,
+            severity = Severity.WARNING,
             implementation = Implementation(
                 ExecutableConditionDetector::class.java,
                 Scope.JAVA_FILE_SCOPE

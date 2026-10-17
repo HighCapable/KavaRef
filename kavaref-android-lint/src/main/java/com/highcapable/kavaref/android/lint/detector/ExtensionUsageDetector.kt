@@ -230,9 +230,9 @@ class ExtensionUsageDetector : Detector(), Detector.UastScanner {
                 member.makeAccessible()
                 ```
             """.trimIndent(),
-            category = Category.USABILITY,
+            category = Category.PRODUCTIVITY,
             priority = 5,
-            severity = Severity.WARNING,
+            severity = Severity.INFORMATIONAL,
             implementation = Implementation(
                 ExtensionUsageDetector::class.java,
                 Scope.JAVA_FILE_SCOPE
