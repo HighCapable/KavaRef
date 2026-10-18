@@ -16,7 +16,7 @@
 
 ## 用途
 
-KavaRef 采用 Kotlin **lambda** 语法与 Java Builder 风格构建。
+KavaRef 采用 Kotlin DSL 语法与 Java Builder 风格构建。
 
 它能取代 [Java 原生的反射 API](https://pdai.tech/md/java/basic/java-basic-x-reflection.html)，使用更加人性化的语言实现一套更加完善的反射方案。
 

@@ -17,7 +17,7 @@ hero:
 features:
   - icon: 🪶
     title: Light and Elegant
-    details: A powerful, elegant, beautiful API built with Kotlin lambda can help you quickly implement bytecode filtering and reflection functions.
+    details: A powerful, elegant, beautiful API built with Kotlin DSL can help you quickly implement bytecode filtering and reflection functions.
   - icon: 🔄
     title: Fully Compatible
     details: Using native Java APIs to implement reflection functionality, it can be used on any Kotlin on JVM project, and it is no problem on Android.

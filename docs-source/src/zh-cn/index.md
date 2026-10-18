@@ -17,7 +17,7 @@ hero:
 features:
   - icon: 🪶
     title: 轻量优雅
-    details: 拥有一套强大、优雅、人性化、完全使用 Kotlin lambda 打造的 API，可以帮你快速实现字节码的过滤以及反射功能。
+    details: 拥有一套强大、优雅、人性化、完全使用 Kotlin DSL 打造的 API，可以帮你快速实现字节码的过滤以及反射功能。
   - icon: 🔄
     title: 全面兼容
     details: 使用原生 Java API 实现反射功能，可在任何 Kotlin on JVM 的项目上使用，在 Android 上使用也丝毫不成问题。

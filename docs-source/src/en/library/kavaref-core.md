@@ -679,7 +679,7 @@ you can find the corresponding integration methods in [here](../config/runtime-l
 The above content explains all the usage methods in standard scenarios.
 If you have a more fine-grained usage scenario, you can manually create related components of KavaRef.
 
-If you don't like the Kotlin lambda writing, you can create chained calls manually.
+If you don't like the Kotlin DSL writing, you can create chained calls manually.
 
 > The following example
 

@@ -644,7 +644,7 @@ KavaRef.setLogger(MyLogger())
 
 上述内容讲解的均为标准场景下的使用方法，如果你有更加细粒度的使用场景，你可以手动创建 KavaRef 的相关组件。
 
-如果你不喜欢 Kotlin lambda 的写法，你可以手动创建链式调用。
+如果你不喜欢 Kotlin DSL 的写法，你可以手动创建链式调用。
 
 > 示例如下
 

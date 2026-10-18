@@ -19,7 +19,7 @@ If you are using YukiReflection or the YukiHookAPI project related to it, you ca
 
 ## Usage
 
-KavaRef is built with Kotlin **lambda** syntax in a Java Builder style.
+KavaRef is built with Kotlin DSL syntax in a Java Builder style.
 
 It can replace [Java's native reflection API](https://www.oracle.com/technical-resources/articles/java/javareflection.html) and implement a more complete reflection solution with a more human-friendly language.
 
