@@ -206,7 +206,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new method reflection and returns the first matching method or null.
+         *
+         * - Note: If no matching method is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see method
+         * @see optional
          * @param condition the condition body.
          * @return [MethodResolver] or null.
          */
@@ -222,7 +226,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new method reflection and returns the last matching method or null.
+         *
+         * - Note: If no matching method is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see method
+         * @see optional
          * @param condition the condition body.
          * @return [MethodResolver] or null.
          */
@@ -247,7 +255,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new method reflection and returns the first matching method or null.
+         *
+         * - Note: If no matching method is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see method
+         * @see optional
          * @param condition the condition body.
          * @return [MethodResolver] or null.
          */
@@ -263,7 +275,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new method reflection and returns the last matching method or null.
+         *
+         * - Note: If no matching method is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see method
+         * @see optional
          * @param condition the condition body.
          * @return [MethodResolver] or null.
          */
@@ -296,7 +312,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new constructor reflection and returns the first matching constructor or null.
+         *
+         * - Note: If no matching constructor is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see constructor
+         * @see optional
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
          */
@@ -312,7 +332,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new constructor reflection and returns the last matching constructor or null.
+         *
+         * - Note: If no matching constructor is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see constructor
+         * @see optional
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
          */
@@ -337,7 +361,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new constructor reflection and returns the first matching constructor or null.
+         *
+         * - Note: If no matching constructor is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see constructor
+         * @see optional
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
          */
@@ -353,7 +381,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new constructor reflection and returns the last matching constructor or null.
+         *
+         * - Note: If no matching constructor is found, [NoSuchMethodException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see constructor
+         * @see optional
          * @param condition the condition body.
          * @return [ConstructorResolver] or null.
          */
@@ -386,7 +418,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new field reflection and returns the first matching field or null.
+         *
+         * - Note: If no matching field is found, [NoSuchFieldException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see field
+         * @see optional
          * @param condition the condition body.
          * @return [FieldResolver] or null.
          */
@@ -402,7 +438,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new field reflection and returns the last matching field or null.
+         *
+         * - Note: If no matching field is found, [NoSuchFieldException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see field
+         * @see optional
          * @param condition the condition body.
          * @return [FieldResolver] or null.
          */
@@ -427,7 +467,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new field reflection and returns the first matching field or null.
+         *
+         * - Note: If no matching field is found, [NoSuchFieldException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see field
+         * @see optional
          * @param condition the condition body.
          * @return [FieldResolver] or null.
          */
@@ -443,7 +487,11 @@ class KavaRef private constructor() {
 
         /**
          * Starts a new field reflection and returns the last matching field or null.
+         *
+         * - Note: If no matching field is found, [NoSuchFieldException] will still be thrown,
+         *   null is returned only when [optional] is enabled.
          * @see field
+         * @see optional
          * @param condition the condition body.
          * @return [FieldResolver] or null.
          */
