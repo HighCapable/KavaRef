@@ -1,10 +1,10 @@
 # Migration to KavaRef
 
-If you are used to using the reflection API in [YukiReflection](https://github.com/HighCapable/YukiReflection) or [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI), you can refer to the following to migrate to KavaRef.
+If you are used to using the reflection API in [YukiReflection](https://github.com/HighCapable/YukiReflection) or [YukiHook](https://github.com/HighCapable/YukiHook), you can refer to the following to migrate to KavaRef.
 
 ::: warning
 
-For YukiHookAPI, you need to continue using its Hook API, and KavaRef only includes Java reflection-related APIs.
+For YukiHook, you need to continue using its Hook API, and KavaRef only includes Java reflection-related APIs.
 
 :::
 
@@ -256,7 +256,7 @@ For more information, please refer to the [Exception Handling](../library/kavare
 
 ## New to KavaRef
 
-If you haven't used YukiReflection or YukiHookAPI, it doesn't matter, you can refer to the following content to get started quickly.
+If you haven't used YukiReflection or YukiHook, it doesn't matter, you can refer to the following content to get started quickly.
 
 ::: tip What to Do Next
 

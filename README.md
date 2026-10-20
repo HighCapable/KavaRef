@@ -24,7 +24,7 @@ reflection.
 The project icon is designed by [MaiTungTM](https://github.com/Lagrio) and is named from **K**otlinJ**avaRef**lection, meaning Java reflection
 implemented using Kotlin.
 
-It was firstborn in the [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI), and was later decoupled into
+It was firstborn in the [YukiHook](https://github.com/HighCapable/YukiHook), and was later decoupled into
 the [YukiReflection](https://github.com/HighCapable/YukiReflection) project.
 
 As you can see, KavaRef is an entirely new API set refactored around the design principles of YukiReflection. It carries no affiliation and has

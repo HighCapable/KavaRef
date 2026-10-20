@@ -1,10 +1,10 @@
 # 迁移至 KavaRef
 
-如果你已经习惯使用 [YukiReflection](https://github.com/HighCapable/YukiReflection) 或 [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI) 中的反射 API，你可以参考以下内容来迁移至 KavaRef。
+如果你已经习惯使用 [YukiReflection](https://github.com/HighCapable/YukiReflection) 或 [YukiHook](https://github.com/HighCapable/YukiHook) 中的反射 API，你可以参考以下内容来迁移至 KavaRef。
 
 ::: warning
 
-针对 YukiHookAPI，你需要继续使用其 Hook API，KavaRef 仅包含 Java 反射相关 API。
+针对 YukiHook，你需要继续使用其 Hook API，KavaRef 仅包含 Java 反射相关 API。
 
 :::
 
@@ -232,7 +232,7 @@ MyClass::class.resolve()
 
 ## 初次使用 KavaRef
 
-如果你没用过 YukiReflection 或者 YukiHookAPI，没关系，你可以参考以下内容来快速上手。
+如果你没用过 YukiReflection 或者 YukiHook，没关系，你可以参考以下内容来快速上手。
 
 ::: tip 接下来做什么
 

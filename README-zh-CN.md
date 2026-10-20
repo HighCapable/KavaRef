@@ -22,7 +22,7 @@
 
 项目图标由 [MaiTungTM](https://github.com/Lagrio) 设计，名称取自 **K**otlinJ**avaRef**lection，意为使用 Kotlin 实现的 Java 反射。
 
-它最早诞生于 [YukiHookAPI](https://github.com/HighCapable/YukiHookAPI)，后期被解耦合为 [YukiReflection](https://github.com/HighCapable/YukiReflection)
+它最早诞生于 [YukiHook](https://github.com/HighCapable/YukiHook)，后期被解耦合为 [YukiReflection](https://github.com/HighCapable/YukiReflection)
 项目。
 
 如你所见，现在 KavaRef 是借助 YukiReflection 的设计思想完全重构的一套全新 API，它们没有从属关系，并取代 YukiReflection 成为一个全新的反射解决方案。
