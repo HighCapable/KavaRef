@@ -13,6 +13,15 @@
 ```kotlin
 class AndroidHiddenApiBypassResolver : MemberProcessor.Resolver() {
 
+    override fun <T : Any> getDeclaredFields(declaringClass: Class<T>): List<Field> {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
+            return super.getDeclaredFields(declaringClass)
+        }
+
+        val fields = HiddenApiBypass.getStaticFields(declaringClass) + HiddenApiBypass.getInstanceFields(declaringClass)
+        return fields.toList()
+    }
+
     override fun <T : Any> getDeclaredConstructors(declaringClass: Class<T>): List<Constructor<T>> {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.P) {
             return super.getDeclaredConstructors(declaringClass)
