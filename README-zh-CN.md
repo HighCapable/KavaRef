@@ -65,6 +65,16 @@ World::class.resolve().firstMethod {
 
 在打开的页面中，选择侧边栏的 **快速开始** 章节以继续阅读。
 
+### Agent Skills
+
+使用 Claude Code、Codex 等智能体辅助开发时，可安装 [Use KavaRef](skills/kavaref-usage/SKILL.md)。
+
+> 示例如下
+
+```bash
+npx skills add HighCapable/KavaRef --skill kavaref-usage
+```
+
 ## 更多项目
 
 <!--suppress HtmlDeprecatedAttribute -->

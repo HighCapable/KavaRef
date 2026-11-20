@@ -68,6 +68,17 @@ You can go to the documentation page for more detailed tutorials and content.
 
 In the opened page, select the **Quick Start** section in the sidebar to continue reading.
 
+### Agent Skills
+
+For AI-assisted development with Claude Code, Codex, and other agents, install
+the [Use KavaRef](skills/kavaref-usage/SKILL.md).
+
+> The following example
+
+```bash
+npx skills add HighCapable/KavaRef --skill kavaref-usage
+```
+
 ## More Projects
 
 <!--suppress HtmlDeprecatedAttribute -->
