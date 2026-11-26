@@ -586,7 +586,7 @@ Test::class.resolve()
 
 ### 日志管理
 
-KavaRef 提供了其自身的日志管理功能，你可以通过 `KavaRef.logLevel` 来设置日志级别。
+KavaRef 提供了其自身的日志管理功能，你可以通过 `KavaRef.logLevel` 来设置最小日志级别。
 
 你可以设置 `KavaRef.logLevel = KavaRefRuntime.LogLevel.DEBUG` 来启用 DEBUG 级别的日志使得 KavaRef 在过滤过程向控制台打印更为详细的分步过滤条件日志。
 

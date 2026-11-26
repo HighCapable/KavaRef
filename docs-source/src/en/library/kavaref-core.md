@@ -618,7 +618,7 @@ Test::class.resolve()
 
 ### Log Management
 
-KavaRef provides its own log management function, you can set the log level through `KavaRef.logLevel`.
+KavaRef provides its own log management function, you can set the minimum log level through `KavaRef.logLevel`.
 
 You can set `KavaRef.logLevel = KavaRefRuntime.LogLevel.DEBUG` to enable DEBUG level logs so that KavaRef
 prints more detailed step-by-step filtering condition logs to the console during the filtering process.
