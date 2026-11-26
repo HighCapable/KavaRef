@@ -95,7 +95,7 @@ object KavaRefRuntime {
     }
 
     /**
-     * Gets or sets the log level for `KavaRef`.
+     * Gets or sets the minimum log level for `KavaRef`.
      *
      * Use `KavaRef` to control it.
      * @return [LogLevel]

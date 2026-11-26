@@ -23,7 +23,6 @@
 
 package com.highcapable.kavaref
 
-import com.highcapable.kavaref.KavaRef.Companion.resolve
 import com.highcapable.kavaref.condition.ConstructorCondition
 import com.highcapable.kavaref.condition.FieldCondition
 import com.highcapable.kavaref.condition.MethodCondition
@@ -47,7 +46,7 @@ class KavaRef private constructor() {
 
     companion object {
 
-        /** Gets or sets the log level for KavaRef. */
+        /** Gets or sets the minimum log level for KavaRef. */
         @JvmStatic
         var logLevel by KavaRefRuntime::logLevel
 
